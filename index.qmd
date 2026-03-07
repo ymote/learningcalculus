@@ -8,28 +8,28 @@ Interactive calculus lecture notes with video and Desmos graphs.
 
 | Date | Topic |
 |------|-------|
-| Aug 19 | [Lesson 1](lessons/calculus20250819.qmd) |
-| Aug 21 | [Lesson 2](lessons/calculus20250821.qmd) |
-| Aug 25 | [Lesson 3](lessons/calculus20250825.qmd) |
-| Aug 28 | [Lesson 4](lessons/calculus20250828.qmd) |
-| Sep 01 | [Lesson 5](lessons/calculus20250901.qmd) |
-| Sep 05 | [Lesson 6](lessons/calculus20250905.qmd) |
-| Sep 11 | [Lesson 7](lessons/calculus20250911.qmd) |
-| Sep 15 | [Lesson 8](lessons/calculus20250915.qmd) |
-| Sep 18 | [Lesson 9](lessons/calculus20250918.qmd) |
-| Sep 22 | [Lesson 10](lessons/calculus20250922.qmd) |
-| Sep 25 | [Lesson 11](lessons/calculus20250925.qmd) |
-| Sep 29 | [Lesson 12](lessons/calculus20250929.qmd) |
-| Oct 02 | [Lesson 13](lessons/calculus20251002.qmd) |
-| Oct 06 | [Lesson 14](lessons/calculus20251006.qmd) |
-| Oct 09 | [Lesson 15](lessons/calculus20251009.qmd) |
-| Oct 13 | [Lesson 16a](lessons/calculus20251013_1.qmd) |
-| Oct 13 | [Lesson 16b](lessons/calculus20251013_2.qmd) |
-| Oct 16 | [Lesson 17](lessons/calculus20251016.qmd) |
-| Oct 20 | [Lesson 18](lessons/calculus20251020.qmd) |
-| Oct 23 | [Lesson 19a](lessons/calculus20251023.qmd) |
-| Oct 23 | [Lesson 19b](lessons/calculus20251023_2.qmd) |
-| Oct 27 | [Lesson 20](lessons/calculus20251027.qmd) |
-| Oct 30 | [Lesson 21](lessons/calculus20251030.qmd) |
-| Nov 03 | [Lesson 22](lessons/calculus20251103.qmd) |
-| Nov 06 | [Lesson 23](lessons/calculus20251106.qmd) |
+| Aug 19 | [Polynomial Graphing, Critical Points & Quotient Rule](lessons/calculus20250819.qmd) |
+| Aug 21 | [Derivative Analysis & Quotient Rule](lessons/calculus20250821.qmd) |
+| Aug 25 | [Product Rule, Chain Rule & Inverse Functions](lessons/calculus20250825.qmd) |
+| Aug 28 | [Inverse Functions & Chain Rule](lessons/calculus20250828.qmd) |
+| Sep 01 | [Optimization & Distance to Curves](lessons/calculus20250901.qmd) |
+| Sep 05 | [Optimization on Ellipses & 3D Surfaces](lessons/calculus20250905.qmd) |
+| Sep 11 | [The Number e & Binomial Expansion](lessons/calculus20250911.qmd) |
+| Sep 15 | [Exponential Functions, Logarithms & Their Derivatives](lessons/calculus20250915.qmd) |
+| Sep 18 | [Taylor/Maclaurin Series & Power Series of ln(1+x)](lessons/calculus20250918.qmd) |
+| Sep 22 | [Derivatives of Trig Functions & sin(x)/x Limit](lessons/calculus20250922.qmd) |
+| Sep 25 | [Derivatives of tan & sec — Graphical and Algebraic](lessons/calculus20250925.qmd) |
+| Sep 29 | [Euler's Formula & Functional Equations](lessons/calculus20250929.qmd) |
+| Oct 02 | [Derivative Techniques Review: Chain Rule, Logarithmic Differentiation & Inverse Function Derivatives](lessons/calculus20251002.qmd) |
+| Oct 06 | [Limits Involving the Definition of e, Power Expansions & Higher Derivatives of Inverse Functions](lessons/calculus20251006.qmd) |
+| Oct 09 | [Power Series from Known Expansions, Geometric Series & Partial Fractions](lessons/calculus20251009.qmd) |
+| Oct 13 | [Related Rates: Connecting Changing Quantities with Derivatives](lessons/calculus20251013_1.qmd) |
+| Oct 13 | [Related Rates: Distance, Shadows & Velocity Decomposition](lessons/calculus20251013_2.qmd) |
+| Oct 16 | [Related Rates via the Physics (Vector Projection) Method](lessons/calculus20251016.qmd) |
+| Oct 20 | [Related Rates — Spheres, Cones & Propagated Error](lessons/calculus20251020.qmd) |
+| Oct 23 | [Propagated Error & Combining Measurements](lessons/calculus20251023.qmd) |
+| Oct 23 | [Propagated Error & Logarithmic Differentiation for Percent Error](lessons/calculus20251023_2.qmd) |
+| Oct 27 | [Motion in 2D: Velocity, Speed, Trajectories & Acceleration](lessons/calculus20251027.qmd) |
+| Oct 30 | [Parametric Motion, Speed vs. Velocity & Proving the Circumference](lessons/calculus20251030.qmd) |
+| Nov 03 | [From Trajectories to Integrals — Antiderivatives & the Area of a Circle](lessons/calculus20251103.qmd) |
+| Nov 06 | [Antiderivative of the Semicircle: Geometry Meets Calculus](lessons/calculus20251106.qmd) |

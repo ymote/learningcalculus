@@ -1,14 +1,350 @@
 ---
-title: "Calculus Lecture — October 13, 2025 Part 2"
+title: "Related Rates: Distance, Shadows & Velocity Decomposition"
 date: 2025-10-13
 ---
+
+In this lesson, you will tackle real related rates problems from start to finish -- two cars at a crossroad, a boat being pulled toward a cliff, and even the mystery of how fast your shadow moves when you walk away from a streetlight. Along the way, you will discover a cool shortcut from physics called "velocity decomposition" that sometimes lets you skip the algebra entirely. By the end, you will have a reliable step-by-step method for any related rates problem.
+
+::: {.callout-tip collapse="true"}
+## Why Related Rates Matter
+
+Related rates problems ask: "If one quantity is changing, how fast is a connected quantity changing?" This shows up constantly in the real world:
+
+- **Navigation**: Air traffic controllers track how fast the distance between two planes is changing to prevent collisions
+- **Construction**: Engineers calculate how fast a shadow moves to plan lighting for buildings and stadiums
+- **Rescue operations**: Coast guard teams figure out how quickly to reel in a towline to bring a boat to shore at the right speed
+- **Medicine**: Doctors model how fast a drug concentration in the blood is changing based on IV drip rates
+- **Sports**: Coaches analyze how quickly the gap between two runners is closing during a relay race
+
+Today we'll solve several classic related rates problems using both calculus (implicit differentiation) and physics (velocity decomposition).
+:::
+
+## Topics Covered
+
+- Setting up related rates problems: identifying variables, given rates, and sought rates
+- Using the Pythagorean theorem $s^2 = x^2 + y^2$ to relate distances
+- Differentiating implicit equations: $s\,ds = x\,dx + y\,dy$
+- Dividing by $dt$ to convert differentials into rates
+- Two cars at a crossroad: finding $\dfrac{ds}{dt}$ from $\dfrac{dx}{dt}$ and $\dfrac{dy}{dt}$
+- Velocity decomposition: projecting motion onto the radial direction
+- Boat-and-cliff problem: reeling in a rope connected to a boat
+- Shadow problems using similar triangles to relate variables
+- Distinguishing variables from constants in problem setup
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251013_2.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## What You Need to Know First
+
+::: {.callout-note collapse="true"}
+## What is implicit differentiation?
+
+When you have an equation like $x^2 + y^2 = s^2$ and both $x$, $y$, and $s$ depend on time $t$, you can't just "take the derivative with respect to $x$." Instead, you **differentiate** each term with respect to its own variable:
+
+$$2x\,dx + 2y\,dy = 2s\,ds$$
+
+Then divide both sides by $dt$ to get rates:
+
+$$2x\frac{dx}{dt} + 2y\frac{dy}{dt} = 2s\frac{ds}{dt}$$
+
+This is **implicit differentiation** -- treating all changing quantities as variables simultaneously.
+:::
+
+::: {.callout-note collapse="true"}
+## What is the Pythagorean theorem?
+
+For a right triangle with legs $a$ and $b$ and hypotenuse $c$:
+
+$$a^2 + b^2 = c^2$$
+
+This is the go-to equation for distances in perpendicular directions. For related rates, the key is recognizing which sides are variables and which are constants.
+:::
+
+::: {.callout-note collapse="true"}
+## What are similar triangles?
+
+Two triangles are **similar** if they have the same angles. When triangles are similar, their corresponding sides are proportional:
+
+$$\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$$
+
+Shadow problems almost always involve similar triangles formed by a light source, an object, and the shadow.
+:::
+
+::: {.callout-note collapse="true"}
+## What is vector decomposition?
+
+Any velocity vector can be broken into two perpendicular components. If you want to know how motion affects a particular direction (say, the distance between two objects), you **project** the velocity onto that direction:
+
+$$v_{\text{radial}} = v \cos\theta$$
+
+where $\theta$ is the angle between the velocity and the direction you care about. The perpendicular component $v \sin\theta$ does not affect the distance -- it only causes rotation.
+:::
+
+## The Related Rates Procedure
+
+Every related rates problem follows the same three-step recipe:
+
+**Step 1 -- Set up variables and rates.** Clearly identify:
+
+- What are the **variables** (quantities that change)?
+- What **rates** are given ($\frac{dx}{dt}$, $\frac{dy}{dt}$, etc.)?
+- What **rate** are we trying to find?
+- Watch the **sign**: if a quantity is decreasing, its rate is negative.
+
+**Step 2 -- Relate the variables.** Find a geometric equation connecting the variables (Pythagorean theorem, similar triangles, etc.). Do **not** plug in numbers yet -- the equation must hold at every instant, not just at the given moment.
+
+**Step 3 -- Differentiate, then plug in.** Differentiate the equation (take differentials of each variable), divide by $dt$, and only **then** substitute the given numerical values.
+
+## Problem 1: Two Cars at a Crossroad
+
+### Setup
+
+Two cars are at a crossroad. Car A drives north at $60$ mph, and Car B drives west (toward the intersection) at $40$ mph. At the moment of interest, Car A is $500$ m north and Car B is $375$ m east. How fast is the distance between them changing?
+
+::: {.desmos-container}
+```{=html}
+<div id="crossroad-graph" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt1 = document.getElementById('crossroad-graph');
+var calc1 = Desmos.GraphingCalculator(elt1, { expressions: true, settingsMenu: false });
+calc1.setExpression({id: 'origin', latex: '(0,0)', color: '#000000', pointSize: 8, label: 'O (intersection)', showLabel: true});
+calc1.setExpression({id: 'carA', latex: '(0, 500)', color: '#2d70b3', pointSize: 10, label: 'Car A (y=500)', showLabel: true});
+calc1.setExpression({id: 'carB', latex: '(375, 0)', color: '#c74440', pointSize: 10, label: 'Car B (x=375)', showLabel: true});
+calc1.setExpression({id: 'yaxis', latex: 'x=0 \\left\\{0 \\le y \\le 500\\right\\}', color: '#2d70b3', lineWidth: 2});
+calc1.setExpression({id: 'xaxis', latex: 'y=0 \\left\\{0 \\le x \\le 375\\right\\}', color: '#c74440', lineWidth: 2});
+calc1.setExpression({id: 'dist', latex: 'y - 500 = \\frac{500}{-375}(x - 0) \\left\\{0 \\le x \\le 375\\right\\}', color: '#388c46', lineWidth: 2, lineStyle: 'DASHED'});
+calc1.setMathBounds({left: -100, right: 500, bottom: -100, top: 650});
+</script>
+```
+:::
+
+*The green dashed line is the distance $s$ between the two cars. The triangle has legs $x = 375$ and $y = 500$, forming a 3-4-5 ratio.*
+
+### Solution by Calculus (Related Rates)
+
+**Variables and rates:**
+
+- $y$ = position of Car A (north), $\frac{dy}{dt} = 60$ mph (increasing)
+- $x$ = position of Car B (east), $\frac{dx}{dt} = -40$ mph (decreasing -- moving toward the origin)
+- $s$ = distance between the cars; find $\frac{ds}{dt}$
+
+**Relate the variables** using the Pythagorean theorem:
+
+$$s^2 = x^2 + y^2$$
+
+**Differentiate** (take differentials, then divide by $dt$):
+
+$$2s\,ds = 2x\,dx + 2y\,dy \quad \Longrightarrow \quad s\frac{ds}{dt} = x\frac{dx}{dt} + y\frac{dy}{dt}$$
+
+**Plug in.** Notice $x : y = 375 : 500 = 3 : 4$, so $s$ corresponds to $5$ in the ratio. We only need the ratios:
+
+$$\frac{ds}{dt} = \frac{x}{s}\cdot\frac{dx}{dt} + \frac{y}{s}\cdot\frac{dy}{dt} = \frac{3}{5}(-40) + \frac{4}{5}(60) = -24 + 48 = 24 \text{ mph}$$
+
+::: {.callout-important}
+## Key Idea: Pythagorean Related Rates
+When two objects move along perpendicular directions, the Pythagorean theorem links their positions, and differentiating it links their speeds to the rate the distance between them changes.
+
+$$\boxed{\frac{ds}{dt} = 24 \text{ mph}}$$
+:::
+
+The distance is increasing at $24$ mph.
+
+### Solution by Velocity Decomposition (Physics Way)
+
+Instead of algebra, decompose each car's velocity into the **radial** direction (along the line connecting A and B) and the **tangential** direction (perpendicular to it). Only the radial component affects the distance between the cars.
+
+**Car A** moves at $60$ mph upward. The triangle $OAB$ has ratio $3:4:5$, so the projection of Car A's velocity onto the radial direction uses $\cos\theta = \frac{4}{5}$:
+
+$$v_{r,A} = 60 \times \frac{4}{5} = 48 \text{ mph (increasing distance)}$$
+
+**Car B** moves at $40$ mph to the left. Projecting onto the radial direction with $\sin\theta = \frac{3}{5}$:
+
+$$v_{r,B} = 40 \times \frac{3}{5} = 24 \text{ mph (decreasing distance)}$$
+
+The net rate of change:
+
+$$\frac{ds}{dt} = 48 - 24 = 24 \text{ mph}$$
+
+Same answer -- but we could almost eyeball it once we spotted the $3$-$4$-$5$ ratio.
+
+## Problem 2: Boat and Cliff (Rope Problem)
+
+### Setup
+
+A person stands atop a $50$ m cliff and pulls in a rope attached to a boat at $2$ m/s. At the moment of interest, the boat is $120$ m from the base of the cliff. How fast is the boat approaching the cliff?
+
+::: {.desmos-container}
+```{=html}
+<div id="cliff-graph" style="width: 100%; height: 400px;"></div>
+<script>
+var elt2 = document.getElementById('cliff-graph');
+var calc2 = Desmos.GraphingCalculator(elt2, { expressions: true, settingsMenu: false });
+calc2.setExpression({id: 'cliff', latex: 'x=0 \\left\\{0 \\le y \\le 50\\right\\}', color: '#000000', lineWidth: 4});
+calc2.setExpression({id: 'ground', latex: 'y=0 \\left\\{0 \\le x \\le 150\\right\\}', color: '#6c757d', lineWidth: 2});
+calc2.setExpression({id: 'rope', latex: 'y = 50 - \\frac{50}{120}x \\left\\{0 \\le x \\le 120\\right\\}', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED'});
+calc2.setExpression({id: 'person', latex: '(0, 50)', color: '#2d70b3', pointSize: 10, label: 'Person (top of cliff)', showLabel: true});
+calc2.setExpression({id: 'boat', latex: '(120, 0)', color: '#c74440', pointSize: 10, label: 'Boat (x=120)', showLabel: true});
+calc2.setExpression({id: 'base', latex: '(0, 0)', color: '#000000', pointSize: 8, label: 'O', showLabel: true});
+calc2.setMathBounds({left: -20, right: 160, bottom: -20, top: 70});
+</script>
+```
+:::
+
+*The dashed red line is the rope of length $r = 130$. The cliff height $h = 50$ is constant -- only $x$ and $r$ are variables.*
+
+### Solution by Related Rates
+
+**Variables and rates:**
+
+- $r$ = length of the rope (hypotenuse), $\frac{dr}{dt} = -2$ m/s (rope is getting shorter)
+- $x$ = horizontal distance from boat to cliff base; find $\frac{dx}{dt}$
+- $h = 50$ m is a **constant** (the cliff height does not change, so $dh = 0$)
+
+**Relate the variables:**
+
+$$r^2 = x^2 + h^2 = x^2 + 50^2$$
+
+**Differentiate** (since $h$ is constant, its differential is zero):
+
+$$2r\,dr = 2x\,dx \quad \Longrightarrow \quad \frac{dx}{dt} = \frac{r}{x}\cdot\frac{dr}{dt}$$
+
+**Find the ratio.** At the moment: $x = 120$, $h = 50$. Notice $120 : 50 = 12 : 5$, so the sides are in ratio $5 : 12 : 13$, giving $r/x = 13/12$.
+
+$$\frac{dx}{dt} = \frac{13}{12} \times (-2) = -\frac{13}{6} \text{ m/s}$$
+
+::: {.callout-important}
+## Key Idea: When One Side Is Constant, the Problem Simplifies
+In the boat-and-cliff problem, the cliff height never changes, so its differential is zero. This means only two variables remain, and you get a clean ratio between the rope-pull speed and the boat speed.
+
+$$\boxed{\frac{dx}{dt} = -\frac{13}{6} \approx -2.17 \text{ m/s}}$$
+:::
+
+The boat approaches the cliff at $\frac{13}{6}$ m/s -- faster than the rope is pulled, because the rope is at an angle.
+
+### Solution by Velocity Decomposition
+
+The rope shrinks at $2$ m/s -- that is the **radial** component of the boat's velocity. The boat moves horizontally, so its full velocity $v$ projects onto the rope direction as $v \cdot \frac{12}{13}$. Setting this equal to $2$:
+
+$$v = 2 \times \frac{13}{12} = \frac{13}{6} \text{ m/s}$$
+
+Eyeball it once you spot the $5$-$12$-$13$ triangle.
+
+## Problem 3: Shadow of a Walking Person
+
+### Setup
+
+A lamppost is $5$ m tall. A $2$ m tall person walks away from the lamp at $3$ m/s. When the person is $3$ m from the lamp, how fast is the tip of their shadow moving?
+
+::: {.desmos-container}
+```{=html}
+<div id="shadow-graph" style="width: 100%; height: 400px;"></div>
+<script>
+var elt3 = document.getElementById('shadow-graph');
+var calc3 = Desmos.GraphingCalculator(elt3, { expressions: true, settingsMenu: false });
+calc3.setExpression({id: 'lamp', latex: 'x=0 \\left\\{0 \\le y \\le 5\\right\\}', color: '#e8a900', lineWidth: 4});
+calc3.setExpression({id: 'ground', latex: 'y=0 \\left\\{0 \\le x \\le 10\\right\\}', color: '#6c757d', lineWidth: 2});
+calc3.setExpression({id: 't_slider', latex: 't=3', sliderBounds: {min: 0.5, max: 6, step: 0.1}});
+calc3.setExpression({id: 'person_line', latex: 'x=t \\left\\{0 \\le y \\le 2\\right\\}', color: '#2d70b3', lineWidth: 3});
+calc3.setExpression({id: 'light_ray', latex: 'y = 5 - \\frac{5}{\\frac{5}{3}t} x \\left\\{0 \\le x \\le \\frac{5}{3}t\\right\\}', color: '#e8a900', lineWidth: 1.5, lineStyle: 'DASHED'});
+calc3.setExpression({id: 'lamp_top', latex: '(0, 5)', color: '#e8a900', pointSize: 10, label: 'Lamp (H=5)', showLabel: true});
+calc3.setExpression({id: 'person_head', latex: '(t, 2)', color: '#2d70b3', pointSize: 8, label: 'Person (h=2)', showLabel: true});
+calc3.setExpression({id: 'shadow_tip', latex: '(\\frac{5}{3}t, 0)', color: '#388c46', pointSize: 10, label: 'Shadow tip', showLabel: true});
+calc3.setMathBounds({left: -1, right: 12, bottom: -1, top: 7});
+</script>
+```
+:::
+
+*Drag the slider $t$ to move the person. Watch how the shadow tip (green dot) always moves proportionally -- the ratio $s/x = 5/3$ never changes.*
+
+### Solution
+
+**Variables and constants:**
+
+- $x$ = distance from person to lamppost (**variable**), with $\frac{dx}{dt} = 3$ m/s
+- $s$ = distance from shadow tip to lamppost (**variable**); find $\frac{ds}{dt}$
+- Heights $H = 5$ m (lamp) and $h = 2$ m (person) are **constants**
+
+**Relate using similar triangles.** The big triangle (lamp to shadow tip, height $5$, base $s$) is similar to the small triangle (person to shadow tip, height $2$, base $s - x$):
+
+$$\frac{x}{s - x} = \frac{H - h}{h} = \frac{5 - 2}{2} = \frac{3}{2}$$
+
+Cross multiply:
+
+$$2x = 3(s - x) = 3s - 3x \quad \Longrightarrow \quad 5x = 3s$$
+
+**Differentiate:**
+
+$$5\,dx = 3\,ds \quad \Longrightarrow \quad \frac{ds}{dt} = \frac{5}{3}\cdot\frac{dx}{dt} = \frac{5}{3} \times 3 = 5 \text{ m/s}$$
+
+::: {.callout-important}
+## Key Idea: Similar Triangles Give Constant-Ratio Rates
+When similar triangles create a linear relationship between two variables (like $5x = 3s$), their rates of change are locked in the same ratio. That is why the shadow tip speed is constant no matter where the person stands.
+
+$$\boxed{\frac{ds}{dt} = 5 \text{ m/s}}$$
+:::
+
+A striking result: the shadow tip moves at a constant $5$ m/s regardless of where the person is. Because the relationship between $s$ and $x$ is linear, their rates are in a fixed ratio.
+
+## Problem 4: Shadow on a Wall
+
+### Setup
+
+A lamp is $3$ m high, and a $2.5$ m tall person stands between the lamp and a wall $4$ m away. The person walks toward the wall at $3$ m/s and is currently $1$ m from the lamp. How fast is the shadow moving on the wall?
+
+### Solution
+
+**Variables and constants:**
+
+- $x$ = distance from person to lamp (**variable**), $\frac{dx}{dt} = 3$ m/s
+- $y$ = height of shadow on the wall (**variable**); find $\frac{dy}{dt}$
+- Lamp height $= 3$ m, person height $= 2.5$ m, wall distance $= 4$ m are all **constants**
+
+**Relate using similar triangles.** The light at height $3$ casts a ray over the person's head (height $2.5$) onto the wall. By similar triangles:
+
+$$\frac{x}{4 - x} = \frac{3 - 2.5}{y - 3} \quad \Longrightarrow \quad x(y - 3) = 0.5(4 - x) \quad \Longrightarrow \quad xy = 2 + 2.5x$$
+
+**Differentiate** using the product rule on $xy$, then divide by $dt$:
+
+$$y\frac{dx}{dt} + x\frac{dy}{dt} = 2.5\frac{dx}{dt}$$
+
+**Plug in.** At $x = 1$: $y = 2 + 2.5 = 4.5$ m.
+
+$$4.5(3) + 1 \cdot \frac{dy}{dt} = 2.5(3) \quad \Longrightarrow \quad \frac{dy}{dt} = 7.5 - 13.5 = -6$$
+
+$$\boxed{\frac{dy}{dt} = -6 \text{ m/s}}$$
+
+The negative sign means the shadow is moving **down** the wall at $6$ m/s. Unlike Problem 3, the $xy$ product makes this relationship nonlinear -- the shadow speed depends on position.
+
+## Common Mistakes to Avoid
+
+1. **Plugging in numbers too early.** If you substitute $x = 3$ before differentiating, you get $\frac{d}{dt}(3) = 0$ -- nonsense. The equation must hold at every instant.
+
+2. **Confusing variables and constants.** The cliff height $h = 50$ never changes, so $dh = 0$. The person's position $x$ does change, so $dx \neq 0$. Label everything at the start.
+
+3. **Forgetting the sign.** If a quantity is decreasing, its rate is **negative**. Car B approaching means $\frac{dx}{dt} < 0$; rope pulled in means $\frac{dr}{dt} < 0$.
+
+4. **Taking the derivative instead of the differential.** Give each variable its own differential ($2r\,dr = 2x\,dx$), then divide by $dt$. Do not decide "with respect to what" prematurely.
+
+## Cheat Sheet
+
+::: {.key-formula}
+| What you need | Formula |
+|---|---|
+| Pythagorean relation | $s^2 = x^2 + y^2$ |
+| Differentiated Pythagorean | $s\dfrac{ds}{dt} = x\dfrac{dx}{dt} + y\dfrac{dy}{dt}$ |
+| Similar triangles | $\dfrac{a_1}{a_2} = \dfrac{b_1}{b_2}$ (corresponding sides proportional) |
+| Radial projection | $v_{\text{radial}} = v\cos\theta$ (component along the distance direction) |
+| Related rates procedure | (1) Set up variables and rates, (2) Relate variables, (3) Differentiate and plug in |
+| Product rule differential | $d(xy) = y\,dx + x\,dy$ |
+| Key principle | Only the radial component of velocity changes the distance between two objects |
+
+### The Related Rates Workflow
+
+$$\text{Identify variables} \;\to\; \text{Geometric equation} \;\xrightarrow{\text{differentiate}}\; \text{Differential equation} \;\xrightarrow{\div\, dt}\; \text{Rate equation} \;\xrightarrow{\text{plug in}}\; \text{Answer}$$
+:::

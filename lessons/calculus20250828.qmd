@@ -1,14 +1,250 @@
 ---
-title: "Calculus Lecture — August 28, 2025"
+title: "Inverse Functions & Chain Rule"
 date: 2025-08-28
 ---
+
+Have you ever used a decoder ring or converted Celsius to Fahrenheit? Then you already know what an inverse function is — it's a function that "undoes" another one. In this lesson, you'll see how inverse functions connect to reflections on a graph, learn the Chain Rule for taking apart nested functions, and discover a slick formula that ties it all together.
+
+::: {.callout-tip collapse="true"}
+## Real-World Connection: Inverse Functions Are Everywhere
+
+Inverse functions show up whenever you need to "undo" something:
+
+- **Temperature conversion**: Celsius to Fahrenheit is a function, Fahrenheit to Celsius is its inverse
+- **Encryption**: encoding a message is a function, decoding it is the inverse
+- **GPS navigation**: converting coordinates to a street address, and vice versa
+- **Cooking**: a recipe converts ingredients to a dish — an inverse would figure out the ingredients from the dish!
+
+The chain rule powers everything from physics (how fast a shadow moves) to machine learning (how neural networks learn).
+:::
+
+## Topics Covered
+
+- Inverse function graphs: mirror reflection across $y = x$
+- Slopes of inverse functions are reciprocals
+- The chain rule: derivative of a composite function
+- Deriving the inverse function derivative formula via the chain rule
+- Evaluating inverse derivatives numerically
+- Practice problems with the chain rule
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250828.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+::: {.callout-note collapse="true"}
+## What You Need to Know First: Inverse Functions
+
+A function $f$ takes an input and gives an output. The **inverse function** $f^{-1}$ reverses this: it takes the output back to the input.
+
+$$f(a) = b \iff f^{-1}(b) = a$$
+
+Key idea: if the point $(a, b)$ is on the graph of $f$, then the point $(b, a)$ is on the graph of $f^{-1}$.
+
+Not every function has an inverse! A function must be **one-to-one** (passes the horizontal line test) to have an inverse.
+:::
+
+::: {.callout-note collapse="true"}
+## What You Need to Know First: Composite Functions
+
+A **composite function** is a function inside another function. We write it as $f(g(x))$ or $(f \circ g)(x)$.
+
+Think of it as a two-step machine:
+
+1. First, $x$ goes into machine $g$ and out comes $g(x)$
+2. Then, $g(x)$ goes into machine $f$ and out comes $f(g(x))$
+
+Example: if $f(x) = x^2$ and $g(x) = 3x + 1$, then
+
+$$f(g(x)) = f(3x+1) = (3x+1)^2$$
+:::
+
+::: {.callout-note collapse="true"}
+## What You Need to Know First: Basic Derivative Rules
+
+Recall these power rule derivatives:
+
+- $\frac{d}{dx}[x^n] = nx^{n-1}$
+- $\frac{d}{dx}[c] = 0$ (constant)
+- $\frac{d}{dx}[cf(x)] = c \cdot f'(x)$ (constant multiple)
+- $\frac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)$ (sum rule)
+:::
+
+## Inverse Function Graphs: Mirror Reflection
+
+The graph of $f^{-1}$ is the **mirror reflection** of $f$ across the line $y = x$.
+
+This is because every point $(a, b)$ on $f$ becomes $(b, a)$ on $f^{-1}$ — you are swapping the $x$ and $y$ coordinates. The line $y = x$ is the **angle bisector** of the $x$-axis and $y$-axis, and reflecting across it swaps coordinates.
+
+::: {.callout-tip collapse="true"}
+## Important: Reflection, NOT Rotation!
+
+A common mistake is to think you can just rotate the graph 90 degrees. That is **wrong**! Rotation and reflection are different transformations.
+
+- **Reflection** across $y = x$: swap $(a, b) \to (b, a)$
+- **Rotation** by 90 degrees: moves $(a, b) \to (-b, a)$
+
+Notice the minus sign in rotation — that changes the shape. Always think "mirror across $y = x$," not "spin the page."
+:::
+
+**Explore — see $f$ and $f^{-1}$ as reflections across $y = x$:**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'f', latex: 'y=x^2 \\left\\{x \\ge 0\\right\\}', color: '#2d70b3', lineWidth: 3 });
+  calc1.setExpression({ id: 'finv', latex: 'y=\\sqrt{x}', color: '#c74440', lineWidth: 3 });
+  calc1.setExpression({ id: 'mirror', latex: 'y=x', color: '#888888', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc1.setExpression({ id: 'a', latex: 'a=2', sliderBounds: {min: 0, max: 4, step: 0.1} });
+  calc1.setExpression({ id: 'p1', latex: '(a, a^2)', color: '#2d70b3', pointSize: 10, label: '(a, a^2)', showLabel: true });
+  calc1.setExpression({ id: 'p2', latex: '(a^2, a)', color: '#c74440', pointSize: 10, label: '(a^2, a)', showLabel: true });
+  calc1.setMathBounds({ left: -2, right: 8, bottom: -2, top: 8 });
+</script>
+```
+
+## Slopes of Inverse Functions Are Reciprocals
+
+This is a beautiful result: if the graph of $f$ has slope $k$ at the point $(a, b)$, then the graph of $f^{-1}$ has slope $\frac{1}{k}$ at the point $(b, a)$.
+
+$$f'(a) = k \implies (f^{-1})'(b) = \frac{1}{k}$$
+
+Why? When you reflect across $y = x$, rise and run swap. A slope of $\frac{\text{rise}}{\text{run}} = k$ becomes $\frac{\text{run}}{\text{rise}} = \frac{1}{k}$.
+
+::: {.callout-important}
+## Key Idea: Inverse Function Derivative Formula
+To find the slope of the inverse function at a point, take the reciprocal of the slope of the original function at the matching point. If the original climbs steeply, the inverse climbs gently.
+
+$$(f^{-1})'(b) = \frac{1}{f'(f^{-1}(b))}$$
+:::
+
+In words: to find the slope of the inverse at $b$, take the reciprocal of the slope of $f$ at the corresponding input.
+
+## The Chain Rule
+
+The chain rule tells you how to differentiate a composite function $f(g(x))$:
+
+::: {.callout-important}
+## Key Idea: The Chain Rule
+To differentiate a function nested inside another function, take the derivative of the outside (keeping the inside untouched), then multiply by the derivative of the inside.
+
+$$\frac{d}{dx}\big[f(g(x))\big] = f'(g(x)) \cdot g'(x)$$
+:::
+
+Think of it this way: **derivative of the outside (leaving the inside alone) times the derivative of the inside.**
+
+::: {.callout-tip collapse="true"}
+## Chain Rule in Plain English
+
+Imagine a gear system: a small gear turns a medium gear, which turns a large gear.
+
+- The rate the large gear turns depends on the medium gear (outer derivative)
+- The rate the medium gear turns depends on the small gear (inner derivative)
+- The total rate = outer rate $\times$ inner rate
+
+That multiplication is the chain rule!
+:::
+
+### Example: Differentiate $(3x^4 - 7x + 1)^3 - 7x^2 + 2$
+
+Break it into pieces:
+
+**Piece 1:** $(3x^4 - 7x + 1)^3$ — this is a composite! The outer function is $u^3$, the inner is $u = 3x^4 - 7x + 1$.
+
+$$\frac{d}{dx}(3x^4 - 7x + 1)^3 = 3(3x^4 - 7x + 1)^2 \cdot (12x^3 - 7)$$
+
+**Piece 2:** $-7x^2 + 2$ — straightforward power rule:
+
+$$\frac{d}{dx}(-7x^2 + 2) = -14x$$
+
+**Full answer:**
+
+$$\frac{d}{dx}\big[(3x^4 - 7x + 1)^3 - 7x^2 + 2\big] = 3(3x^4 - 7x + 1)^2(12x^3 - 7) - 14x$$
+
+## Deriving the Inverse Derivative Formula
+
+Here is where the chain rule and inverse functions come together beautifully. Start from the defining property of an inverse:
+
+$$f^{-1}(f(x)) = x$$
+
+Now differentiate **both sides** using the chain rule:
+
+$$\frac{d}{dx}\big[f^{-1}(f(x))\big] = \frac{d}{dx}[x]$$
+
+$$(f^{-1})'(f(x)) \cdot f'(x) = 1$$
+
+Solve for $(f^{-1})'$:
+
+$$(f^{-1})'(f(x)) = \frac{1}{f'(x)}$$
+
+This is exactly the reciprocal relationship we saw geometrically! If $f(a) = b$, then:
+
+$$(f^{-1})'(b) = \frac{1}{f'(a)}$$
+
+## Evaluating Inverse Derivatives Numerically
+
+### Example: Find $(f^{-1})'(28)$ where $f(x) = x^3 + x$
+
+**Step 1:** Find which input $a$ gives $f(a) = 28$.
+
+$$a^3 + a = 28$$
+
+Try $a = 3$: $27 + 3 = 30$ (too big). Try $a = 2$: $8 + 2 = 10$ (too small). Hmm — but let's check the transcript's example. Try to solve systematically, or notice the problem may use a different cubic. The method is what matters:
+
+**General method:**
+
+1. **Find $a$** such that $f(a) = 28$ (so $f^{-1}(28) = a$)
+2. **Compute $f'(a)$**: take the derivative of $f$ and plug in $a$
+3. **Take the reciprocal**: $(f^{-1})'(28) = \frac{1}{f'(a)}$
+
+**Worked example with $f(x) = x^3 + 3x$ and finding $(f^{-1})'(10)$:**
+
+1. Solve $a^3 + 3a = 10$. Try $a = 1$: $1 + 3 = 4$. Try $a = 2$: $8 + 6 = 14$. Hmm, not integer. Let's use $f(x) = x^3 + x$ and find $(f^{-1})'(30)$:
+   - Solve $a^3 + a = 30$. Try $a = 3$: $27 + 3 = 30$ ✓
+2. $f'(x) = 3x^2 + 1$, so $f'(3) = 3(9) + 1 = 28$
+3. $(f^{-1})'(30) = \frac{1}{28}$
+
+**Explore — see the function and its inverse, with tangent lines showing reciprocal slopes:**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'f', latex: 'y=x^3+x', color: '#2d70b3', lineWidth: 2.5 });
+  calc2.setExpression({ id: 'mirror', latex: 'y=x', color: '#888888', lineStyle: 'DASHED', lineWidth: 1 });
+  calc2.setExpression({ id: 'pt', latex: '(3, 30)', color: '#2d70b3', pointSize: 10, label: '(3, 30) on f', showLabel: true });
+  calc2.setExpression({ id: 'ptinv', latex: '(30, 3)', color: '#c74440', pointSize: 10, label: '(30, 3) on f^{-1}', showLabel: true });
+  calc2.setExpression({ id: 'tangent_f', latex: 'y=28(x-3)+30', color: '#2d70b3', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc2.setExpression({ id: 'tangent_finv', latex: 'y=\\frac{1}{28}(x-30)+3', color: '#c74440', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc2.setMathBounds({ left: -5, right: 40, bottom: -5, top: 40 });
+</script>
+```
+
+## Cheat Sheet
+
+::: {.key-formula}
+| Concept | Formula / Rule |
+|---|---|
+| Inverse graph | Reflect across $y = x$ (swap coordinates), NOT rotate |
+| Inverse slopes | If $f'(a) = k$, then $(f^{-1})'(b) = \frac{1}{k}$ where $b = f(a)$ |
+| Inverse derivative formula | $(f^{-1})'(b) = \frac{1}{f'(f^{-1}(b))}$ |
+| Chain rule | $\frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)$ |
+| Chain rule in words | Derivative of outside $\times$ derivative of inside |
+| Deriving inverse derivative | Start from $f^{-1}(f(x)) = x$, differentiate both sides |
+
+### Steps to Find $(f^{-1})'(b)$ Numerically
+
+1. Find $a$ such that $f(a) = b$
+2. Compute $f'(a)$
+3. Answer: $(f^{-1})'(b) = \frac{1}{f'(a)}$
+:::

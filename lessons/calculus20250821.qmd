@@ -1,14 +1,249 @@
 ---
-title: "Calculus Lecture — August 21, 2025"
+title: "Derivative Analysis & Quotient Rule"
 date: 2025-08-21
 ---
+
+Ready to become a graph detective? In this lesson, you'll sharpen your skills at reading derivative graphs to figure out where a function goes up, goes down, and hits its peaks and valleys. You'll also learn the Quotient Rule — a formula for taking the derivative of a fraction — which shows up any time one changing quantity is divided by another.
+
+::: {.callout-tip collapse="true"}
+## Real-World Connection: Reading Graphs Like a Pro
+
+When engineers design roller coasters, they don't just care about the shape of the track — they care about where it goes up, where it goes down, and where the peaks and valleys are. That's exactly what derivatives tell us! And the quotient rule? It shows up every time you compute a rate like "miles per gallon" or "points per game" — any time you divide one changing quantity by another.
+:::
+
+## Topics Covered
+
+- Polynomial graphing: the snaking method (continued practice)
+- Multiplicity at roots: even power = bounce, odd power = cross
+- Reading the derivative graph $f'(x)$ to understand $f(x)$
+- Identifying maxima, minima, and stationary points from sign changes in $f'(x)$
+- Differentiating fractions by rewriting as powers of $x$
+- The Quotient Rule: $\displaystyle\frac{d}{dx}\!\left(\frac{P}{Q}\right) = \frac{Q \cdot dP - P \cdot dQ}{Q^2}$
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250821.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## Polynomial Graphing: The Snaking Method
+
+::: {.callout-note collapse="true"}
+## What You Need to Know First: Factoring Polynomials
+
+To use the snaking method, you first need to write the polynomial in factored form. For example:
+
+$$x^3 - 4x = x(x-2)(x+2)$$
+
+The factors tell you the **roots** (where the graph touches or crosses the x-axis). Once you have the roots, you can snake through them.
+:::
+
+The **snaking method** is a quick way to sketch a polynomial:
+
+1. **Find the roots** from the factored form.
+2. **Mark them on the x-axis.**
+3. **Check the leading term** to know if the graph starts high or low on the right.
+4. **Snake through the roots** — crossing at odd-multiplicity roots, bouncing at even-multiplicity roots.
+
+## Multiplicity and Behavior at Roots
+
+The **power** (multiplicity) of each factor tells you what happens at that root:
+
+| Factor | Multiplicity | Behavior at root |
+|---|---|---|
+| $(x - r)^1$ | 1 (odd) | Graph **crosses** the x-axis |
+| $(x - r)^2$ | 2 (even) | Graph **bounces** off the x-axis |
+| $(x - r)^3$ | 3 (odd) | Graph **crosses with a flat S-shape** |
+| $(x - r)^4$ | 4 (even) | Graph **bounces** (flatter than square) |
+
+::: {.callout-tip collapse="true"}
+## The Simple Rule
+
+**Odd power = cross. Even power = bounce.**
+
+Why? Because $(x - r)^{\text{even}}$ is always $\geq 0$ — a square (or fourth power, etc.) can't be negative. So the graph can't go through to the other side. But $(x - r)^{\text{odd}}$ changes sign, so the graph must cross.
+:::
+
+**Explore multiplicity — drag the sliders to change the powers:**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'bounce', latex: 'y=0.5(x+2)(x-1)^2', color: '#c74440', lineWidth: 2 });
+  calc1.setExpression({ id: 'cross', latex: 'y=0.1(x+2)(x-1)^3', color: '#2d70b3', lineWidth: 2 });
+  calc1.setExpression({ id: 'p1', latex: '(1, 0)', color: '#c74440', pointSize: 10, label: 'bounces (even power)', showLabel: true });
+  calc1.setExpression({ id: 'p2', latex: '(1, 0)', color: '#2d70b3', pointSize: 10, label: 'crosses (odd power)', showLabel: true, labelOrientation: Desmos.LabelOrientations.BELOW });
+  calc1.setExpression({ id: 'p3', latex: '(-2, 0)', color: '#388c46', pointSize: 10, label: 'single root (crosses)', showLabel: true });
+  calc1.setMathBounds({ left: -5, right: 5, bottom: -8, top: 8 });
+</script>
+```
+
+## Critical Points and Reading the Derivative Graph
+
+::: {.callout-note collapse="true"}
+## What You Need to Know First: What Is a Derivative?
+
+The derivative $f'(x)$ tells you the **slope** of $f(x)$ at every point. If $f'(x) > 0$, the original function is going uphill. If $f'(x) < 0$, it's going downhill. If $f'(x) = 0$, the function is momentarily flat — a **critical point**.
+:::
+
+The derivative graph $f'(x)$ is like a **dashboard** for the original function $f(x)$:
+
+| What $f'(x)$ does | What $f(x)$ does |
+|---|---|
+| $f'(x) > 0$ (above x-axis) | $f(x)$ is **increasing** (going up) |
+| $f'(x) < 0$ (below x-axis) | $f(x)$ is **decreasing** (going down) |
+| $f'(x) = 0$ (crosses x-axis) | $f(x)$ has a **critical point** (flat) |
+
+## Identifying Maxima, Minima, and Stationary Points
+
+A critical point (where $f'(x) = 0$) can be one of three things. You figure out which by looking at how $f'(x)$ changes sign:
+
+::: {.callout-important}
+## Key Idea: The First Derivative Test
+Check the sign of the derivative just before and just after a critical point. The sign change (or lack of one) tells you exactly what type of critical point you have.
+
+| Sign change in $f'(x)$ | Type of critical point |
+|---|---|
+| $+ \to -$ (positive then negative) | **Local maximum** (hilltop) |
+| $- \to +$ (negative then positive) | **Local minimum** (valley) |
+| No sign change ($+ \to +$ or $- \to -$) | **Stationary inflection point** (flat but keeps going) |
+:::
+
+::: {.callout-tip collapse="true"}
+## Think of it like driving
+
+- **Maximum**: You were going uphill ($f' > 0$), hit the top, then go downhill ($f' < 0$).
+- **Minimum**: You were going downhill ($f' < 0$), hit the bottom, then go uphill ($f' > 0$).
+- **Stationary inflection**: You slow down to zero speed momentarily, then keep going the same direction — like pausing at a flat spot on a winding road.
+:::
+
+**Explore: see $f(x)$ and $f'(x)$ side by side:**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'func', latex: 'f(x) = x^3 - 3x', color: '#2d70b3', lineWidth: 3 });
+  calc2.setExpression({ id: 'deriv', latex: 'g(x) = 3x^2 - 3', color: '#c74440', lineWidth: 2, lineStyle: Desmos.Styles.DASHED });
+  calc2.setExpression({ id: 'max', latex: '(-1, 2)', color: '#388c46', pointSize: 10, label: 'local max', showLabel: true });
+  calc2.setExpression({ id: 'min', latex: '(1, -2)', color: '#388c46', pointSize: 10, label: 'local min', showLabel: true });
+  calc2.setExpression({ id: 'label_f', latex: '(2.5, 9)', color: '#2d70b3', label: 'f(x)', showLabel: true, pointSize: 0 });
+  calc2.setExpression({ id: 'label_fp', latex: '(2.5, 6)', color: '#c74440', label: "f'(x) (dashed)", showLabel: true, pointSize: 0 });
+  calc2.setMathBounds({ left: -4, right: 4, bottom: -6, top: 10 });
+</script>
+```
+
+Notice: $f'(x) = 0$ at $x = -1$ and $x = 1$ — exactly where $f(x)$ has its max and min!
+
+## Differentiating Fractions: Rewriting as Powers
+
+::: {.callout-note collapse="true"}
+## What You Need to Know First: Negative Exponents
+
+Remember that $\dfrac{1}{x^n} = x^{-n}$. This lets us turn fractions into power functions that we already know how to differentiate using the power rule.
+:::
+
+Before learning the quotient rule, there's a simpler trick that works when the denominator is just a power of $x$: **rewrite the fraction as a sum of powers**.
+
+**Example:** Differentiate $\dfrac{1 + x}{x^2}$.
+
+**Step 1:** Split the fraction:
+
+$$\frac{1 + x}{x^2} = \frac{1}{x^2} + \frac{x}{x^2} = x^{-2} + x^{-1}$$
+
+**Step 2:** Apply the power rule to each term:
+
+$$\frac{d}{dx}\left(x^{-2} + x^{-1}\right) = -2x^{-3} + (-1)x^{-2} = -\frac{2}{x^3} - \frac{1}{x^2}$$
+
+This shortcut avoids the quotient rule entirely! Use it whenever you can.
+
+## The Quotient Rule
+
+::: {.callout-note collapse="true"}
+## What You Need to Know First: The Product Rule
+
+The quotient rule is built on the product rule. Recall: if $y = P \cdot Q$, then
+
+$$\frac{dy}{dx} = P \cdot \frac{dQ}{dx} + Q \cdot \frac{dP}{dx}$$
+
+The quotient rule handles $P/Q$ instead of $P \cdot Q$.
+:::
+
+When you have a fraction $\dfrac{P}{Q}$ where both $P$ and $Q$ are functions of $x$, the **quotient rule** says:
+
+::: {.callout-important}
+## Key Idea: The Quotient Rule
+To differentiate a fraction, use "bottom times derivative of top, minus top times derivative of bottom, all over bottom squared."
+
+$$\frac{d}{dx}\!\left(\frac{P}{Q}\right) = \frac{Q \cdot \dfrac{dP}{dx} \;-\; P \cdot \dfrac{dQ}{dx}}{Q^2}$$
+:::
+
+::: {.callout-tip collapse="true"}
+## Where does this formula come from?
+
+Start with $y = \dfrac{P}{Q}$. When $x$ changes by a tiny amount $dx$:
+
+- $P$ changes to $P + dP$
+- $Q$ changes to $Q + dQ$
+
+So the new value is $\dfrac{P + dP}{Q + dQ}$. The change in $y$ is:
+
+$$dy = \frac{P + dP}{Q + dQ} - \frac{P}{Q}$$
+
+Put both fractions over a common denominator $Q(Q + dQ)$:
+
+$$dy = \frac{Q(P + dP) - P(Q + dQ)}{Q(Q + dQ)} = \frac{Q \cdot dP - P \cdot dQ}{Q(Q + dQ)}$$
+
+Since $dQ$ is infinitesimally small, $Q + dQ \approx Q$, so:
+
+$$\frac{dy}{dx} = \frac{Q \cdot \dfrac{dP}{dx} - P \cdot \dfrac{dQ}{dx}}{Q^2}$$
+:::
+
+**Example:** Differentiate $\dfrac{x^2 + 1}{x - 3}$.
+
+Let $P = x^2 + 1$ and $Q = x - 3$. Then $\dfrac{dP}{dx} = 2x$ and $\dfrac{dQ}{dx} = 1$.
+
+$$\frac{d}{dx}\!\left(\frac{x^2+1}{x-3}\right) = \frac{(x-3)(2x) - (x^2+1)(1)}{(x-3)^2} = \frac{2x^2 - 6x - x^2 - 1}{(x-3)^2} = \frac{x^2 - 6x - 1}{(x-3)^2}$$
+
+**Explore the function and its derivative:**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'func', latex: 'f(x) = \\frac{x^2+1}{x-3}', color: '#2d70b3', lineWidth: 3 });
+  calc3.setExpression({ id: 'deriv', latex: 'g(x) = \\frac{x^2-6x-1}{(x-3)^2}', color: '#c74440', lineWidth: 2, lineStyle: Desmos.Styles.DASHED });
+  calc3.setExpression({ id: 'asymptote', latex: 'x=3', color: '#999999', lineWidth: 1, lineStyle: Desmos.Styles.DASHED });
+  calc3.setExpression({ id: 'label_f', latex: '(6, 7)', color: '#2d70b3', label: 'f(x)', showLabel: true, pointSize: 0 });
+  calc3.setExpression({ id: 'label_fp', latex: '(6, 3)', color: '#c74440', label: "f'(x) (dashed)", showLabel: true, pointSize: 0 });
+  calc3.setMathBounds({ left: -5, right: 12, bottom: -20, top: 20 });
+</script>
+```
+
+## Cheat Sheet
+
+::: {.key-formula}
+| Concept | Key Formula / Rule |
+|---|---|
+| Multiplicity at roots | Odd power = cross, even power = bounce |
+| $f'(x) > 0$ | $f(x)$ is increasing |
+| $f'(x) < 0$ | $f(x)$ is decreasing |
+| $f'(x) = 0$, sign $+ \to -$ | Local **maximum** |
+| $f'(x) = 0$, sign $- \to +$ | Local **minimum** |
+| $f'(x) = 0$, no sign change | Stationary inflection point |
+| Fraction shortcut | $\dfrac{1+x}{x^2} = x^{-2} + x^{-1}$, then use power rule |
+| Quotient Rule | $\dfrac{d}{dx}\!\left(\dfrac{P}{Q}\right) = \dfrac{Q \cdot dP - P \cdot dQ}{Q^2}$ |
+:::

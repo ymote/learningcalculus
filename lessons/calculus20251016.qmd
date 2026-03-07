@@ -1,14 +1,343 @@
 ---
-title: "Calculus Lecture — October 16, 2025"
+title: "Related Rates via the Physics (Vector Projection) Method"
 date: 2025-10-16
 ---
+
+What if you could figure out how fast something is moving without taking a single derivative? In this lesson, you will learn the "physics method" -- a technique that uses vector projection to solve related rates problems for rigid objects like rods and beams. You will also prove the Law of Sines using circles, which is one of the most beautiful results in geometry. Get ready for a lesson where physics and math team up!
+
+::: {.callout-tip collapse="true"}
+## Why Vector Projection and Related Rates Matter
+
+Understanding how velocities of connected objects relate to each other shows up everywhere in the real world:
+
+- **Robotics**: a robotic arm has rigid links connected at joints -- engineers use velocity projections to figure out how fast the end of the arm moves when a motor turns one joint
+- **Car engines**: pistons and crankshafts are connected by rigid rods, and the piston speed depends on projecting the crankshaft's velocity along the rod direction
+- **Sports**: when a baseball bat swings, every point on the bat moves at a different speed -- the rigid-body constraint determines exactly how fast the tip moves relative to the handle
+- **Construction cranes**: as the crane arm rotates, the cable attachment point moves along a circle, and the load swings -- predicting the load's velocity requires decomposing motion along and perpendicular to the cable
+- **Video games**: physics engines simulate rigid bodies by enforcing constraints on how connected parts move, using exactly the projection ideas from this lesson
+:::
+
+## Topics Covered
+
+- Related rates for rigid bodies using the **vector projection method** (no derivatives needed)
+- Velocity decomposition into **radial** and **tangential** components along a rigid rod
+- Rigid body constraint: radial components of velocity at both ends must be equal
+- The result $v = u \dfrac{\cos\theta}{\cos\phi}$ for a rod sliding along two walls
+- **Law of Cosines**: $a^2 = b^2 + c^2 - 2bc\cos A$
+- **Law of Sines**: $\dfrac{a}{\sin A} = \dfrac{b}{\sin B} = \dfrac{c}{\sin C} = 2R$
+- Proof of the Law of Sines using the **circumcircle** and inscribed angle theorem
+- Circumscribed circle uniqueness via perpendicular bisectors
+- Inscribed angle theorem: circumferential angle $= \frac{1}{2} \times$ central angle
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251016.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## What You Need to Know First
+
+::: {.callout-note collapse="true"}
+## What is the Law of Cosines?
+
+The **Law of Cosines** generalizes the Pythagorean theorem to any triangle. For a triangle with sides $a$, $b$, $c$ and the angle $A$ opposite side $a$:
+
+$$a^2 = b^2 + c^2 - 2bc\cos A$$
+
+When $A = 90°$, we get $\cos A = 0$ and this reduces to $a^2 = b^2 + c^2$, which is just the Pythagorean theorem. This formula lets you find a missing side when you know two sides and the included angle, or find a missing angle when you know all three sides.
+:::
+
+::: {.callout-note collapse="true"}
+## What is vector decomposition?
+
+Any velocity vector can be **decomposed** (split) into two perpendicular components. For example, if you have a velocity $\vec{v}$ and a reference direction, you can write:
+
+$$\vec{v} = v_{\text{radial}} + v_{\text{tangential}}$$
+
+where:
+
+- $v_{\text{radial}} = |\vec{v}|\cos\alpha$ is the component **along** the reference direction
+- $v_{\text{tangential}} = |\vec{v}|\sin\alpha$ is the component **perpendicular** to it
+
+Here $\alpha$ is the angle between $\vec{v}$ and the reference direction. This is just the idea of projecting a vector onto a line using cosine.
+:::
+
+::: {.callout-note collapse="true"}
+## What is a rigid body?
+
+A **rigid body** is an object that cannot stretch, shrink, or deform. A rigid rod of length $L$ means that the distance between its two endpoints is always exactly $L$, no matter how it moves.
+
+This gives us a powerful constraint: the rate at which the distance between the endpoints changes must always be zero:
+
+$$\frac{dL}{dt} = 0$$
+
+In the physics/vector approach, this means the radial components of velocity at both ends (the parts that would stretch or compress the rod) must be equal.
+:::
+
+::: {.callout-note collapse="true"}
+## What is the circumcircle of a triangle?
+
+The **circumcircle** (or circumscribed circle) is the unique circle that passes through all three vertices of a triangle. Its center is called the **circumcenter**, and its radius is called the **circumradius** $R$.
+
+The circumcenter is found at the intersection of the **perpendicular bisectors** of any two sides. Since a perpendicular bisector of a segment is the set of all points equidistant from the two endpoints, the circumcenter is equidistant from all three vertices.
+:::
+
+::: {.callout-note collapse="true"}
+## What is the inscribed angle theorem?
+
+The **inscribed angle theorem** states that any angle inscribed in a circle (formed by two chords meeting at a point on the circle) is exactly half the central angle that subtends the same arc:
+
+$$\text{inscribed angle} = \frac{1}{2} \times \text{arc measurement}$$
+
+A key consequence: an angle inscribed in a semicircle (facing a diameter) is always $90°$, because the semicircular arc measures $\pi$ radians and $\frac{\pi}{2} = 90°$.
+:::
+
+## The L-Shaped Wall Problem
+
+### Setting Up the Geometry
+
+Consider two walls meeting at an angle of $120°$ at point $O$. A rigid rod $AB$ leans against the walls with:
+
+- $OA = 1$ (distance from the corner to where the rod touches one wall)
+- $OB = 2$ (distance from the corner to where the rod touches the other wall)
+
+We first need the length of the rod $AB$ using the **Law of Cosines**:
+
+$$AB^2 = OA^2 + OB^2 - 2 \cdot OA \cdot OB \cdot \cos(120°)$$
+
+$$= 1^2 + 2^2 - 2(1)(2)\cos(120°)$$
+
+Since $\cos 120° = -\frac{1}{2}$:
+
+$$AB^2 = 1 + 4 - 2(1)(2)\!\left(-\frac{1}{2}\right) = 5 + 2 = 7$$
+
+$$\boxed{AB = \sqrt{7}}$$
+
+**Explore -- see the L-shaped wall configuration:**
+
+::: {.desmos-container}
+```{=html}
+<div id="lwall" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt = document.getElementById('lwall');
+var calculator = Desmos.GraphingCalculator(elt, {expressions: true, settingsMenu: false});
+calculator.setExpression({id: 'wall1', latex: 'y=0 \\left\\{x \\ge 0\\right\\}', color: '#888888', lineWidth: 3});
+calculator.setExpression({id: 'wall2', latex: 'y=-\\tan(60\\cdot\\pi/180)\\cdot x \\left\\{x \\le 0\\right\\}', color: '#888888', lineWidth: 3});
+calculator.setExpression({id: 'ptO', latex: '(0,0)', color: '#000000', pointSize: 10, label: 'O', showLabel: true});
+calculator.setExpression({id: 'ptA', latex: '(1,0)', color: '#2d70b3', pointSize: 10, label: 'A (OA=1)', showLabel: true});
+calculator.setExpression({id: 'ptB', latex: '(-2\\cos(\\pi/3), 2\\sin(\\pi/3))', color: '#c74440', pointSize: 10, label: 'B (OB=2)', showLabel: true});
+calculator.setExpression({id: 'rod', latex: '(1-t)(1, 0)+t(-2\\cos(\\pi/3), 2\\sin(\\pi/3))', color: '#388c46', lineWidth: 3, parametricDomain: {min: '0', max: '1'}});
+calculator.setMathBounds({left: -3, right: 3, bottom: -1, top: 4});
+</script>
+```
+:::
+
+*The green segment is the rigid rod $AB$ with length $\sqrt{7}$. The two gray lines are the walls meeting at $120°$ at the origin $O$.*
+
+### The Physics (Vector Projection) Method
+
+Now suppose point $A$ is pulled along its wall with a horizontal velocity $u = 2$ m/s. We want to find the velocity $v$ of point $B$ along the other wall.
+
+The key insight of the **physics method** is:
+
+> For a rigid rod, the component of velocity **along the rod direction** must be the same at both ends.
+
+If the radial (along-the-rod) components were different, the rod would be stretching or compressing -- which is impossible for a rigid body.
+
+### Why the Velocity Must Be Perpendicular to the Rod (Single Fixed Point)
+
+Before tackling the two-moving-endpoints case, consider a simpler scenario: point $A$ is **fixed** and only $B$ can move. What direction can $B$'s velocity point?
+
+- If $B$ had any velocity component **along** the rod, the distance $AB$ would immediately start changing -- the rod would stretch or shrink.
+- So $B$'s velocity must be entirely **perpendicular** to the rod. There is no constraint on the magnitude -- $B$ can move fast or slow, it just has to move sideways.
+- Geometrically, $B$ moves on a circle centered at $A$, and the instantaneous velocity is tangent to that circle.
+
+### Two Moving Endpoints: Decomposing Velocities
+
+When both $A$ and $B$ are moving, we decompose each velocity into:
+
+- A **radial component** (along the rod $AB$) -- this is the part that would change the rod's length
+- A **tangential component** (perpendicular to the rod) -- this just rotates the rod without changing its length
+
+Let $\theta$ be the angle between the rod and the wall at end $A$, and $\phi$ be the angle between the rod and the wall at end $B$.
+
+The velocity $u$ at point $A$ is along the horizontal wall. Its component along the rod direction is:
+
+$$u_{\text{radial}} = u \cos\theta$$
+
+The velocity $v$ at point $B$ is along the other wall. Its component along the rod direction is:
+
+$$v_{\text{radial}} = v \cos\phi$$
+
+### Applying the Rigid Body Constraint
+
+Since the rod cannot change length, the radial components must be equal:
+
+$$u \cos\theta = v \cos\phi$$
+
+Solving for $v$:
+
+::: {.callout-important}
+## Key Idea: The Rigid Body Velocity Formula
+For a rigid rod that cannot stretch or compress, the components of velocity along the rod at each end must be equal. This gives you a simple formula to find one endpoint's speed from the other -- no calculus required!
+
+$$\boxed{v = u \cdot \frac{\cos\theta}{\cos\phi}}$$
+:::
+
+No derivatives were taken. We related the velocities purely through geometric projection.
+
+### Solving the Triangle: Finding $\cos\theta$ and $\cos\phi$
+
+We have a triangle $OAB$ with sides $OA = 1$, $OB = 2$, $AB = \sqrt{7}$, and the included angle at $O$ equal to $120°$.
+
+**Finding $\cos\theta$** (angle at vertex $A$, between the rod and the horizontal wall):
+
+Apply the Law of Cosines with $\theta$ as the angle at $A$:
+
+$$OB^2 = OA^2 + AB^2 - 2 \cdot OA \cdot AB \cdot \cos\theta$$
+
+$$4 = 1 + 7 - 2(1)(\sqrt{7})\cos\theta$$
+
+$$\cos\theta = \frac{1 + 7 - 4}{2\sqrt{7}} = \frac{4}{2\sqrt{7}} = \frac{2}{\sqrt{7}}$$
+
+**Finding $\cos\phi$** (angle at vertex $B$, between the rod and the other wall):
+
+$$OA^2 = OB^2 + AB^2 - 2 \cdot OB \cdot AB \cdot \cos\phi$$
+
+$$1 = 4 + 7 - 2(2)(\sqrt{7})\cos\phi$$
+
+$$\cos\phi = \frac{4 + 7 - 1}{4\sqrt{7}} = \frac{10}{4\sqrt{7}} = \frac{5}{2\sqrt{7}}$$
+
+### Computing the Final Answer
+
+$$v = u \cdot \frac{\cos\theta}{\cos\phi} = 2 \cdot \frac{\;\dfrac{2}{\sqrt{7}}\;}{\;\dfrac{5}{2\sqrt{7}}\;} = 2 \cdot \frac{2}{\sqrt{7}} \cdot \frac{2\sqrt{7}}{5} = 2 \cdot \frac{4}{5} = \frac{8}{5}$$
+
+$$\boxed{v = \frac{8}{5} = 1.6 \text{ m/s}}$$
+
+Notice how the $\sqrt{7}$ cancels out cleanly -- there is no need to rationalize intermediate expressions.
+
+## Proof of the Law of Sines
+
+### Uniqueness of the Circumcircle
+
+Every triangle has a unique **circumcircle** passing through all three vertices. The circumcenter $O$ must lie on:
+
+1. The **perpendicular bisector** of $AB$ (equidistant from $A$ and $B$)
+2. The **perpendicular bisector** of $AC$ (equidistant from $A$ and $C$)
+
+These two lines meet at exactly one point. By transitivity, that point is also equidistant from $B$ and $C$, confirming it lies on the perpendicular bisector of $BC$ as well. This unique point is the circumcenter, and its distance to any vertex is the circumradius $R$.
+
+### The Inscribed Angle Theorem
+
+All inscribed angles subtending the same arc are equal, and each equals half the central angle:
+
+$$\text{Inscribed angle} = \frac{1}{2} \times \text{central angle (arc measurement)}$$
+
+A crucial special case: any angle inscribed in a semicircle equals $90°$.
+
+### Proving $\dfrac{a}{\sin A} = 2R$
+
+Draw the diameter $BD$ through vertex $B$. Since $\angle BCD$ is inscribed in a semicircle:
+
+$$\angle BCD = 90°$$
+
+By the inscribed angle theorem, $\angle BDC = \angle A$ (both subtend arc $BC$).
+
+In the right triangle $BDC$ with hypotenuse $BD = 2R$:
+
+$$\sin(\angle BDC) = \frac{BC}{BD} = \frac{a}{2R}$$
+
+Since $\angle BDC = \angle A$:
+
+$$\sin A = \frac{a}{2R} \implies \frac{a}{\sin A} = 2R$$
+
+By the same argument applied to the other vertices:
+
+::: {.callout-important}
+## Key Idea: The Law of Sines
+In any triangle, the ratio of a side to the sine of its opposite angle is the same for all three sides -- and that common value equals the diameter of the circumscribed circle.
+
+$$\boxed{\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C} = 2R}$$
+:::
+
+**Explore -- the circumcircle and the inscribed angle theorem:**
+
+::: {.desmos-container}
+```{=html}
+<div id="circumcircle" style="width: 100%; height: 400px;"></div>
+<script>
+var elt2 = document.getElementById('circumcircle');
+var calc2 = Desmos.GraphingCalculator(elt2, {expressions: true, settingsMenu: false});
+calc2.setExpression({id: 'circle', latex: 'x^2+y^2=4', color: '#aaaaaa', lineWidth: 2});
+calc2.setExpression({id: 'pA', latex: '(2\\cos(2.5), 2\\sin(2.5))', color: '#2d70b3', pointSize: 10, label: 'A', showLabel: true});
+calc2.setExpression({id: 'pB', latex: '(2\\cos(0.3), 2\\sin(0.3))', color: '#c74440', pointSize: 10, label: 'B', showLabel: true});
+calc2.setExpression({id: 'pC', latex: '(2\\cos(4.5), 2\\sin(4.5))', color: '#388c46', pointSize: 10, label: 'C', showLabel: true});
+calc2.setExpression({id: 'sAB', latex: '(1-t)(2\\cos(2.5), 2\\sin(2.5))+t(2\\cos(0.3), 2\\sin(0.3))', color: '#2d70b3', lineWidth: 2, parametricDomain: {min: '0', max: '1'}});
+calc2.setExpression({id: 'sBC', latex: '(1-t)(2\\cos(0.3), 2\\sin(0.3))+t(2\\cos(4.5), 2\\sin(4.5))', color: '#c74440', lineWidth: 2, parametricDomain: {min: '0', max: '1'}});
+calc2.setExpression({id: 'sCA', latex: '(1-t)(2\\cos(4.5), 2\\sin(4.5))+t(2\\cos(2.5), 2\\sin(2.5))', color: '#388c46', lineWidth: 2, parametricDomain: {min: '0', max: '1'}});
+calc2.setExpression({id: 'diam', latex: '(1-t)(2\\cos(0.3), 2\\sin(0.3))+t(-2\\cos(0.3), -2\\sin(0.3))', color: '#fa7e19', lineWidth: 2, lineStyle: 'DASHED', parametricDomain: {min: '0', max: '1'}});
+calc2.setExpression({id: 'pD', latex: '(-2\\cos(0.3), -2\\sin(0.3))', color: '#fa7e19', pointSize: 8, label: 'D', showLabel: true});
+calc2.setExpression({id: 'sDC', latex: '(1-t)(-2\\cos(0.3), -2\\sin(0.3))+t(2\\cos(4.5), 2\\sin(4.5))', color: '#fa7e19', lineWidth: 1, lineStyle: 'DASHED', parametricDomain: {min: '0', max: '1'}});
+calc2.setMathBounds({left: -4, right: 4, bottom: -3.5, top: 3.5});
+</script>
+```
+:::
+
+*Triangle $ABC$ is inscribed in a circle of radius $R = 2$. The orange dashed line is the diameter $BD$. Triangle $BDC$ is a right triangle (angle at $C$ is $90°$), and angle $D$ equals angle $A$ by the inscribed angle theorem.*
+
+## Rigid Rod on a Circle (Homework Problem)
+
+Here is the second example from class, left as homework:
+
+A rod $AB$ has length equal to one side of a regular hexagon inscribed in a given circle (so the arc $AB$ subtends $60°$, meaning $AB$ equals the radius $r$).
+
+Point $B$ moves **radially outward** from the center at $v = 2$ m/s. Point $A$ is constrained to move **along the circle** (tangentially). Find the speed of $A$.
+
+**Hints to get you started:**
+
+1. Since arc $AB$ subtends $60°$ at the center, the triangle $OAB$ (where $O$ is the center) is **equilateral** -- all sides equal $r$ and all angles equal $60°$
+2. The velocity of $A$ must be along the **tangent line** to the circle at $A$ (perpendicular to the radius $OA$)
+3. The velocity of $B$ is along the **radial direction** from the center through $B$
+4. Decompose both velocities along the rod direction $AB$
+5. Set the radial components equal (rigid body constraint): $v_A \cos\alpha = v_B \cos\beta$
+6. Use the equilateral triangle geometry to find $\alpha$ and $\beta$
+
+The method is identical to the L-shaped wall problem -- only the directions of the constrained motions have changed.
+
+## Cheat Sheet
+
+::: {.key-formula}
+| Formula | What it means |
+|---|---|
+| $a^2 = b^2 + c^2 - 2bc\cos A$ | **Law of Cosines** -- find a side or angle in any triangle |
+| $\dfrac{a}{\sin A} = \dfrac{b}{\sin B} = \dfrac{c}{\sin C} = 2R$ | **Law of Sines** -- relate sides to opposite angles and the circumradius |
+| $\cos 120° = -\dfrac{1}{2}$ | Key value used in the L-wall problem |
+| $u\cos\theta = v\cos\phi$ | **Rigid body constraint** -- radial velocity components must match |
+| $v = u\dfrac{\cos\theta}{\cos\phi}$ | Solving for the unknown velocity of the other endpoint |
+
+### The Vector Projection Method (Step by Step)
+
+1. Identify the **rigid rod** connecting two moving points
+2. Determine the **direction** each point is constrained to move
+3. **Decompose** each velocity into radial (along the rod) and tangential (perpendicular to the rod) components
+4. Set the **radial components equal**: $v_A^{\text{radial}} = v_B^{\text{radial}}$
+5. Solve for the unknown speed
+
+### Key Geometry Facts
+
+$$\text{Inscribed angle} = \frac{1}{2} \times \text{arc (central angle)}$$
+
+$$\text{Angle inscribed in a semicircle} = 90°$$
+
+$$\text{Circumcenter} = \text{intersection of perpendicular bisectors}$$
+
+### When to Use Each Method
+
+| Method | Use when... |
+|---|---|
+| **Vector projection (physics)** | Two points connected by a rigid rod, each constrained to a known path |
+| **Calculus (related rates)** | General relationships between changing quantities, not limited to rigid rods |
+:::

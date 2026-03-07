@@ -1,14 +1,356 @@
 ---
-title: "Calculus Lecture — October 06, 2025"
+title: "Limits Involving the Definition of e, Power Expansions & Higher Derivatives of Inverse Functions"
 date: 2025-10-06
 ---
+
+The number $e$ keeps popping up everywhere in math, and today you'll see why. We'll tackle limits that look impossible at first -- expressions like $(1 + \text{tiny number})^{\text{huge power}}$ -- and learn a powerful logarithm trick that cracks them wide open. You'll also discover a magical shortcut: if you know a function's power series, you can read off its 2024th derivative at zero without differentiating even once. Seriously.
+
+::: {.callout-tip collapse="true"}
+## Why Limits Involving e and Power Expansions Matter
+
+The number $e$ and the techniques for evaluating tricky limits show up constantly in science and everyday life:
+
+- **Finance**: compound interest formulas use $(1 + r/n)^n$, which approaches $e^r$ -- this is exactly how banks calculate continuously compounded interest
+- **Medicine**: drug concentration in the bloodstream decays exponentially, and doctors use limits involving $e$ to determine dosing schedules
+- **Engineering**: electrical circuits with capacitors charge and discharge following $e$-based exponential curves, and engineers approximate these with power expansions
+- **Computer science**: algorithms that divide problems in half have logarithmic complexity -- understanding $\ln(1+x)$ expansions helps analyze their performance
+- **Physics**: radioactive decay, heat transfer, and population dynamics all rely on exponential functions built from the definition of $e$
+
+Today we'll master techniques for evaluating limits that disguise the definition of $e$, see when power expansion works (and when it fails!), and discover how Maclaurin series let us find absurdly high-order derivatives without differentiating.
+:::
+
+## Topics Covered
+
+- The definition of $e$: $\displaystyle\lim_{n \to \infty}\left(1 + \frac{1}{n}\right)^n = e$
+- Variations of the limit definition: $\displaystyle\lim_{n \to \infty}\left(1 - \frac{x}{n}\right)^n = e^{-x}$
+- Evaluating limits like $\displaystyle\lim_{n \to \infty}\left(1 - \frac{3}{n^2}\right)^n$ using the logarithm technique
+- Re-deriving the power expansion of $\ln(1+x)$ from first principles
+- Using $\ln(1+x)$ expansions to handle limits where direct binomial expansion fails
+- Why binomial expansion of $(1 + 1/n)^n$ does not converge via truncation in powers of $n$
+- The Maclaurin coefficient formula: $f^{(k)}(0) = k! \cdot a_k$
+- Odd and even functions and their implications for Maclaurin expansions
+- Finding higher derivatives of $\arcsin x$ using power series
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251006.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## What You Need to Know First
+
+::: {.callout-note collapse="true"}
+## What is the number e?
+
+The number $e \approx 2.71828\ldots$ is one of the most important constants in mathematics. It is defined as:
+
+$$e = \lim_{n \to \infty}\left(1 + \frac{1}{n}\right)^n$$
+
+As $n$ grows, the base $1 + 1/n$ gets closer to 1, but the exponent $n$ grows without bound. These two opposing forces balance out to produce the finite number $e$. This is a $1^\infty$ indeterminate form -- the result could be 1, infinity, or anything in between, depending on how the base and exponent interact.
+:::
+
+::: {.callout-note collapse="true"}
+## What is the Maclaurin expansion of ln(1+x)?
+
+We proved in a previous lesson that:
+
+$$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots = \sum_{k=1}^{\infty} \frac{(-1)^{k+1} x^k}{k}$$
+
+This comes from integrating the geometric series $\frac{1}{1+x} = 1 - x + x^2 - x^3 + \cdots$ term by term. The constant of integration is found by plugging in $x = 0$ (since $\ln 1 = 0$).
+:::
+
+::: {.callout-note collapse="true"}
+## What is a binomial expansion?
+
+The **binomial expansion** generalizes $(1+x)^n$ for any exponent $n$, even negative or fractional:
+
+$$(1+x)^n = \sum_{k=0}^{\infty} \binom{n}{k} x^k = 1 + nx + \frac{n(n-1)}{2!}x^2 + \frac{n(n-1)(n-2)}{3!}x^3 + \cdots$$
+
+When $n$ is a negative integer like $-1$, this gives us the geometric series:
+
+$$(1+x)^{-1} = 1 - x + x^2 - x^3 + \cdots$$
+:::
+
+::: {.callout-note collapse="true"}
+## What are odd and even functions?
+
+An **even function** satisfies $f(-x) = f(x)$ -- its graph is symmetric about the $y$-axis. Examples: $x^2$, $\cos x$.
+
+An **odd function** satisfies $f(-x) = -f(x)$ -- its graph has rotational symmetry about the origin. Examples: $x^3$, $\sin x$.
+
+In terms of Maclaurin series:
+
+- Even functions have only **even powers** of $x$
+- Odd functions have only **odd powers** of $x$
+
+This means that for an odd function, all even-order derivatives at zero are automatically zero!
+:::
+
+::: {.callout-note collapse="true"}
+## What is the relationship between Maclaurin coefficients and derivatives?
+
+If a function has a Maclaurin expansion $f(x) = \sum_{k=0}^{\infty} a_k x^k$, then each coefficient encodes a derivative:
+
+$$a_k = \frac{f^{(k)}(0)}{k!} \quad \Longleftrightarrow \quad f^{(k)}(0) = k! \cdot a_k$$
+
+So if you know the power series, you can read off any derivative at zero without differentiating!
+:::
+
+## Key Concepts
+
+### Variations on the Definition of e
+
+We start from the fundamental definition:
+
+$$\lim_{n \to \infty}\left(1 + \frac{1}{n}\right)^n = e$$
+
+The key feature is that the term added to 1 inside the parentheses is the **reciprocal** of the exponent. We can create variations by forcing other expressions into this same shape.
+
+**Example 1**: Find $\displaystyle\lim_{n \to \infty}\left(1 - \frac{x}{n}\right)^n$.
+
+We rewrite the expression to match the definition. Since we have $-x/n$ inside and $n$ as the exponent, we can write:
+
+$$\left(1 + \frac{(-x)}{n}\right)^n$$
+
+To force this into the $e$-definition form, we need the exponent to be the reciprocal of $-x/n$, which is $-n/x$. So we write:
+
+$$\left(1 + \frac{(-x)}{n}\right)^{(-n/x) \cdot (-x)} = \left[\left(1 + \frac{(-x)}{n}\right)^{-n/x}\right]^{-x}$$
+
+As $n \to \infty$, the inner bracket approaches $e$ by definition, so the limit is:
+
+::: {.callout-important}
+## Key Idea: Variations on the Definition of e
+Any limit of the form $(1 + \text{something}/n)^n$ can be reshaped into the definition of $e$. The trick is to rewrite the expression so the exponent is the reciprocal of the small term inside the parentheses.
+
+$$\boxed{\lim_{n \to \infty}\left(1 - \frac{x}{n}\right)^n = e^{-x}}$$
+:::
+
+**Explore -- see how $(1 + 1/n)^n$ converges to $e$:**
+
+::: {.desmos-container}
+```{=html}
+<div id="calc-e-def" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt1 = document.getElementById('calc-e-def');
+var calc1 = Desmos.GraphingCalculator(elt1, { expressions: true, settingsMenu: false });
+calc1.setExpression({ id: 'e_def', latex: 'y=\\left(1+\\frac{1}{x}\\right)^{x}', color: '#2d70b3', lineWidth: 3 });
+calc1.setExpression({ id: 'e_line', latex: 'y=e', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+calc1.setExpression({ id: 'n_slider', latex: 'n=10', sliderBounds: {min: 1, max: 200, step: 1} });
+calc1.setExpression({ id: 'pt', latex: '\\left(n, \\left(1+\\frac{1}{n}\\right)^{n}\\right)', color: '#388c46', pointSize: 10, label: '(1+1/n)^n', showLabel: true });
+calc1.setMathBounds({ left: -5, right: 100, bottom: 1, top: 4 });
+</script>
+```
+:::
+
+*Drag the slider for $n$ and watch the green dot approach the dashed red line $y = e \approx 2.718$.*
+
+### The Logarithm Technique for Limits
+
+**Example 2**: Find $\displaystyle\lim_{n \to \infty}\left(1 - \frac{3}{n^2}\right)^n$.
+
+This one cannot be directly forced into the $e$-definition because the term inside is $-3/n^2$ while the exponent is only $n$ (not $n^2$). Let's call the limit $L$ and take the natural log:
+
+$$\ln L = \lim_{n \to \infty} n \cdot \ln\left(1 - \frac{3}{n^2}\right)$$
+
+Now we apply the Maclaurin expansion $\ln(1+u) = u - \frac{u^2}{2} + \cdots$ with $u = -3/n^2$:
+
+$$\ln\left(1 - \frac{3}{n^2}\right) = -\frac{3}{n^2} - \frac{9}{2n^4} - \cdots$$
+
+Multiplying by $n$:
+
+$$n \cdot \ln\left(1 - \frac{3}{n^2}\right) = -\frac{3}{n} - \frac{9}{2n^3} - \cdots$$
+
+As $n \to \infty$, every term vanishes. So $\ln L = 0$, which means:
+
+$$\boxed{L = e^0 = 1}$$
+
+We can verify this makes intuitive sense: the base $1 - 3/n^2$ approaches 1 faster than the exponent $n$ grows, so the limit collapses to 1.
+
+**Alternative approach**: Force it into the $e$-definition directly. Rewrite as:
+
+$$\left(1 + \frac{(-3)}{n^2}\right)^{(-n^2/3) \cdot (-3/n)} = \left[\left(1 + \frac{(-3)}{n^2}\right)^{-n^2/3}\right]^{-3/n}$$
+
+The inner bracket approaches $e$, and the outer exponent $-3/n \to 0$. So we get $e^0 = 1$. Same answer, confirmed.
+
+### A Tricky Product Limit
+
+**Example 3**: Find $\displaystyle\lim_{n \to \infty}\left(1 + \frac{1}{2n}\right)^{2n^2}\left(1 - \frac{1}{3n}\right)^{3n^2}$.
+
+This is a product of two terms, each in the $1^\infty$ indeterminate form. A natural first thought is to force each into the $e$-definition:
+
+$$\left(1 + \frac{1}{2n}\right)^{2n} \to e \quad \text{and} \quad \left(1 - \frac{1}{3n}\right)^{3n} \to e^{-1}$$
+
+But the actual exponents are $2n^2$ and $3n^2$, not $2n$ and $3n$. We can rewrite the first factor as:
+
+$$\left[\left(1 + \frac{1}{2n}\right)^{2n}\right]^{n} \to e^n \to \infty$$
+
+and the second as:
+
+$$\left[\left(1 - \frac{1}{3n}\right)^{3n}\right]^{n} \to e^{-n} \to 0$$
+
+So we get $\infty \cdot 0$, an indeterminate form. We need a more careful approach.
+
+**Why binomial expansion fails here**: If you try to expand $(1 + 1/(2n))^{2n^2}$ using the binomial theorem, the coefficients $\binom{2n^2}{k}$ contain powers of $n$ in the numerator that cancel with the powers of $1/(2n)$ in the denominator. The terms do not shrink based on powers of $1/n$ -- they shrink based on $1/k!$. This means you cannot truncate to a few terms; you need infinitely many to capture the limit.
+
+**The logarithm technique works**: Set $L$ equal to the limit and take the log:
+
+$$\ln L = \lim_{n \to \infty}\left[2n^2 \ln\left(1 + \frac{1}{2n}\right) + 3n^2 \ln\left(1 - \frac{1}{3n}\right)\right]$$
+
+Now expand each logarithm using $\ln(1+u) = u - \frac{u^2}{2} + \frac{u^3}{3} - \cdots$:
+
+$$\ln\left(1 + \frac{1}{2n}\right) = \frac{1}{2n} - \frac{1}{8n^2} + \cdots$$
+
+$$\ln\left(1 - \frac{1}{3n}\right) = -\frac{1}{3n} - \frac{1}{18n^2} - \cdots$$
+
+Multiplying through:
+
+$$2n^2 \cdot \ln\left(1 + \frac{1}{2n}\right) = 2n^2\left(\frac{1}{2n} - \frac{1}{8n^2} + \cdots\right) = n - \frac{1}{4} + \cdots$$
+
+$$3n^2 \cdot \ln\left(1 - \frac{1}{3n}\right) = 3n^2\left(-\frac{1}{3n} - \frac{1}{18n^2} - \cdots\right) = -n - \frac{1}{6} + \cdots$$
+
+Adding them together:
+
+$$\ln L = \left(n - \frac{1}{4} + \cdots\right) + \left(-n - \frac{1}{6} + \cdots\right) = -\frac{1}{4} - \frac{1}{6} + \cdots = -\frac{5}{12}$$
+
+The $n$ terms cancel (as expected), and the higher-order terms vanish. Therefore:
+
+$$\boxed{L = e^{-5/12}}$$
+
+This is a beautiful result -- a number between 0 and 1 that you could never guess without the technique.
+
+**Explore -- watch the product converge as $n$ grows:**
+
+::: {.desmos-container}
+```{=html}
+<div id="calc-product" style="width: 100%; height: 400px;"></div>
+<script>
+var elt2 = document.getElementById('calc-product');
+var calc2 = Desmos.GraphingCalculator(elt2, { expressions: true, settingsMenu: false });
+calc2.setExpression({ id: 'n_slider', latex: 'n=5', sliderBounds: {min: 1, max: 100, step: 1} });
+calc2.setExpression({ id: 'factor1', latex: 'f=\\left(1+\\frac{1}{2n}\\right)^{2n^2}', color: '#2d70b3' });
+calc2.setExpression({ id: 'factor2', latex: 'g=\\left(1-\\frac{1}{3n}\\right)^{3n^2}', color: '#c74440' });
+calc2.setExpression({ id: 'product', latex: 'p=f\\cdot g', color: '#388c46' });
+calc2.setExpression({ id: 'limit_line', latex: 'y=e^{-5/12}', color: '#6042a6', lineWidth: 2, lineStyle: 'DASHED' });
+calc2.setExpression({ id: 'pt', latex: '(n, p)', color: '#388c46', pointSize: 10, label: 'product', showLabel: true });
+calc2.setMathBounds({ left: -5, right: 50, bottom: 0, top: 2 });
+</script>
+```
+:::
+
+*Increase $n$ with the slider and watch the green dot converge to $e^{-5/12} \approx 0.659$.*
+
+### Why the Logarithm Technique is Essential
+
+The key insight from the product limit example is this: when you have $(1 + \text{small})^{\text{large}}$ and try to expand directly with the binomial theorem, the convergence depends on $1/k!$ (the factorial in the denominator), **not** on powers of $1/n$. This means:
+
+- You cannot truncate the expansion at a few terms
+- The "lowest order infinitesimal" strategy does not apply directly
+
+But when you take the natural log, the exponent comes **down** as a multiplier:
+
+$$\ln\left[(1 + u)^m\right] = m \cdot \ln(1+u)$$
+
+Now the expansion of $\ln(1+u)$ **does** depend on increasing powers of $u$, so truncation works perfectly. This is why the logarithm technique is so powerful for these limit problems.
+
+### Re-deriving the Power Expansion of ln(1+x)
+
+This derivation was reviewed in the lecture from scratch. Here is the chain of reasoning:
+
+**Step 1**: We need the derivative of $\ln u$. Since $\ln$ is the inverse of $e^x$, we write $y = \ln u$, so $u = e^y$. Differentiating:
+
+$$\frac{du}{dy} = e^y = u \quad \Longrightarrow \quad \frac{dy}{du} = \frac{1}{u}$$
+
+So $\frac{d}{du}\ln u = \frac{1}{u}$. Note: this reciprocal relationship between the derivative of a function and its inverse only works for the **first** derivative.
+
+**Step 2**: By the chain rule, $\frac{d}{dx}\ln(1+x) = \frac{1}{1+x}$.
+
+**Step 3**: Expand $\frac{1}{1+x} = (1+x)^{-1}$ using the binomial/geometric series:
+
+$$\frac{1}{1+x} = 1 - x + x^2 - x^3 + x^4 - \cdots$$
+
+**Step 4**: Since $\ln(1+x)$ is the antiderivative of $\frac{1}{1+x}$, integrate term by term:
+
+$$\ln(1+x) = C + x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots$$
+
+**Step 5**: Determine $C$ by plugging in $x = 0$: since $\ln(1) = 0$, we get $C = 0$.
+
+::: {.callout-important}
+## Key Idea: Power Series for ln(1+x)
+This series comes from integrating the geometric series $\frac{1}{1+x} = 1 - x + x^2 - \cdots$ term by term. It is one of the most useful expansions in calculus -- the key weapon for cracking $1^\infty$ limits.
+
+$$\boxed{\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots}$$
+:::
+
+### Higher Derivatives via Maclaurin Coefficients
+
+Recall the general Maclaurin expansion:
+
+$$f(x) = \sum_{k=0}^{\infty} a_k x^k \quad \text{where} \quad a_k = \frac{f^{(k)}(0)}{k!}$$
+
+We derive this by differentiating the power series $k$ times and evaluating at $x = 0$. Each differentiation peels off one power of $x$ and multiplies by the corresponding index, until after $k$ differentiations only the constant $k! \cdot a_k$ survives.
+
+**Application to arcsine**: What is the 2025th derivative of $\arcsin x$ at $x = 0$?
+
+First, observe that $\sin x$ is an **odd function**, and so is its inverse $\arcsin x$. An odd function's Maclaurin expansion contains only odd powers of $x$:
+
+$$\arcsin x = a_1 x + a_3 x^3 + a_5 x^5 + \cdots$$
+
+The 2025th derivative corresponds to the coefficient of $x^{2025}$. Since 2025 is odd, this coefficient could be nonzero -- you would need to find the full expansion to determine the answer.
+
+But what about the **2024th derivative** of $\arcsin x$ at $x = 0$? Since 2024 is **even**, there is no $x^{2024}$ term in the expansion of an odd function. Therefore:
+
+$$\boxed{(\arcsin x)^{(2024)}\bigg|_{x=0} = 0}$$
+
+No computation needed -- the symmetry of the function tells us the answer instantly.
+
+**Explore -- see that $\arcsin x$ is an odd function:**
+
+::: {.desmos-container}
+```{=html}
+<div id="calc-arcsin" style="width: 100%; height: 400px;"></div>
+<script>
+var elt3 = document.getElementById('calc-arcsin');
+var calc3 = Desmos.GraphingCalculator(elt3, { expressions: true, settingsMenu: false });
+calc3.setExpression({ id: 'arcsin', latex: 'y=\\arcsin(x)', color: '#2d70b3', lineWidth: 3 });
+calc3.setExpression({ id: 'sin', latex: 'y=\\sin(x) \\left\\{-\\frac{\\pi}{2} \\le x \\le \\frac{\\pi}{2}\\right\\}', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+calc3.setExpression({ id: 'bisector', latex: 'y=x', color: '#999999', lineWidth: 1, lineStyle: 'DASHED' });
+calc3.setExpression({ id: 'origin', latex: '(0,0)', color: '#388c46', pointSize: 8 });
+calc3.setMathBounds({ left: -3, right: 3, bottom: -3, top: 3 });
+</script>
+```
+:::
+
+*Notice that $\arcsin x$ (blue) is the reflection of $\sin x$ (red dashed) across the line $y = x$. Both are odd functions, passing through the origin with rotational symmetry.*
+
+### Finding the Expansion of arcsin x (Homework Preview)
+
+To find the actual Maclaurin expansion of $\arcsin x$, apply the same strategy used for $\ln(1+x)$:
+
+1. Take the derivative: $\frac{d}{dx}\arcsin x = \frac{1}{\sqrt{1 - x^2}} = (1 - x^2)^{-1/2}$
+2. Expand $(1 - x^2)^{-1/2}$ using the binomial series
+3. Integrate term by term to recover $\arcsin x$
+4. The constant is zero since $\arcsin(0) = 0$
+
+This was assigned as homework -- try it yourself!
+
+## Cheat Sheet
+
+::: {.key-formula}
+| What you want | Formula |
+|---|---|
+| Definition of $e$ | $\displaystyle\lim_{n \to \infty}\left(1 + \frac{1}{n}\right)^n = e$ |
+| General variation | $\displaystyle\lim_{n \to \infty}\left(1 + \frac{x}{n}\right)^n = e^x$ |
+| Power series for $\ln(1+x)$ | $\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots$ |
+| Logarithm technique | Set $L = \lim$, compute $\ln L$, then $L = e^{\ln L}$ |
+| Maclaurin coefficient formula | $a_k = \frac{f^{(k)}(0)}{k!}$, so $f^{(k)}(0) = k! \cdot a_k$ |
+| Odd function rule | Odd functions have only odd powers in their Maclaurin series; all even derivatives at 0 are zero |
+| Derivative of $\ln u$ | $\frac{d}{du}\ln u = \frac{1}{u}$ (proved via inverse of $e^x$) |
+| Inverse function derivative | $\frac{dy}{dx} = \frac{1}{dx/dy}$ (first derivative only!) |
+
+### The Big Strategy for $1^\infty$ Limits
+
+$$\text{Set } L = \lim \;\xrightarrow{\;\text{take}\;\ln\;}\; \ln L = \lim\, m \cdot \ln(1+u) \;\xrightarrow{\;\text{expand}\;}\; \text{keep lowest order in } u \;\xrightarrow{\;\text{evaluate}\;}\; L = e^{\ln L}$$
+:::

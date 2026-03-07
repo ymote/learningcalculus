@@ -1,14 +1,293 @@
 ---
-title: "Calculus Lecture — September 22, 2025"
+title: "Derivatives of Trig Functions & sin(x)/x Limit"
 date: 2025-09-22
 ---
+
+Sine and cosine are everywhere: sound waves, roller coasters, ocean tides, and even the electricity powering your phone. In this lesson, you'll discover why the derivative of $\sin x$ is $\cos x$ using three completely different methods, explore a sneaky limit that makes it all work, and find out why radians are the only angle measurement that plays nicely with calculus. Once you understand these ideas, you'll have the tools to analyze anything that moves in a cycle.
+
+::: {.callout-tip collapse="true"}
+## Why Trig Derivatives Matter
+
+Trigonometric functions describe anything that repeats in a cycle:
+
+- **Music**: sound waves are sine and cosine curves — their derivatives tell you how fast the air pressure is changing
+- **Roller coasters**: the slope of the track at any point is a trig derivative
+- **Tides**: ocean levels follow sine-like patterns — the derivative tells you when the tide is rising fastest
+- **Electricity**: household AC current is a sine wave — engineers need its derivative to design circuits
+
+Knowing that the derivative of $\sin x$ is $\cos x$ is one of the most-used facts in all of science and engineering.
+:::
+
+## Topics Covered
+
+- Geometric derivation of $\frac{d}{dx}(\sin x) = \cos x$ using the unit circle
+- Geometric derivation of $\frac{d}{dx}(\cos x) = -\sin x$
+- Three approaches to trig derivatives: complex exponentials, geometry, and Maclaurin series
+- The fundamental limit: $\lim_{x \to 0} \frac{\sin x}{x} = 1$
+- Why radians matter (and what goes wrong with degrees)
+- Significant figures and numerical estimation
+- Maclaurin expansions of $\sin x$ and $\cos x$
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250922.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## What You Need to Know First
+
+::: {.callout-note collapse="true"}
+## What is the unit circle?
+
+The **unit circle** is a circle centered at the origin with radius 1.
+
+Any point on the unit circle can be written as $(\cos\theta, \sin\theta)$, where $\theta$ is the angle measured counterclockwise from the positive $x$-axis.
+
+- $\cos\theta$ is the **horizontal** (x) coordinate
+- $\sin\theta$ is the **vertical** (y) coordinate
+
+This is the bridge between angles and coordinates, and it's the foundation for everything in this lesson.
+:::
+
+::: {.callout-note collapse="true"}
+## What is a radian?
+
+A **radian** is a way to measure angles using the radius of a circle.
+
+If you take the radius of a circle and wrap it along the edge (the arc), the angle you sweep out is **1 radian**.
+
+- A full circle = $2\pi$ radians (about 6.28 radians)
+- $\pi$ radians = $180°$
+- To convert: multiply degrees by $\frac{\pi}{180}$
+
+**Why radians matter for calculus:** the beautiful formula $\frac{d}{dx}(\sin x) = \cos x$ only works when $x$ is in radians!
+:::
+
+::: {.callout-note collapse="true"}
+## What is a derivative?
+
+The **derivative** of a function tells you its **rate of change** — how fast the output is changing as the input changes.
+
+Geometrically, the derivative at a point is the **slope of the tangent line** at that point.
+
+We write it as $\frac{d}{dx} f(x)$ or $f'(x)$.
+:::
+
+::: {.callout-note collapse="true"}
+## What is a factorial?
+
+A **factorial** is written $n!$ and means "multiply all whole numbers from 1 to $n$."
+
+- $3! = 3 \times 2 \times 1 = 6$
+- $5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$
+- $0! = 1$ (by definition)
+
+Factorials grow incredibly fast and show up in series expansions.
+:::
+
+## Key Concepts
+
+::: {.callout-important}
+## Key Idea: Derivative of Sine
+The derivative of $\sin x$ is $\cos x$. You can see this geometrically: as an angle increases by a tiny amount on the unit circle, the vertical coordinate (sine) changes at a rate equal to the horizontal coordinate (cosine).
+
+$$\frac{d}{dx}(\sin x) = \cos x$$
+:::
+
+### Geometric Derivation: $\frac{d}{dx}(\sin x) = \cos x$
+
+Picture a point moving around the unit circle. As the angle $\theta$ increases by a tiny amount $\Delta\theta$:
+
+1. The point moves along a tiny **arc** of length $\Delta\theta$ (since radius = 1, arc length = angle in radians)
+2. For very small angles, the arc is practically a straight line segment — **arc $\approx$ chord**
+3. This tiny displacement is tangent to the circle, pointing perpendicular to the radius
+4. The **vertical component** of this displacement (the change in $\sin\theta$) is $\Delta\theta \cdot \cos\theta$
+
+So:
+
+$$\frac{\Delta(\sin\theta)}{\Delta\theta} \approx \cos\theta$$
+
+In the limit: $\frac{d}{d\theta}(\sin\theta) = \cos\theta$
+
+**Explore the unit circle — watch how $\sin\theta$ changes as $\theta$ moves:**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'circle', latex: 'x^2+y^2=1', color: '#aaaaaa' });
+  calc1.setExpression({ id: 'theta', latex: '\\theta=1', sliderBounds: {min: 0, max: 6.28, step: 0.01} });
+  calc1.setExpression({ id: 'point', latex: '(\\cos\\theta, \\sin\\theta)', color: '#2d70b3', pointSize: 12, label: '(cos θ, sin θ)', showLabel: true });
+  calc1.setExpression({ id: 'sinline', latex: 'x=\\cos\\theta', color: '#c74440', lineStyle: 'DASHED', domain: {min: '\\min(0,\\sin\\theta)', max: '\\max(0,\\sin\\theta)'} });
+  calc1.setExpression({ id: 'cosline', latex: 'y=0', color: '#388c46', lineStyle: 'DASHED', domain: {min: '\\min(0,\\cos\\theta)', max: '\\max(0,\\cos\\theta)'} });
+  calc1.setExpression({ id: 'sinlabel', latex: '(\\cos\\theta, \\sin\\theta/2)', color: '#c74440', pointSize: 0, label: 'sin θ', showLabel: true });
+  calc1.setExpression({ id: 'coslabel', latex: '(\\cos\\theta/2, 0)', color: '#388c46', pointSize: 0, label: 'cos θ', showLabel: true });
+  calc1.setMathBounds({ left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 });
+</script>
+```
+
+::: {.callout-important}
+## Key Idea: Derivative of Cosine
+The derivative of $\cos x$ is $-\sin x$. The negative sign makes sense: when $\sin x$ is positive (point is above the x-axis), the horizontal coordinate (cosine) is decreasing, so its rate of change is negative.
+
+$$\frac{d}{dx}(\cos x) = -\sin x$$
+:::
+
+### Geometric Derivation: $\frac{d}{dx}(\cos x) = -\sin x$
+
+The same argument, but now we look at the **horizontal component**:
+
+1. As $\theta$ increases by $\Delta\theta$, the tiny displacement is tangent to the circle
+2. The **horizontal component** of this displacement is $-\Delta\theta \cdot \sin\theta$ (negative because increasing $\theta$ moves the point leftward in the upper half)
+
+$$\frac{d}{d\theta}(\cos\theta) = -\sin\theta$$
+
+::: {.callout-tip collapse="true"}
+## Why the negative sign?
+
+Think about it: when $\theta$ is between $0$ and $\pi/2$, the point is moving **upward and to the left**. So $\sin\theta$ is increasing (positive derivative) while $\cos\theta$ is decreasing (negative derivative). The $-\sin\theta$ captures exactly this: cosine decreases wherever sine is positive.
+:::
+
+::: {.callout-important}
+## Key Idea: The sin(x)/x Limit
+For small angles (in radians), $\sin x$ is almost exactly equal to $x$ itself. This fact is the hidden engine that makes the derivative of sine come out to cosine, and it only works when $x$ is measured in radians.
+
+$$\lim_{x \to 0} \frac{\sin x}{x} = 1$$
+:::
+
+### The Fundamental Limit: $\lim_{x \to 0} \frac{\sin x}{x} = 1$
+
+This limit is the hidden engine behind $\frac{d}{dx}(\sin x) = \cos x$.
+
+**Why is it true?** Using the Maclaurin series:
+
+$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$$
+
+Divide both sides by $x$:
+
+$$\frac{\sin x}{x} = 1 - \frac{x^2}{3!} + \frac{x^4}{5!} - \cdots$$
+
+As $x \to 0$, every term except the first vanishes, so $\frac{\sin x}{x} \to 1$.
+
+**See it for yourself — zoom in near $x = 0$:**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'sinc', latex: 'y=\\frac{\\sin(x)}{x}', color: '#2d70b3' });
+  calc2.setExpression({ id: 'limit', latex: '(0, 1)', color: '#c74440', pointSize: 10, pointStyle: 'OPEN', label: 'Limit = 1', showLabel: true });
+  calc2.setExpression({ id: 'one', latex: 'y=1', color: '#aaaaaa', lineStyle: 'DASHED' });
+  calc2.setMathBounds({ left: -15, right: 15, bottom: -0.5, top: 1.5 });
+</script>
+```
+
+### Radians vs. Degrees: Why Radians Win
+
+The limit $\frac{\sin x}{x} \to 1$ **only works when $x$ is in radians**.
+
+If $x$ is in degrees:
+
+$$\lim_{x \to 0} \frac{\sin_{\text{deg}}(x)}{x} = \frac{\pi}{180} \approx 0.01745$$
+
+::: {.callout-tip collapse="true"}
+## Numerical Example: $\frac{\sin(0.0047°)}{0.0047}$
+
+Don't be tricked! If the angle is in degrees, you must convert:
+
+$$0.0047° = 0.0047 \times \frac{\pi}{180} \approx 8.203 \times 10^{-5} \text{ radians}$$
+
+Since $\sin(\theta) \approx \theta$ for small $\theta$ in radians:
+
+$$\sin(0.0047°) \approx 8.203 \times 10^{-5}$$
+
+So $\frac{\sin(0.0047°)}{0.0047} \approx \frac{8.203 \times 10^{-5}}{0.0047} \approx 0.01745 = \frac{\pi}{180}$
+
+The answer is NOT 1 — it's $\frac{\pi}{180}$, because we divided by degrees, not radians.
+:::
+
+### Three Roads to the Same Answer
+
+There are three completely different ways to prove $\frac{d}{dx}(\sin x) = \cos x$:
+
+| Approach | Key idea |
+|---|---|
+| **Complex exponential** | Write $\sin x = \frac{e^{ix} - e^{-ix}}{2i}$, differentiate using $\frac{d}{dx}e^{ix} = ie^{ix}$ |
+| **Geometric (unit circle)** | Arc $\approx$ chord for small angles, project onto vertical axis |
+| **Maclaurin series** | Differentiate $x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$ term by term |
+
+All three give the same result — a good sign that it must be true!
+
+### Maclaurin Series for Sine and Cosine
+
+These infinite series let you compute trig functions using only addition and multiplication:
+
+$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots = \sum_{n=0}^{\infty} \frac{(-1)^n \, x^{2n+1}}{(2n+1)!}$$
+
+$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots = \sum_{n=0}^{\infty} \frac{(-1)^n \, x^{2n}}{(2n)!}$$
+
+::: {.callout-tip collapse="true"}
+## Notice the pattern!
+
+- $\sin x$ has only **odd** powers: $x^1, x^3, x^5, \ldots$
+- $\cos x$ has only **even** powers: $x^0, x^2, x^4, \ldots$
+- The signs alternate: $+, -, +, -, \ldots$
+- If you differentiate the $\sin x$ series term by term, you get exactly the $\cos x$ series!
+:::
+
+**See how adding more terms gets closer to the true curve:**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'sin', latex: 'y=\\sin(x)', color: '#2d70b3', lineWidth: 3 });
+  calc3.setExpression({ id: 't1', latex: 'y=x', color: '#c74440', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setExpression({ id: 't3', latex: 'y=x-\\frac{x^3}{6}', color: '#388c46', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setExpression({ id: 't5', latex: 'y=x-\\frac{x^3}{6}+\\frac{x^5}{120}', color: '#6042a6', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setExpression({ id: 't7', latex: 'y=x-\\frac{x^3}{6}+\\frac{x^5}{120}-\\frac{x^7}{5040}', color: '#fa7e19', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setMathBounds({ left: -8, right: 8, bottom: -3, top: 3 });
+</script>
+```
+
+### Significant Figures and Numerical Estimation
+
+When working with very small angles:
+
+- $\sin x \approx x$ for small $x$ (in radians) — the smaller $x$ is, the better the approximation
+- The number of **significant figures** you can trust depends on how small $x$ is
+- Always check: are your angles in **radians** or **degrees** before computing?
+
+## Cheat Sheet
+
+::: {.key-formula}
+| Formula | Notes |
+|---|---|
+| $\frac{d}{dx}(\sin x) = \cos x$ | $x$ must be in radians |
+| $\frac{d}{dx}(\cos x) = -\sin x$ | Don't forget the negative! |
+| $\lim_{x \to 0} \frac{\sin x}{x} = 1$ | Only in radians |
+| $\lim_{x \to 0} \frac{\sin_{\text{deg}} x}{x} = \frac{\pi}{180}$ | In degrees |
+| $\sin x \approx x$ for small $x$ | First-order approximation |
+
+### Maclaurin Series
+
+$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$$
+
+$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots$$
+
+### Degrees to Radians
+
+$$\theta_{\text{rad}} = \theta_{\text{deg}} \times \frac{\pi}{180}$$
+:::

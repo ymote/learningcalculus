@@ -1,14 +1,320 @@
 ---
-title: "Calculus Lecture — October 27, 2025"
+title: "Motion in 2D: Velocity, Speed, Trajectories & Acceleration"
 date: 2025-10-27
 ---
+
+Have you ever wondered how a video game knows where a projectile will land, or how NASA plots a satellite's orbit? The secret is describing motion with equations that track the x- and y-coordinates separately over time. In this lesson, you will learn how to find an object's speed and direction from its position, how to figure out the shape of its path, and how to tell whether it is speeding up or slowing down -- all skills that unlock the physics of everything from roller coasters to rocket launches.
+
+::: {.callout-tip collapse="true"}
+## Why Motion in 2D Matters
+
+Understanding how objects move through space is the foundation of physics and engineering. Here's where 2D motion shows up in the real world:
+
+- **Video games & animation**: every character, projectile, and camera path is described by parametric equations that give position as a function of time
+- **Space exploration**: NASA uses exactly these equations to plot satellite orbits (which are ellipses!) and calculate when to fire thrusters
+- **Sports science**: tracking a soccer ball's curved path or a runner on a track requires breaking velocity into components
+- **Robotics**: self-driving cars must know their speed (magnitude) and direction (velocity vector) separately to navigate safely
+- **Weather forecasting**: hurricanes and wind patterns are described by velocity fields in 2D and 3D, and meteorologists need to know when storms are accelerating
+
+Today we'll learn how to describe motion with vectors, eliminate time to find trajectory shapes, and determine when an object is speeding up or slowing down!
+:::
+
+## Topics Covered
+
+- Position vector $\vec{r}(t) = (x(t),\, y(t),\, z(t))$ and time evolution
+- Velocity vector $\vec{v}(t) = \frac{d\vec{r}}{dt} = (\dot{x},\, \dot{y},\, \dot{z})$
+- Speed as magnitude of velocity: $v = |\vec{v}| = \sqrt{\dot{x}^2 + \dot{y}^2 + \dot{z}^2}$
+- Eliminating the parameter $t$ to find the trajectory equation
+- Identifying elliptical orbits from parametric equations using the Pythagorean identity
+- Determining starting point and direction of motion on a trajectory
+- Accelerating vs. decelerating: when $a(t) \cdot v(t) > 0$ vs. $a(t) \cdot v(t) < 0$
+- Graphical analysis of speed without taking messy derivatives
+- Turning points in 1D motion: where $v(t) = 0$ and velocity changes sign
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251027.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## What You Need to Know First
+
+::: {.callout-note collapse="true"}
+## What is a vector?
+
+A **vector** is a quantity that has both magnitude (size) and direction. We write vectors with arrows: $\vec{v}$.
+
+In 2D, a vector has two components: $\vec{v} = (v_x,\, v_y)$. In 3D, it has three: $\vec{v} = (v_x,\, v_y,\, v_z)$.
+
+The **magnitude** (length) of a vector uses the Pythagorean theorem:
+
+$$|\vec{v}| = \sqrt{v_x^2 + v_y^2} \quad \text{(2D)} \qquad |\vec{v}| = \sqrt{v_x^2 + v_y^2 + v_z^2} \quad \text{(3D)}$$
+
+For example, if $\vec{v} = (3, 4)$, then $|\vec{v}| = \sqrt{9 + 16} = 5$.
+:::
+
+::: {.callout-note collapse="true"}
+## What are parametric equations?
+
+**Parametric equations** describe a curve by giving each coordinate as a separate function of a parameter (usually time $t$):
+
+$$x = f(t), \qquad y = g(t)$$
+
+Instead of writing $y$ directly as a function of $x$, we let both $x$ and $y$ depend on $t$. As $t$ changes, the point $(x, y)$ traces out a curve called the **trajectory**.
+
+For example, $x = \cos t$, $y = \sin t$ traces a unit circle as $t$ goes from $0$ to $2\pi$.
+:::
+
+::: {.callout-note collapse="true"}
+## What is the Pythagorean trigonometric identity?
+
+The most important trig identity is:
+
+$$\cos^2\theta + \sin^2\theta = 1$$
+
+This comes directly from the unit circle: any point $(\cos\theta, \sin\theta)$ lies on the circle $x^2 + y^2 = 1$.
+
+We use this identity constantly to **eliminate** the parameter $t$ from parametric equations involving sine and cosine.
+:::
+
+::: {.callout-note collapse="true"}
+## What is an ellipse?
+
+An **ellipse** is a stretched circle. Its standard equation is:
+
+$$\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$$
+
+where $a$ is the semi-major axis (half the width) and $b$ is the semi-minor axis (half the height), or vice versa. When $a = b$, the ellipse becomes a circle.
+
+A parametric form of the ellipse is $x = a\cos\theta$, $y = b\sin\theta$.
+:::
+
+## Key Concepts
+
+### Position, Velocity, and Speed in 2D and 3D
+
+An object moving through space has a **position vector** that changes with time:
+
+$$\vec{r}(t) = \big(x(t),\; y(t),\; z(t)\big)$$
+
+The **velocity vector** is the derivative of position with respect to time:
+
+$$\vec{v}(t) = \frac{d\vec{r}}{dt} = \big(\dot{x}(t),\; \dot{y}(t),\; \dot{z}(t)\big)$$
+
+Here the dot notation $\dot{x}$ means $\frac{dx}{dt}$. Velocity tells us both how fast and in which direction we're moving. It is a **vector** -- it points along the tangent to the trajectory.
+
+The **speed** is the magnitude of velocity -- it tells us only how fast, with no direction:
+
+$$v = |\vec{v}| = \sqrt{\dot{x}^2 + \dot{y}^2 + \dot{z}^2}$$
+
+Speed can also be written as $\frac{ds}{dt}$, where $ds$ is an infinitesimal arc length along the trajectory.
+
+### Eliminating the Parameter: Finding the Trajectory
+
+Given parametric equations, we often want the **trajectory** -- the curve in space without any reference to time. We do this by eliminating $t$.
+
+**Example**: Suppose $x(t) = 4\cos(3t)$ and $y(t) = 3\sin(3t)$.
+
+Step 1 -- Isolate the trig functions:
+
+$$\frac{x}{4} = \cos(3t), \qquad \frac{y}{3} = \sin(3t)$$
+
+Step 2 -- Apply the Pythagorean identity $\cos^2\theta + \sin^2\theta = 1$:
+
+$$\left(\frac{x}{4}\right)^2 + \left(\frac{y}{3}\right)^2 = \cos^2(3t) + \sin^2(3t) = 1$$
+
+::: {.callout-important}
+## Key Idea: Eliminating the Parameter Reveals the Trajectory Shape
+By using the Pythagorean identity $\cos^2\theta + \sin^2\theta = 1$, you can remove time from parametric equations and discover the geometric shape of the path. Here, the parametric circle/ellipse equations combine into one clean equation.
+
+$$\boxed{\frac{x^2}{16} + \frac{y^2}{9} = 1}$$
+:::
+
+This is an **ellipse** with semi-major axis $a = 4$ (along $x$) and semi-minor axis $b = 3$ (along $y$).
+
+**Explore -- see the elliptical trajectory traced out over time:**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'ellipse', latex: '\\frac{x^2}{16}+\\frac{y^2}{9}=1', color: '#2d70b3', lineWidth: 2 });
+  calc1.setExpression({ id: 't_max', latex: 't_{max}=1', sliderBounds: {min: 0, max: 6.28, step: 0.01} });
+  calc1.setExpression({ id: 'path', latex: '(4\\cos(3t),\\; 3\\sin(3t))', color: '#c74440', lineWidth: 3, parametricDomain: {min: '0', max: 't_{max}'} });
+  calc1.setExpression({ id: 'point', latex: '(4\\cos(3t_{max}),\\; 3\\sin(3t_{max}))', color: '#388c46', pointSize: 12, label: 'particle', showLabel: true });
+  calc1.setExpression({ id: 'start', latex: '(4, 0)', color: '#fa7e19', pointSize: 10, label: 'start (t=0)', showLabel: true });
+  calc1.setMathBounds({ left: -6, right: 6, bottom: -5, top: 5 });
+</script>
+```
+
+*Drag the slider for $t_{\max}$ to watch the particle trace out the ellipse. It starts at $(4, 0)$ and moves counterclockwise!*
+
+### Starting Point and Direction of Motion
+
+The trajectory equation $\frac{x^2}{16} + \frac{y^2}{9} = 1$ tells us the shape but **not** where the motion starts or which way it goes. To recover that, we go back to the parametric equations.
+
+**Starting point**: Plug in $t = 0$:
+
+$$x(0) = 4\cos(0) = 4, \qquad y(0) = 3\sin(0) = 0$$
+
+So the motion starts at $(4, 0)$, the rightmost point of the ellipse.
+
+**Direction**: For a small positive $t$, $\cos(3t)$ decreases slightly from 1 while $\sin(3t)$ increases from 0. So $x$ decreases and $y$ increases -- the particle moves **up and to the left**, i.e., **counterclockwise**.
+
+### Computing Velocity and Speed for the Ellipse
+
+Taking derivatives of $x(t) = 4\cos(3t)$ and $y(t) = 3\sin(3t)$:
+
+$$\vec{v}(t) = \big(-12\sin(3t),\;\; 9\cos(3t)\big)$$
+
+The speed is:
+
+$$v = \sqrt{(-12\sin 3t)^2 + (9\cos 3t)^2} = \sqrt{144\sin^2(3t) + 81\cos^2(3t)}$$
+
+We simplify by splitting $144 = 81 + 63$:
+
+$$v = \sqrt{81\sin^2(3t) + 63\sin^2(3t) + 81\cos^2(3t)}$$
+
+$$= \sqrt{81\underbrace{(\sin^2 3t + \cos^2 3t)}_{= 1} + 63\sin^2(3t)}$$
+
+$$\boxed{v(t) = \sqrt{81 + 63\sin^2(3t)}}$$
+
+Since $\sin^2(3t) \ge 0$, the minimum speed is $v_{\min} = \sqrt{81} = 9$ (when $\sin(3t) = 0$), and the maximum speed is $v_{\max} = \sqrt{81 + 63} = \sqrt{144} = 12$ (when $|\sin(3t)| = 1$).
+
+### Accelerating vs. Decelerating: The Subtle Distinction
+
+An object is **accelerating** when its speed is increasing, and **decelerating** when its speed is decreasing. This is trickier than it sounds!
+
+#### The 1D Trap
+
+Consider the 1D velocity $v(t) = 7t^2 - 100t$. The acceleration is:
+
+$$a(t) = \frac{dv}{dt} = 14t - 100$$
+
+Setting $a > 0$ gives $t > \frac{50}{7}$. But positive acceleration does **not** always mean the object is speeding up!
+
+The velocity $v(t)$ is a parabola with roots at $t = 0$ and $t = \frac{100}{7}$. Between these roots the velocity is **negative** (moving left). Even though the acceleration becomes positive at $t = \frac{50}{7}$, the object is still moving left and getting slower at that moment.
+
+The correct rule: look at the **speed** $|v(t)|$, not the velocity.
+
+- When $v$ and $a$ have the **same sign**: the object speeds up (accelerating)
+- When $v$ and $a$ have **opposite signs**: the object slows down (decelerating)
+
+::: {.callout-important}
+## Key Idea: Speeding Up vs. Slowing Down
+An object speeds up when its velocity and acceleration point the same way, and slows down when they point in opposite directions. The sign of their product tells you which case you are in.
+
+$$\boxed{\text{Accelerating:} \quad a(t) \cdot v(t) > 0 \qquad\qquad \text{Decelerating:} \quad a(t) \cdot v(t) < 0}$$
+:::
+
+**Explore -- see how speed differs from velocity for $v(t) = 7t^2 - 100t$:**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'vel', latex: 'y=7x^2-100x', color: '#2d70b3', lineWidth: 3, label: 'v(t)', showLabel: true });
+  calc2.setExpression({ id: 'speed', latex: 'y=|7x^2-100x|', color: '#c74440', lineWidth: 3, lineStyle: 'DASHED', label: '|v(t)| = speed', showLabel: true });
+  calc2.setExpression({ id: 'zero1', latex: '(0, 0)', color: '#388c46', pointSize: 8 });
+  calc2.setExpression({ id: 'zero2', latex: '(100/7, 0)', color: '#388c46', pointSize: 8, label: '100/7', showLabel: true });
+  calc2.setExpression({ id: 'mid', latex: '(50/7, -2500/7)', color: '#fa7e19', pointSize: 8, label: '50/7 (max speed)', showLabel: true });
+  calc2.setMathBounds({ left: -2, right: 18, bottom: -450, top: 200 });
+</script>
+```
+
+*The blue curve is velocity $v(t)$. The red dashed curve is speed $|v(t)|$. The speed increases from $t=0$ to $t=\frac{50}{7}$ (accelerating), then decreases from $t=\frac{50}{7}$ to $t = \frac{100}{7}$ (decelerating) -- even though the acceleration $a(t)$ changes sign at $t = \frac{50}{7}$, not at the same points!*
+
+### Graphical Analysis of Speed in 2D (Avoiding Derivatives)
+
+For our ellipse, we found $v(t) = \sqrt{81 + 63\sin^2(3t)}$. To determine when the speed increases or decreases, we do **not** need to differentiate this complicated expression!
+
+**The trick**: the speed $v$ increases when $\sin^2(3t)$ increases, which happens when $|\sin(3t)|$ increases. So we just graph $|\sin(3t)|$ and read off where it is rising or falling.
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'sin_raw', latex: 'y=\\sin(3x)', color: '#bbbbbb', lineWidth: 1.5, lineStyle: 'DASHED', label: 'sin(3t)', showLabel: true });
+  calc3.setExpression({ id: 'sin_abs', latex: 'y=|\\sin(3x)|', color: '#2d70b3', lineWidth: 3, label: '|sin(3t)|', showLabel: true });
+  calc3.setExpression({ id: 'p1', latex: '(\\pi/6, 1)', color: '#c74440', pointSize: 8, label: 'pi/6', showLabel: true });
+  calc3.setExpression({ id: 'p2', latex: '(\\pi/3, 0)', color: '#388c46', pointSize: 8, label: 'pi/3', showLabel: true });
+  calc3.setMathBounds({ left: -0.5, right: 4, bottom: -1.5, top: 1.5 });
+</script>
+```
+
+*The gray dashed curve is $\sin(3t)$. The blue curve is $|\sin(3t)|$ -- obtained by "flipping" the negative parts upward. Notice the sharp cusps where the function hits zero. The speed is increasing wherever the blue curve is rising.*
+
+From the graph, $|\sin(3t)|$ increases on intervals where $3t$ goes from $k\pi$ to $k\pi + \frac{\pi}{2}$:
+
+$$\text{Accelerating: } t \in \left[\frac{k\pi}{3},\;\; \frac{k\pi}{3} + \frac{\pi}{6}\right] \quad \text{for any integer } k$$
+
+$$\text{Decelerating: } t \in \left[\frac{k\pi}{3} + \frac{\pi}{6},\;\; \frac{(k+1)\pi}{3}\right] \quad \text{for any integer } k$$
+
+### Simplifying Complex Speed Expressions
+
+The graphical method works even for intimidating formulas. Suppose:
+
+$$v(t) = \frac{63a^3}{4\cos^2\theta + 7\sqrt{\frac{12\cos^2\theta + 7\sin^2\theta}{64}}}$$
+
+where $\theta = 2t$ and $a$ is a positive constant. Instead of differentiating, we reason:
+
+1. **Both terms in the denominator are positive**, so to make $v$ increase, we need the denominator to **decrease**.
+2. Use $\sin^2\theta = 1 - \cos^2\theta$ to rewrite everything in terms of $u = \cos^2\theta$.
+3. Both denominator terms are increasing functions of $u$, so they decrease when $u$ decreases, i.e., when $|\cos\theta|$ decreases.
+4. Graph $|\cos\theta|$ and read off where it is decreasing -- those are the intervals where the object accelerates.
+
+This approach completely avoids chain rule nightmares!
+
+### Turning Points in 1D Motion
+
+A **turning point** is where a 1D object reverses direction. It requires two conditions:
+
+$$\dot{x}(t_0) = 0 \qquad \text{and} \qquad \dot{x}(t) \text{ changes sign at } t_0$$
+
+Simply having $\dot{x} = 0$ is not enough -- the velocity must switch from positive to negative (the object was moving right, now moves left) or vice versa. This is like a local maximum or minimum of the position $x(t)$.
+
+In **2D motion**, there is no single rigorous definition of a turning point. Whether a point counts as a "turn" depends on which coordinate direction you are analyzing. On the ellipse, for example, the top and bottom could be turning points for the $y$-coordinate, while the left and right extremes are turning points for the $x$-coordinate.
+
+### Homework: Maximum and Minimum Distance on the Ellipse
+
+For the ellipse $\frac{x^2}{16} + \frac{y^2}{9} = 1$, find the point(s) at maximum and minimum distance from the center using differential calculus (optimization).
+
+**Hint**: Maximize and minimize $r^2 = x^2 + y^2$ subject to the ellipse constraint. You can substitute $y^2 = 9\left(1 - \frac{x^2}{16}\right)$ and optimize over $x$.
+
+Your intuition says the farthest point is at $(\pm 4, 0)$ and the closest is at $(0, \pm 3)$ -- prove it rigorously!
+
+## Cheat Sheet
+
+::: {.key-formula}
+| What you want | Formula |
+|---|---|
+| Position vector | $\vec{r}(t) = (x(t),\, y(t))$ |
+| Velocity vector | $\vec{v}(t) = (\dot{x}(t),\, \dot{y}(t)) = \frac{d\vec{r}}{dt}$ |
+| Speed | $v = \lvert\vec{v}\rvert = \sqrt{\dot{x}^2 + \dot{y}^2}$ |
+| Eliminate parameter (trig) | Use $\cos^2\theta + \sin^2\theta = 1$ to remove $t$ |
+| Ellipse from parametric | $x = a\cos\omega t,\; y = b\sin\omega t \;\Rightarrow\; \frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$ |
+| Starting point | Plug $t = 0$ into $x(t)$ and $y(t)$ |
+| Direction of motion | Check sign of $\dot{x}$ and $\dot{y}$ for small $t > 0$ |
+| Accelerating (1D) | $a(t) \cdot v(t) > 0$ (same sign) |
+| Decelerating (1D) | $a(t) \cdot v(t) < 0$ (opposite signs) |
+| Accelerating (2D) | Speed $\lvert\vec{v}\rvert$ is increasing |
+| Turning point (1D) | $v(t_0) = 0$ and $v$ changes sign |
+
+### The Big Chain of Ideas
+
+$$\vec{r}(t) \;\xrightarrow{\;\frac{d}{dt}\;}\; \vec{v}(t) \;\xrightarrow{\;|\cdot|\;}\; v(t) = \text{speed} \;\xrightarrow{\;\text{increasing?}\;}\; \text{accelerating}$$
+
+$$\text{Parametric: } x(t),\, y(t) \;\xrightarrow{\;\text{eliminate } t\;}\; F(x, y) = 0 \;\text{ (trajectory)}$$
+:::

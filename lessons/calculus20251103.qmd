@@ -1,14 +1,349 @@
 ---
-title: "Calculus Lecture — November 03, 2025"
+title: "From Trajectories to Integrals — Antiderivatives and the Area of a Circle"
 date: 2025-11-03
 ---
+
+How do scientists measure the area of something curved? Today you will see how slicing a circle into infinitely thin strips lets calculus compute areas that geometry alone cannot easily handle. You will also learn how to "undo" a derivative -- a skill called antidifferentiation -- and discover that inverse trig functions like arcsine pop up in surprising places when you work with circles. Along the way, you will prove the trajectory of a thrown ball is a parabola.
+
+::: {.callout-tip collapse="true"}
+## Why Antiderivatives and Integration Matter
+
+Integration is the second great pillar of calculus — it lets you add up infinitely many tiny pieces to find totals:
+
+- **Medicine**: doctors calculate the total amount of a drug absorbed by your body over time by integrating the absorption rate — getting the dosage wrong could be dangerous
+- **Space travel**: NASA engineers integrate acceleration data to figure out how far a rocket has traveled and how fast it is going at every moment
+- **Architecture**: architects compute the area of curved surfaces (like domes and arches) by slicing them into thin strips and adding up the pieces — that is integration
+- **Sports analytics**: tracking how far a soccer player runs during a match means integrating their speed over time
+- **Animation**: Pixar uses integration to calculate how light bounces off curved surfaces, making 3D characters look realistic
+:::
+
+## Topics Covered
+
+- Projectile motion: recovering position from velocity via antiderivatives ($x = ut$, $y = \tfrac{1}{2}gt^2$)
+- Eliminating the parameter $t$ to find the trajectory $y = \dfrac{g}{2u^2}\,x^2$
+- Introduction to integral calculus: assembling infinitesimals
+- Area of a circle by vertical slices: $dA = 2\sqrt{r^2 - x^2}\,dx$
+- Review of the seven families of functions and their derivative--antiderivative pairs
+- Derivative of $\arcsin x$ via implicit differentiation: $\dfrac{d}{dx}\arcsin x = \dfrac{1}{\sqrt{1-x^2}}$
+- Derivative of $\ln x$ via the inverse-function rule: $\dfrac{d}{dx}\ln x = \dfrac{1}{x}$
+- Antiderivative involving arcsine: $\displaystyle\int \frac{1}{\sqrt{r^2 - x^2}}\,dx = \arcsin\!\left(\frac{x}{r}\right) + C$
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251103.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## What You Need to Know First
+
+::: {.callout-note collapse="true"}
+## What is an antiderivative?
+
+An **antiderivative** of a function $f(x)$ is any function $F(x)$ whose derivative gives back $f(x)$:
+
+$$F'(x) = f(x)$$
+
+For example, if $f(x) = 2x$, then $F(x) = x^2$ is an antiderivative because $\frac{d}{dx}(x^2) = 2x$.
+
+But $F(x) = x^2 + 7$ also works! Any constant added to an antiderivative is still an antiderivative, because constants vanish when you differentiate. That is why we write $+C$ (an arbitrary constant) at the end.
+:::
+
+::: {.callout-note collapse="true"}
+## What is projectile motion?
+
+When you throw a ball horizontally, two things happen at once:
+
+1. **Horizontally**, the ball keeps moving at a constant speed $u$ (no force pushes or pulls it sideways)
+2. **Vertically**, gravity pulls the ball downward with constant acceleration $g \approx 9.8\;\text{m/s}^2$
+
+The horizontal and vertical motions are independent. We describe them with separate equations:
+
+$$\dot{x} = u \qquad \text{(constant horizontal velocity)}$$
+$$\dot{y} = g\,t \qquad \text{(vertical velocity increases with time)}$$
+
+The dot notation $\dot{x}$ means $\frac{dx}{dt}$, the rate of change with respect to time.
+:::
+
+::: {.callout-note collapse="true"}
+## What does "eliminating the parameter" mean?
+
+Often in physics, position is given as two separate equations in time: $x(t)$ and $y(t)$. The variable $t$ is called a **parameter**.
+
+To find the **trajectory** (the path the object traces in the $xy$-plane), we eliminate $t$ by solving one equation for $t$ and substituting into the other. The result is a direct relationship $y = f(x)$ — the shape of the path, independent of when the object was at each point.
+:::
+
+::: {.callout-note collapse="true"}
+## What is the equation of a circle?
+
+A circle centered at the origin with radius $r$ is described by the **implicit equation**:
+
+$$x^2 + y^2 = r^2$$
+
+This is not a function (it fails the vertical line test), but we can solve for $y$:
+
+$$y = \pm\sqrt{r^2 - x^2}$$
+
+The positive root gives the upper half, and the negative root gives the lower half.
+:::
+
+::: {.callout-note collapse="true"}
+## What is the power rule for antiderivatives?
+
+If the derivative of $x^n$ is $nx^{n-1}$, then running the rule in reverse gives:
+
+$$\int x^n\,dx = \frac{x^{n+1}}{n+1} + C \qquad (n \neq -1)$$
+
+For example, if you know that $\frac{d}{dt}(t^2) = 2t$, then the antiderivative of $2t$ is $t^2 + C$. Equivalently, the antiderivative of $t$ is $\frac{t^2}{2} + C$.
+:::
+
+## Key Concepts
+
+### Projectile Motion: From Velocity to Position
+
+We are given the velocity components of a ball thrown horizontally with initial speed $u$ in a gravitational field:
+
+$$\dot{x} = u \qquad \dot{y} = g\,t$$
+
+**Goal:** find the trajectory $y(x)$ by (1) recovering position from velocity, then (2) eliminating $t$.
+
+**Step 1 — Find $x(t)$.**  Since $\dot{x} = u$ is constant, the antiderivative is:
+
+$$x(t) = ut + a$$
+
+Using the initial condition $x(0) = 0$ (the ball starts at the origin), we find $a = 0$, so:
+
+$$\boxed{x(t) = ut}$$
+
+**Step 2 — Find $y(t)$.**  Since $\dot{y} = gt$ is linear in $t$, we reverse the power rule:
+
+$$y(t) = \frac{1}{2}g\,t^2 + a$$
+
+Again, $y(0) = 0$ forces $a = 0$:
+
+$$\boxed{y(t) = \tfrac{1}{2}g\,t^2}$$
+
+**Step 3 — Eliminate $t$.**  From $x = ut$ we get $t = \frac{x}{u}$. Substituting into $y(t)$:
+
+$$y = \frac{1}{2}g\left(\frac{x}{u}\right)^2$$
+
+::: {.callout-important}
+## Key Idea: A Horizontal Projectile Follows a Parabola
+By finding position from velocity (antidifferentiation) and then eliminating time, you can prove that a ball thrown horizontally traces out a parabolic path. Gravity controls how steep the curve is, and the throwing speed controls how flat it is.
+
+$$\boxed{y = \frac{g}{2u^2}\,x^2}$$
+:::
+
+This is a **parabola**. Larger $g$ makes it steeper (the ball drops faster); larger $u$ makes it flatter (the ball travels farther before falling).
+
+**Explore -- how $g$ and $u$ change the trajectory:**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'g', latex: 'g=9.8', sliderBounds: {min: 1, max: 20, step: 0.1} });
+  calc1.setExpression({ id: 'u', latex: 'u=5', sliderBounds: {min: 1, max: 15, step: 0.1} });
+  calc1.setExpression({ id: 'traj', latex: 'y=\\frac{g}{2u^2}x^2', color: '#2d70b3', lineWidth: 3 });
+  calc1.setExpression({ id: 'origin', latex: '(0,0)', color: '#2d70b3', pointSize: 10, label: 'Launch point', showLabel: true });
+  calc1.setMathBounds({ left: -1, right: 12, bottom: -1, top: 15 });
+</script>
+```
+
+*Drag $g$ to increase gravity (the parabola steepens) or increase $u$ to throw faster (the parabola flattens). The ball always follows a parabolic path!*
+
+### From Differential to Integral Calculus
+
+Up to this point we have been doing **differential calculus**: chopping quantities into infinitesimals and finding rates of change. Now we begin **integral calculus**: assembling infinitesimals back together to find totals. The key insight is that differentiation and antidifferentiation are **inverse operations** — just as we recovered position from velocity in the projectile problem above.
+
+### Finding the Area of a Circle
+
+How do we prove that the area of a circle of radius $r$ is $\pi r^2$? We slice it into infinitesimally thin vertical strips and add them up.
+
+**Setup.** Place the circle $x^2 + y^2 = r^2$ at the origin. Define $A(x)$ as the area swept from $-r$ up to position $x$:
+
+$$A(x) = \text{shaded area from } {-r} \text{ to } x$$
+
+As $x$ increases by a tiny amount $dx$, the area increases by a thin rectangular strip:
+
+$$dA = \text{height} \times \text{width} = 2\sqrt{r^2 - x^2}\;\cdot\;dx$$
+
+The factor of $2$ accounts for both the upper and lower halves of the circle. Therefore, the derivative of the area function is:
+
+::: {.callout-important}
+## Key Idea: Slicing a Circle into Thin Strips
+To find the area of a circle, imagine sweeping a vertical line across it. Each infinitely thin strip has height $2\sqrt{r^2 - x^2}$ and width $dx$. The total area is the sum (integral) of all those strips -- and finding that sum means finding an antiderivative.
+
+$$\boxed{A'(x) = 2\sqrt{r^2 - x^2}}$$
+:::
+
+Now the problem reduces to finding the antiderivative of $2\sqrt{r^2 - x^2}$.
+
+**Explore -- see the vertical slicing of a circle:**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'circle', latex: 'x^2+y^2=9', color: '#2d70b3', lineWidth: 2 });
+  calc2.setExpression({ id: 'a', latex: 'a=1', sliderBounds: {min: -3, max: 3, step: 0.01} });
+  calc2.setExpression({ id: 'shade', latex: '0 \\le y^2 \\le 9 - x^2 \\left\\{-3 \\le x \\le a\\right\\}', color: '#2d70b3' });
+  calc2.setExpression({ id: 'strip', latex: 'x=a \\left\\{-\\sqrt{9-a^2} \\le y \\le \\sqrt{9-a^2}\\right\\}', color: '#c74440', lineWidth: 3 });
+  calc2.setExpression({ id: 'pt_top', latex: '(a, \\sqrt{9-a^2})', color: '#c74440', pointSize: 8 });
+  calc2.setExpression({ id: 'pt_bot', latex: '(a, -\\sqrt{9-a^2})', color: '#c74440', pointSize: 8 });
+  calc2.setMathBounds({ left: -5, right: 5, bottom: -4, top: 4 });
+</script>
+```
+
+*Drag $a$ from $-3$ to $3$. The shaded blue region is $A(a)$. The red strip is the infinitesimal slice $dA$ — its height is $2\sqrt{9 - a^2}$. When $a$ reaches $3$, the shaded area equals the full circle: $\pi(3)^2 = 9\pi \approx 28.27$.*
+
+### Review: Seven Families and Their Derivatives
+
+Before tackling the antiderivative of $\sqrt{r^2 - x^2}$, we review which functions produce which derivatives. Most families are "closed" — the derivative stays in the same family. The key exceptions are the **inverse functions**.
+
+| Family | $f(x)$ | $f'(x)$ | Stays in family? |
+|---|---|---|---|
+| Power | $x^n$ | $nx^{n-1}$ | Yes |
+| Polynomial | $a_nx^n + \cdots + a_0$ | $na_nx^{n-1} + \cdots$ | Yes |
+| Rational | $\dfrac{p(x)}{q(x)}$ | $\dfrac{p'q - pq'}{q^2}$ | Yes |
+| Trigonometric | $\sin x,\;\cos x$ | $\cos x,\;{-}\sin x$ | Yes |
+| Inverse trig | $\arcsin x$ | $\dfrac{1}{\sqrt{1 - x^2}}$ | **No** — gives a radical |
+| Exponential | $a^x$ | $a^x \ln a$ | Yes |
+| Logarithmic | $\ln x$ | $\dfrac{1}{x}$ | **No** — gives a rational function |
+
+The crucial observation: **when you see a radical like $\frac{1}{\sqrt{1-x^2}}$ and need its antiderivative, think inverse trig. When you see $\frac{1}{x}$, think logarithm.** The derivative goes "out" of the family, so the antiderivative goes back "in."
+
+### Deriving the Derivative of $\arcsin x$
+
+Let $y = \arcsin x$. Then $\sin y = x$. Differentiating both sides with respect to $x$:
+
+$$\cos y \;\frac{dy}{dx} = 1 \qquad \Longrightarrow \qquad \frac{dy}{dx} = \frac{1}{\cos y}$$
+
+Now use the Pythagorean identity $\sin^2 y + \cos^2 y = 1$ to rewrite $\cos y$:
+
+$$\cos y = \sqrt{1 - \sin^2 y} = \sqrt{1 - x^2}$$
+
+Therefore:
+
+::: {.callout-important}
+## Key Idea: The Derivative of Arcsine
+The derivative of $\arcsin x$ produces a radical expression -- it "leaves" the inverse trig family. This means that when you see $\frac{1}{\sqrt{1-x^2}}$ and need its antiderivative, the answer is $\arcsin x$. This is exactly the link that lets us integrate circular shapes.
+
+$$\boxed{\frac{d}{dx}\arcsin x = \frac{1}{\sqrt{1 - x^2}}}$$
+:::
+
+**Explore -- see $\arcsin x$ and its derivative:**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'arcsin', latex: 'y=\\arcsin(x)', color: '#2d70b3', lineWidth: 3 });
+  calc3.setExpression({ id: 'deriv', latex: 'y=\\frac{1}{\\sqrt{1-x^2}}', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+  calc3.setExpression({ id: 'a', latex: 'a=0.5', sliderBounds: {min: -0.95, max: 0.95, step: 0.01} });
+  calc3.setExpression({ id: 'pt', latex: '(a, \\arcsin(a))', color: '#2d70b3', pointSize: 10, label: 'arcsin(a)', showLabel: true });
+  calc3.setExpression({ id: 'tangent', latex: 'y - \\arcsin(a) = \\frac{1}{\\sqrt{1-a^2}}(x - a)', color: '#388c46', lineWidth: 1.5, lineStyle: 'DASHED' });
+  calc3.setMathBounds({ left: -2, right: 2, bottom: -2.5, top: 2.5 });
+</script>
+```
+
+*Drag $a$ between $-1$ and $1$. The green tangent line to $\arcsin x$ (blue) has slope $\frac{1}{\sqrt{1-a^2}}$ (red dashed). Notice the slope blows up near $x = \pm 1$ — the curve becomes vertical there!*
+
+### Deriving the Derivative of $\ln x$ and $a^x$
+
+**Natural log.** Let $y = \ln x$, so $e^y = x$. Differentiating both sides:
+
+$$e^y \frac{dy}{dx} = 1 \qquad \Longrightarrow \qquad \frac{dy}{dx} = \frac{1}{e^y} = \frac{1}{x}$$
+
+$$\boxed{\frac{d}{dx}\ln x = \frac{1}{x}}$$
+
+**General exponential.** Let $y = a^x$, so $\ln y = x\ln a$. Differentiating: $\frac{1}{y}\frac{dy}{dx} = \ln a$, giving:
+
+$$\boxed{\frac{d}{dx}\,a^x = a^x \ln a}$$
+
+### Antiderivative of $\dfrac{1}{\sqrt{r^2 - x^2}}$
+
+Returning to the circle area problem, we need the antiderivative of $\sqrt{r^2 - x^2}$. We split this into two parts. The first part leads to a term involving $\frac{1}{\sqrt{r^2 - x^2}}$, which looks similar to the derivative of $\arcsin x$.
+
+**Step 1 — Factor out $r$.**  Pull $r^2$ out of the square root:
+
+$$\frac{1}{\sqrt{r^2 - x^2}} = \frac{1}{r\,\sqrt{1 - (x/r)^2}}$$
+
+**Step 2 — Guess the antiderivative.**  Since $\frac{d}{dx}\arcsin(x) = \frac{1}{\sqrt{1 - x^2}}$, try $\arcsin\!\left(\frac{x}{r}\right)$. By the chain rule:
+
+$$\frac{d}{dx}\arcsin\!\left(\frac{x}{r}\right) = \frac{1}{\sqrt{1 - (x/r)^2}} \cdot \frac{1}{r} = \frac{1}{\sqrt{r^2 - x^2}}$$
+
+This matches exactly, so:
+
+$$\boxed{\int \frac{dx}{\sqrt{r^2 - x^2}} = \arcsin\!\left(\frac{x}{r}\right) + C}$$
+
+**Step 3 — Scale for the circle area.**  We need the antiderivative of the full expression $\frac{r^2}{\sqrt{r^2 - x^2}}$, which appears after rewriting $\sqrt{r^2 - x^2}$. Multiplying by $r^2$:
+
+$$\int \frac{r^2}{\sqrt{r^2 - x^2}}\,dx = r^2\,\arcsin\!\left(\frac{x}{r}\right) + C$$
+
+The remaining piece of the circle area (involving $x\sqrt{r^2 - x^2}$) has a geometric interpretation as a triangular region — interpreting the arcsine term as a **circular sector area** reveals what the second term must be.
+
+**Explore -- the arcsine antiderivative vs. the integrand:**
+
+```{=html}
+<div id="calc4" class="desmos-container"></div>
+<script>
+  var calc4 = Desmos.GraphingCalculator(document.getElementById('calc4'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc4.setExpression({ id: 'r', latex: 'r=3', sliderBounds: {min: 1, max: 5, step: 0.1} });
+  calc4.setExpression({ id: 'integrand', latex: 'y=\\frac{1}{\\sqrt{r^2-x^2}}', color: '#c74440', lineWidth: 2 });
+  calc4.setExpression({ id: 'antideriv', latex: 'y=\\arcsin(x/r)', color: '#2d70b3', lineWidth: 3 });
+  calc4.setExpression({ id: 'a', latex: 'a=1.5', sliderBounds: {min: -2.9, max: 2.9, step: 0.01} });
+  calc4.setExpression({ id: 'pt', latex: '(a, \\arcsin(a/r))', color: '#2d70b3', pointSize: 10 });
+  calc4.setExpression({ id: 'slope_pt', latex: '(a, \\frac{1}{\\sqrt{r^2-a^2}})', color: '#c74440', pointSize: 10, label: 'slope', showLabel: true });
+  calc4.setMathBounds({ left: -5, right: 5, bottom: -2, top: 4 });
+</script>
+```
+
+*The blue curve is $\arcsin(x/r)$ (the antiderivative) and the red curve is $\frac{1}{\sqrt{r^2 - x^2}}$ (the integrand). At every point, the red value equals the slope of the blue curve. Drag $r$ to change the radius.*
+
+## Cheat Sheet
+
+::: {.key-formula}
+| Formula | Meaning |
+|---|---|
+| $x(t) = ut$ | Horizontal position under constant velocity $u$ |
+| $y(t) = \tfrac{1}{2}gt^2$ | Vertical position under constant acceleration $g$ |
+| $y = \dfrac{g}{2u^2}\,x^2$ | Parabolic trajectory of a horizontal projectile |
+| $dA = 2\sqrt{r^2 - x^2}\;dx$ | Infinitesimal area slice of a circle of radius $r$ |
+| $\dfrac{d}{dx}\arcsin x = \dfrac{1}{\sqrt{1-x^2}}$ | Derivative of inverse sine |
+| $\dfrac{d}{dx}\ln x = \dfrac{1}{x}$ | Derivative of natural log |
+| $\dfrac{d}{dx}\,a^x = a^x\ln a$ | Derivative of a general exponential |
+| $\displaystyle\int \frac{dx}{\sqrt{r^2 - x^2}} = \arcsin\!\left(\frac{x}{r}\right) + C$ | Key antiderivative for the circle area problem |
+
+### The Seven Function Families
+
+$$\frac{d}{dx}(x^n) = nx^{n-1} \qquad\longleftrightarrow\qquad \int x^n\,dx = \frac{x^{n+1}}{n+1}+C$$
+
+$$\frac{d}{dx}(\sin x) = \cos x \qquad \frac{d}{dx}(\cos x) = -\sin x$$
+
+$$\frac{d}{dx}(\arcsin x) = \frac{1}{\sqrt{1-x^2}} \qquad \frac{d}{dx}(\arccos x) = \frac{-1}{\sqrt{1-x^2}}$$
+
+$$\frac{d}{dx}(e^x) = e^x \qquad \frac{d}{dx}(\ln x) = \frac{1}{x}$$
+
+### The Inverse Function Derivative Rule
+
+If $y = f^{-1}(x)$, then:
+
+$$\frac{dy}{dx} = \frac{1}{f'(y)}$$
+
+The derivative of an inverse function is the **reciprocal** of the derivative of the original function, evaluated at $y$.
+:::

@@ -1,14 +1,345 @@
 ---
-title: "Calculus Lecture — October 09, 2025"
+title: "Power Series from Known Expansions, Geometric Series, and Partial Fractions"
 date: 2025-10-09
 ---
+
+What if you could turn any complicated function into an infinite polynomial that's easy to work with? That's exactly what power series do, and today you'll learn how to build them like a pro -- not by computing dozens of derivatives, but by recycling series you already know. We'll also learn partial fractions, a technique that splits ugly fractions into bite-sized pieces, plus a slick "cover-up trick" that finds the coefficients in seconds.
+
+::: {.callout-tip collapse="true"}
+## Why Power Series and Partial Fractions Matter
+
+Power series let you replace complicated functions with simple polynomials, and partial fractions let you break ugly fractions into easy pieces:
+
+- **Computer graphics**: Video games approximate trig and log functions with power series so that GPUs can render frames in milliseconds
+- **Medicine**: MRI scanners reconstruct images using series expansions of signals measured from your body
+- **Finance**: Banks use Taylor expansions to quickly estimate how bond prices change when interest rates move
+- **Robotics**: Robot arms compute inverse kinematics using arctan expansions to convert coordinates into joint angles in real time
+- **Audio engineering**: Equalizers decompose a signal's transfer function using partial fractions to understand how each frequency band responds
+:::
+
+## Topics Covered
+
+- Deriving power expansions from known series: $\ln(1+x)$, $\arctan x$, $\arcsin x$
+- Proving $\frac{d}{dx}(\arctan x) = \frac{1}{1+x^2}$ via inverse functions
+- Recognizing $\frac{1}{1+x^2}$ as a geometric series: $1 - x^2 + x^4 - x^6 + \cdots$
+- Power expansion of general rational expressions like $\frac{1}{a + bx^n}$
+- **Partial fraction decomposition**: splitting a complicated fraction into simple geometric-series-ready pieces
+- The **cover-up trick** for finding partial fraction coefficients quickly
 
 ## Lecture Video
 
 ```{=html}
 <video controls width="100%" preload="metadata">
-  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251009.mp4" type="video/mp4">
 </video>
 ```
 
-*Content will be generated from transcript.*
+## What You Need to Know First
+
+::: {.callout-note collapse="true"}
+## What is a power series (Taylor expansion)?
+
+A **power series** centered at $x = 0$ writes a function as an infinite polynomial:
+
+$$f(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots$$
+
+The coefficients come from the derivatives of $f$ at zero:
+
+$$a_n = \frac{f^{(n)}(0)}{n!}$$
+
+Once you know the power series, you automatically know every derivative of $f$ at zero -- and vice versa.
+:::
+
+::: {.callout-note collapse="true"}
+## What is a geometric series?
+
+A **geometric series** is a sum where each term is a fixed multiple $r$ of the previous one:
+
+$$1 + r + r^2 + r^3 + \cdots = \frac{1}{1 - r} \qquad \text{when } |r| < 1$$
+
+For example, with $r = -x^2$:
+
+$$1 - x^2 + x^4 - x^6 + \cdots = \frac{1}{1 + x^2}$$
+
+Recognizing a geometric series saves you from doing the full binomial expansion every time.
+:::
+
+::: {.callout-note collapse="true"}
+## What is an inverse function?
+
+If $y = f(x)$, then the **inverse function** $f^{-1}$ reverses it: $x = f^{-1}(y)$.
+
+For example, $y = \tan x$ and $x = \arctan y$ are inverses. The key derivative relationship is:
+
+$$\frac{dy}{dx} = \frac{1}{\;\dfrac{dx}{dy}\;}$$
+
+So if you know the derivative of $\tan y$, you can find the derivative of $\arctan x$ by taking the reciprocal.
+
+**Important**: inverse functions do **not** distribute over arithmetic. For instance, $\arctan x \neq \frac{\arcsin x}{\arccos x}$. You can verify: $\arctan(1) = \frac{\pi}{4}$, but $\frac{\arcsin(1)}{\arccos(1)} = \frac{\pi/2}{0}$, which is undefined!
+:::
+
+::: {.callout-note collapse="true"}
+## What is the binomial expansion?
+
+For any exponent $n$ (including negative and fractional values), the **binomial expansion** is:
+
+$$(1 + u)^n = \sum_{k=0}^{\infty} \binom{n}{k} u^k = 1 + nu + \frac{n(n-1)}{2!}u^2 + \frac{n(n-1)(n-2)}{3!}u^3 + \cdots$$
+
+When $n$ is a negative integer, this reduces to a geometric series. For example:
+
+$$(1 + u)^{-1} = 1 - u + u^2 - u^3 + \cdots = \frac{1}{1+u}$$
+:::
+
+::: {.callout-note collapse="true"}
+## What are partial fractions?
+
+**Partial fraction decomposition** breaks a complicated rational function into a sum of simpler fractions. For example:
+
+$$\frac{x^2}{(2x-1)(x-1)} = \frac{1}{2} + \frac{A}{2x-1} + \frac{B}{x-1}$$
+
+Each simple fraction has a linear denominator, which means each one can be expanded as a geometric series. This is a powerful technique for integration and for finding power series of rational functions.
+:::
+
+## Key Concepts
+
+### Building Power Series from Known Ones
+
+We rarely compute higher-order derivatives to find a power series. Instead, we **build upon expansions we already know** using differentiation and integration.
+
+**Strategy**: If a function's derivative has a known power expansion, integrate the series term by term to recover the original function's expansion.
+
+| Target function | Take its derivative | Recognize the derivative as... |
+|---|---|---|
+| $\ln(1+x)$ | $\frac{1}{1+x}$ | Geometric series with $r = -x$ |
+| $\arctan x$ | $\frac{1}{1+x^2}$ | Geometric series with $r = -x^2$ |
+| $\arcsin x$ | $\frac{1}{\sqrt{1-x^2}}$ | Binomial expansion $(1-x^2)^{-1/2}$ |
+
+### Derivative of $\arctan x$ via Inverse Functions
+
+Let $y = \arctan x$. Then $x = \tan y$, and we differentiate the easier side:
+
+$$\frac{dx}{dy} = \sec^2 y$$
+
+We proved $\frac{d}{dy}(\tan y) = \sec^2 y$ using the quotient rule on $\frac{\sin y}{\cos y}$:
+
+$$\frac{d}{dy}\!\left(\frac{\sin y}{\cos y}\right) = \frac{\cos y \cdot \cos y - \sin y \cdot (-\sin y)}{\cos^2 y} = \frac{\cos^2 y + \sin^2 y}{\cos^2 y} = \sec^2 y$$
+
+Now take the reciprocal to get $\frac{dy}{dx}$, and rewrite in terms of $x$:
+
+$$\frac{dy}{dx} = \cos^2 y$$
+
+Using the identity $1 + \tan^2 y = \sec^2 y = \frac{1}{\cos^2 y}$, we get $\cos^2 y = \frac{1}{1 + \tan^2 y}$.
+
+Since $\tan y = x$:
+
+::: {.callout-important}
+## Key Idea: Derivative of Arctangent
+To find this, write $x = \tan y$, differentiate the easy side to get $\sec^2 y$, flip it, and rewrite using $\tan y = x$. The result is a clean rational function that doubles as a geometric series.
+
+$$\boxed{\frac{d}{dx}(\arctan x) = \frac{1}{1 + x^2}}$$
+:::
+
+**Explore -- see $\arctan x$ and its derivative $\frac{1}{1+x^2}$:**
+
+::: {.desmos-container}
+```{=html}
+<div id="arctan-graph" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt1 = document.getElementById('arctan-graph');
+var calc1 = Desmos.GraphingCalculator(elt1, {expressions: true, settingsMenu: false});
+calc1.setExpression({id: 'arctan', latex: 'y=\\arctan(x)', color: '#2d70b3', lineWidth: 3});
+calc1.setExpression({id: 'deriv', latex: 'y=\\frac{1}{1+x^2}', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED'});
+calc1.setExpression({id: 'a', latex: 'a=0.5', sliderBounds: {min: -4, max: 4, step: 0.01}});
+calc1.setExpression({id: 'pt', latex: '(a, \\arctan(a))', color: '#2d70b3', pointSize: 10, label: 'arctan(a)', showLabel: true});
+calc1.setExpression({id: 'tangent_line', latex: 'y - \\arctan(a) = \\frac{1}{1+a^2}(x - a)', color: '#388c46', lineWidth: 1.5, lineStyle: 'DASHED'});
+calc1.setMathBounds({left: -6, right: 6, bottom: -3, top: 3});
+</script>
+```
+:::
+
+*Drag the slider for $a$. The green dashed tangent line has slope $\frac{1}{1+a^2}$ (red curve). Notice the slope is largest at $a = 0$ and decreases as $|a|$ grows -- $\arctan x$ flattens out toward its horizontal asymptotes $\pm\frac{\pi}{2}$.*
+
+### Power Expansion of $\arctan x$ via Geometric Series
+
+Since $\frac{1}{1+x^2}$ is a geometric series with ratio $r = -x^2$:
+
+$$\frac{1}{1+x^2} = 1 - x^2 + x^4 - x^6 + \cdots \qquad (|x| < 1)$$
+
+Integrate term by term to recover $\arctan x$ (using $\arctan(0) = 0$):
+
+::: {.callout-important}
+## Key Idea: Power Series for Arctangent (Leibniz Formula)
+Integrate the geometric series $\frac{1}{1+x^2} = 1 - x^2 + x^4 - \cdots$ term by term and you get this elegant series. Plug in $x = 1$ and you get a famous formula for $\pi/4$.
+
+$$\boxed{\arctan x = x - \frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \cdots}$$
+:::
+
+This beautiful result is called the **Leibniz formula**. Plugging in $x = 1$ gives the famous identity:
+
+$$\frac{\pi}{4} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots$$
+
+### Recognizing Geometric Series in Disguise
+
+Many power expansions are just geometric series $\frac{1}{1-r}$ in disguise. The trick is to **force** the expression into the form $\frac{1}{1 - (\text{something})}$.
+
+**Example 1**: Expand $\dfrac{1}{2 - 3x^2}$.
+
+Factor out the constant to create a leading $1$ in the denominator:
+
+$$\frac{1}{2 - 3x^2} = \frac{1}{2} \cdot \frac{1}{1 - \frac{3}{2}x^2}$$
+
+Now apply the geometric series with $r = \frac{3}{2}x^2$:
+
+$$= \frac{1}{2}\!\left(1 + \frac{3}{2}x^2 + \frac{9}{4}x^4 + \frac{27}{8}x^6 + \cdots\right)$$
+
+$$= \frac{1}{2} + \frac{3}{4}x^2 + \frac{9}{8}x^4 + \frac{27}{16}x^6 + \cdots$$
+
+**Example 2**: Expand $\dfrac{a}{b - cx^3}$.
+
+Factor out $b$ from the denominator:
+
+$$\frac{a}{b - cx^3} = \frac{a}{b} \cdot \frac{1}{1 - \frac{c}{b}x^3}$$
+
+Apply the geometric series with $r = \frac{c}{b}x^3$:
+
+$$= \frac{a}{b}\!\left(1 + \frac{c}{b}x^3 + \frac{c^2}{b^2}x^6 + \frac{c^3}{b^3}x^9 + \cdots\right)$$
+
+**Explore -- compare a rational function with its geometric series approximation:**
+
+::: {.desmos-container}
+```{=html}
+<div id="geom-series" style="width: 100%; height: 400px;"></div>
+<script>
+var elt2 = document.getElementById('geom-series');
+var calc2 = Desmos.GraphingCalculator(elt2, {expressions: true, settingsMenu: false});
+calc2.setExpression({id: 'exact', latex: 'y=\\frac{1}{2-3x^2}', color: '#2d70b3', lineWidth: 3});
+calc2.setExpression({id: 'n', latex: 'n=3', sliderBounds: {min: 1, max: 8, step: 1}});
+calc2.setExpression({id: 'approx1', latex: 'y=\\frac{1}{2}\\sum_{k=0}^{n}\\left(\\frac{3}{2}x^2\\right)^k', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED'});
+calc2.setMathBounds({left: -1.5, right: 1.5, bottom: -2, top: 5});
+</script>
+```
+:::
+
+*Drag the slider $n$ to add more terms. Watch how the red dashed approximation hugs the blue curve more closely within the radius of convergence $|x| < \sqrt{2/3} \approx 0.82$.*
+
+### Partial Fraction Decomposition
+
+When a denominator factors into linear terms, we can decompose the fraction into simpler pieces, each of which yields a geometric series.
+
+**Example**: Expand $\dfrac{x^2}{2x^2 - 3x + 1}$ as a power series.
+
+**Step 1 -- Check degrees.** The numerator has degree 2 and the denominator has degree 2, so this is not a proper fraction. When $x \to \infty$, the function approaches $\frac{x^2}{2x^2} = \frac{1}{2}$. So we first extract the polynomial part:
+
+$$\frac{x^2}{2x^2 - 3x + 1} = \frac{1}{2} + \frac{\text{remainder}}{2x^2 - 3x + 1}$$
+
+**Step 2 -- Factor the denominator.**
+
+$$2x^2 - 3x + 1 = (2x - 1)(x - 1)$$
+
+**Step 3 -- Set up partial fractions.** After extracting $\frac{1}{2}$, write:
+
+$$\frac{x^2}{(2x-1)(x-1)} = \frac{1}{2} + \frac{A}{2x-1} + \frac{B}{x-1}$$
+
+**Step 4 -- Find coefficients** by clearing denominators and comparing like terms. Multiply through by $(2x-1)(x-1)$:
+
+$$x^2 - \tfrac{1}{2}(2x-1)(x-1) = A(x-1) + B(2x-1)$$
+
+The left side simplifies to $x^2 - \tfrac{1}{2}(2x^2 - 3x + 1) = \tfrac{3}{2}x - \tfrac{1}{2}$. Matching coefficients of $x$ and the constant term gives:
+
+$$A + 2B = \tfrac{3}{2}, \qquad -A - B = -\tfrac{1}{2}$$
+
+Solving: $B = 1$ and $A = -\tfrac{1}{2}$.
+
+$$\frac{x^2}{(2x-1)(x-1)} = \frac{1}{2} - \frac{1/2}{2x-1} + \frac{1}{x-1}$$
+
+**Step 5 -- Expand each fraction as a geometric series:**
+
+$$\frac{1}{2x - 1} = \frac{-1}{1 - 2x} = -(1 + 2x + 4x^2 + 8x^3 + \cdots)$$
+
+$$\frac{1}{x - 1} = \frac{-1}{1 - x} = -(1 + x + x^2 + x^3 + \cdots)$$
+
+Combine everything to get the full power series of the original function.
+
+### The Cover-Up Trick for Partial Fractions
+
+Finding $A$ and $B$ by clearing denominators and matching coefficients is tedious. Here is a much faster method that uses a clever choice of $x$-value.
+
+**To find $B$**: choose $x$ so that the factor $(x - 1)$ vanishes, i.e., set $x = 1$. Then the $A$-term has a finite value while we are effectively "covering up" the $(x-1)$ factor:
+
+$$B = \left.\frac{x^2 - \frac{1}{2}(2x-1)(x-1)}{2x - 1}\right|_{x=1} = \frac{\frac{3}{2}(1) - \frac{1}{2}}{2(1)-1} = 1$$
+
+**To find $A$**: set $x = \frac{1}{2}$ so that $(2x - 1)$ vanishes:
+
+$$A = \left.\frac{x^2 - \frac{1}{2}(2x-1)(x-1)}{x - 1}\right|_{x=1/2} = \frac{\frac{3}{2}\!\cdot\!\frac{1}{2} - \frac{1}{2}}{\frac{1}{2} - 1} = \frac{1/4}{-1/2} = -\frac{1}{2}$$
+
+The idea: choose an $x$-value that **zeroes out** one denominator, making only one unknown survive. No systems of equations needed!
+
+**Explore -- see how partial fractions decompose a rational function:**
+
+::: {.desmos-container}
+```{=html}
+<div id="partial-frac" style="width: 100%; height: 400px;"></div>
+<script>
+var elt3 = document.getElementById('partial-frac');
+var calc3 = Desmos.GraphingCalculator(elt3, {expressions: true, settingsMenu: false});
+calc3.setExpression({id: 'original', latex: 'y=\\frac{x^2}{2x^2-3x+1}', color: '#2d70b3', lineWidth: 3});
+calc3.setExpression({id: 'piece1', latex: 'y=\\frac{1}{2}+\\frac{1}{2(2x-1)}', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED'});
+calc3.setExpression({id: 'piece2', latex: 'y=\\frac{1}{x-1}', color: '#388c46', lineWidth: 2, lineStyle: 'DASHED'});
+calc3.setExpression({id: 'asymp1', latex: 'x=\\frac{1}{2}', color: '#aaaaaa', lineStyle: 'DASHED', lineWidth: 1});
+calc3.setExpression({id: 'asymp2', latex: 'x=1', color: '#aaaaaa', lineStyle: 'DASHED', lineWidth: 1});
+calc3.setExpression({id: 'horiz', latex: 'y=\\frac{1}{2}', color: '#6042a6', lineStyle: 'DASHED', lineWidth: 1});
+calc3.setMathBounds({left: -2, right: 3, bottom: -8, top: 8});
+</script>
+```
+:::
+
+*The blue curve is the original function. The red and green dashed curves are the partial fraction pieces. Gray dashed lines mark the vertical asymptotes at $x = \frac{1}{2}$ and $x = 1$; the purple dashed line marks the horizontal asymptote at $y = \frac{1}{2}$.*
+
+### Power Expansion of $\ln(1+x)$ and $\arcsin x$
+
+For completeness, here are the other two expansions built by the same "differentiate, expand, integrate" strategy discussed in class:
+
+**Natural log**: Since $\frac{d}{dx}\ln(1+x) = \frac{1}{1+x} = 1 - x + x^2 - x^3 + \cdots$, integrating gives:
+
+$$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots$$
+
+**Arcsine**: Since $\frac{d}{dx}\arcsin x = (1 - x^2)^{-1/2}$, we use the binomial expansion:
+
+$$(1-x^2)^{-1/2} = 1 + \frac{1}{2}x^2 + \frac{3}{8}x^4 + \frac{5}{16}x^6 + \cdots$$
+
+Integrating term by term:
+
+$$\arcsin x = x + \frac{x^3}{6} + \frac{3x^5}{40} + \frac{5x^7}{112} + \cdots$$
+
+Notice that all even-order derivatives of $\arcsin x$ at $x = 0$ are zero (only odd powers appear), which the power series makes immediately visible.
+
+## Cheat Sheet
+
+::: {.key-formula}
+| Formula | Key idea |
+|---|---|
+| $\dfrac{d}{dx}(\arctan x) = \dfrac{1}{1+x^2}$ | Write $x = \tan y$, differentiate, take reciprocal |
+| $\dfrac{1}{1-r} = 1 + r + r^2 + r^3 + \cdots$ | Geometric series (valid for $\lvert r\rvert < 1$) |
+| $\arctan x = x - \dfrac{x^3}{3} + \dfrac{x^5}{5} - \cdots$ | Integrate the geometric series for $\frac{1}{1+x^2}$ |
+| $\ln(1+x) = x - \dfrac{x^2}{2} + \dfrac{x^3}{3} - \cdots$ | Integrate the geometric series for $\frac{1}{1+x}$ |
+
+### Geometric Series Conversion Recipe
+
+To expand $\dfrac{1}{a + bx^n}$:
+
+1. Factor out $a$: $\;\dfrac{1}{a} \cdot \dfrac{1}{1 + \frac{b}{a}x^n}$
+2. Identify $r = -\dfrac{b}{a}x^n$ and apply $\dfrac{1}{1-r} = 1 + r + r^2 + \cdots$
+
+### Partial Fraction Steps
+
+1. If degree of numerator $\geq$ degree of denominator, do **polynomial long division** first
+2. **Factor** the denominator into linear terms
+3. Write $\dfrac{A}{(\text{factor}_1)} + \dfrac{B}{(\text{factor}_2)} + \cdots$
+4. Find $A, B, \ldots$ by the **cover-up trick**: plug in the root of each factor to isolate one unknown at a time
+5. Expand each simple fraction as a **geometric series**
+
+### The Cover-Up Trick
+
+To find the coefficient for a given linear factor, set $x$ equal to the **root** of that factor. This zeroes out every other partial fraction term, leaving only the one you want. No systems of equations needed!
+:::
