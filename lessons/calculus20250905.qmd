@@ -39,7 +39,7 @@ Ellipses and ellipsoids are some of the most common shapes in nature --- planets
 ## Key Frames from the Lecture
 
 ```{=html}
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1em 0;">
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin: 1em 0;">
   <img src="../images/calculus20250905_frame1.jpg" style="width:100%; border-radius: 6px;">
   <img src="../images/calculus20250905_frame2.jpg" style="width:100%; border-radius: 6px;">
   <img src="../images/calculus20250905_frame3.jpg" style="width:100%; border-radius: 6px;">

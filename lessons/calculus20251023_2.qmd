@@ -37,7 +37,7 @@ Every measurement in the real world has some inaccuracy. When you plug those mea
 ## Key Frames from the Lecture
 
 ```{=html}
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1em 0;">
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin: 1em 0;">
   <img src="../images/calculus20251023_2_frame1.jpg" style="width:100%; border-radius: 6px;">
   <img src="../images/calculus20251023_2_frame2.jpg" style="width:100%; border-radius: 6px;">
   <img src="../images/calculus20251023_2_frame3.jpg" style="width:100%; border-radius: 6px;">

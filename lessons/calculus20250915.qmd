@@ -42,7 +42,7 @@ The number $e \approx 2.718$ is the "natural" base for all of this. Today we'll 
 ## Key Frames from the Lecture
 
 ```{=html}
-<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1em 0;">
+<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin: 1em 0;">
   <img src="../images/calculus20250915_frame1.jpg" style="width:100%; border-radius: 6px;">
   <img src="../images/calculus20250915_frame2.jpg" style="width:100%; border-radius: 6px;">
   <img src="../images/calculus20250915_frame3.jpg" style="width:100%; border-radius: 6px;">
