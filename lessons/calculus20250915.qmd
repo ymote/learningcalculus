@@ -39,6 +39,19 @@ The number $e \approx 2.718$ is the "natural" base for all of this. Today we'll 
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250915_frame1.jpg)
+
+![](../images/calculus20250915_frame2.jpg)
+
+![](../images/calculus20250915_frame3.jpg)
+
+![](../images/calculus20250915_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

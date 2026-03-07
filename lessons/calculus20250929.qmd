@@ -35,6 +35,19 @@ Euler's formula connects exponentials, trigonometry, and complex numbers in one 
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250929_frame1.jpg)
+
+![](../images/calculus20250929_frame2.jpg)
+
+![](../images/calculus20250929_frame3.jpg)
+
+![](../images/calculus20250929_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

@@ -33,6 +33,19 @@ These problems all follow the same three-step pattern: relate the variables, dif
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251020_frame1.jpg)
+
+![](../images/calculus20251020_frame2.jpg)
+
+![](../images/calculus20251020_frame3.jpg)
+
+![](../images/calculus20251020_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

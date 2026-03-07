@@ -35,6 +35,19 @@ Once you know the derivatives of sin and cos, the derivatives of tan and sec fol
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250925_frame1.jpg)
+
+![](../images/calculus20250925_frame2.jpg)
+
+![](../images/calculus20250925_frame3.jpg)
+
+![](../images/calculus20250925_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

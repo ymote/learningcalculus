@@ -38,6 +38,19 @@ Today we'll discover how to build the power series for $\ln(1+x)$ from a geometr
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250918_frame1.jpg)
+
+![](../images/calculus20250918_frame2.jpg)
+
+![](../images/calculus20250918_frame3.jpg)
+
+![](../images/calculus20250918_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

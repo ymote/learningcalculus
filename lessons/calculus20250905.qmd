@@ -36,6 +36,19 @@ Ellipses and ellipsoids are some of the most common shapes in nature --- planets
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250905_frame1.jpg)
+
+![](../images/calculus20250905_frame2.jpg)
+
+![](../images/calculus20250905_frame3.jpg)
+
+![](../images/calculus20250905_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

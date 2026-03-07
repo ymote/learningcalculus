@@ -29,6 +29,19 @@ Imagine you put \$1 in a bank account that pays 100% interest per year. If the b
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250911_frame1.jpg)
+
+![](../images/calculus20250911_frame2.jpg)
+
+![](../images/calculus20250911_frame3.jpg)
+
+![](../images/calculus20250911_frame4.jpg)
+:::
+
+
 ::: {.callout-note collapse="true"}
 ## What You Need to Know First: Exponent Rules
 

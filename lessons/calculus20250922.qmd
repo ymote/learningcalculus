@@ -36,6 +36,19 @@ Knowing that the derivative of $\sin x$ is $\cos x$ is one of the most-used fact
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250922_frame1.jpg)
+
+![](../images/calculus20250922_frame2.jpg)
+
+![](../images/calculus20250922_frame3.jpg)
+
+![](../images/calculus20250922_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

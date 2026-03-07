@@ -37,6 +37,19 @@ Understanding how velocities of connected objects relate to each other shows up 
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251016_frame1.jpg)
+
+![](../images/calculus20251016_frame2.jpg)
+
+![](../images/calculus20251016_frame3.jpg)
+
+![](../images/calculus20251016_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

@@ -39,6 +39,19 @@ Today we'll solve several classic related rates problems using both calculus (im
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251013_2_frame1.jpg)
+
+![](../images/calculus20251013_2_frame2.jpg)
+
+![](../images/calculus20251013_2_frame3.jpg)
+
+![](../images/calculus20251013_2_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

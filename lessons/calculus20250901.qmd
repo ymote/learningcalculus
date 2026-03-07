@@ -36,6 +36,19 @@ Calculus gives us a superpower: instead of trying every possibility, we can use 
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250901_frame1.jpg)
+
+![](../images/calculus20250901_frame2.jpg)
+
+![](../images/calculus20250901_frame3.jpg)
+
+![](../images/calculus20250901_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

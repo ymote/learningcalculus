@@ -36,6 +36,19 @@ If you can't quantify how much your answer might be off, you can't trust it at a
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251023_frame1.jpg)
+
+![](../images/calculus20251023_frame2.jpg)
+
+![](../images/calculus20251023_frame3.jpg)
+
+![](../images/calculus20251023_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

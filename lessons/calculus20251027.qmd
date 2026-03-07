@@ -39,6 +39,19 @@ Today we'll learn how to describe motion with vectors, eliminate time to find tr
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251027_frame1.jpg)
+
+![](../images/calculus20251027_frame2.jpg)
+
+![](../images/calculus20251027_frame3.jpg)
+
+![](../images/calculus20251027_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

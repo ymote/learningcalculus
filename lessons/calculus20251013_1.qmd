@@ -36,6 +36,19 @@ These are all situations where knowing one rate of change lets you figure out an
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251013_1_frame1.jpg)
+
+![](../images/calculus20251013_1_frame2.jpg)
+
+![](../images/calculus20251013_1_frame3.jpg)
+
+![](../images/calculus20251013_1_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

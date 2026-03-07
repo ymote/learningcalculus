@@ -35,6 +35,19 @@ Parametric equations describe how objects actually move through space over time:
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251030_frame1.jpg)
+
+![](../images/calculus20251030_frame2.jpg)
+
+![](../images/calculus20251030_frame3.jpg)
+
+![](../images/calculus20251030_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

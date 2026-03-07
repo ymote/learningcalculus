@@ -37,6 +37,19 @@ Today we discover that by thinking geometrically -- splitting a region under a s
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251106_frame1.jpg)
+
+![](../images/calculus20251106_frame2.jpg)
+
+![](../images/calculus20251106_frame3.jpg)
+
+![](../images/calculus20251106_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

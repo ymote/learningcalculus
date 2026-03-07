@@ -28,6 +28,19 @@ When engineers design roller coasters, they don't just care about the shape of t
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20250821_frame1.jpg)
+
+![](../images/calculus20250821_frame2.jpg)
+
+![](../images/calculus20250821_frame3.jpg)
+
+![](../images/calculus20250821_frame4.jpg)
+:::
+
+
 ## Polynomial Graphing: The Snaking Method
 
 ::: {.callout-note collapse="true"}

@@ -35,6 +35,19 @@ Being able to take derivatives quickly and accurately is the gateway to the rest
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251002_frame1.jpg)
+
+![](../images/calculus20251002_frame2.jpg)
+
+![](../images/calculus20251002_frame3.jpg)
+
+![](../images/calculus20251002_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}

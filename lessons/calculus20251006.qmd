@@ -39,6 +39,19 @@ Today we'll master techniques for evaluating limits that disguise the definition
 </video>
 ```
 
+## Key Frames from the Lecture
+
+::: {layout-ncol=2}
+![](../images/calculus20251006_frame1.jpg)
+
+![](../images/calculus20251006_frame2.jpg)
+
+![](../images/calculus20251006_frame3.jpg)
+
+![](../images/calculus20251006_frame4.jpg)
+:::
+
+
 ## What You Need to Know First
 
 ::: {.callout-note collapse="true"}
