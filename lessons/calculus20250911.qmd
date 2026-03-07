@@ -32,11 +32,11 @@ Imagine you put \$1 in a bank account that pays 100% interest per year. If the b
 ## Key Frames from the Lecture
 
 ```{=html}
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin: 1em 0;">
-  <img src="../images/calculus20250911_frame1.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20250911_frame2.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20250911_frame3.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20250911_frame4.jpg" style="width:100%; border-radius: 6px;">
+<div style="display: flex; gap: 8px; margin: 1em 0;">
+  <img src="../images/calculus20250911_frame1.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20250911_frame2.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20250911_frame3.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20250911_frame4.jpg" style="width:25%; border-radius: 6px;">
 </div>
 ```
 

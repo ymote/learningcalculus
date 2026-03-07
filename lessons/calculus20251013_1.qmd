@@ -39,11 +39,11 @@ These are all situations where knowing one rate of change lets you figure out an
 ## Key Frames from the Lecture
 
 ```{=html}
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin: 1em 0;">
-  <img src="../images/calculus20251013_1_frame1.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20251013_1_frame2.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20251013_1_frame3.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20251013_1_frame4.jpg" style="width:100%; border-radius: 6px;">
+<div style="display: flex; gap: 8px; margin: 1em 0;">
+  <img src="../images/calculus20251013_1_frame1.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20251013_1_frame2.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20251013_1_frame3.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20251013_1_frame4.jpg" style="width:25%; border-radius: 6px;">
 </div>
 ```
 

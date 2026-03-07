@@ -31,11 +31,11 @@ When engineers design roller coasters, they don't just care about the shape of t
 ## Key Frames from the Lecture
 
 ```{=html}
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin: 1em 0;">
-  <img src="../images/calculus20250821_frame1.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20250821_frame2.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20250821_frame3.jpg" style="width:100%; border-radius: 6px;">
-  <img src="../images/calculus20250821_frame4.jpg" style="width:100%; border-radius: 6px;">
+<div style="display: flex; gap: 8px; margin: 1em 0;">
+  <img src="../images/calculus20250821_frame1.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20250821_frame2.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20250821_frame3.jpg" style="width:25%; border-radius: 6px;">
+  <img src="../images/calculus20250821_frame4.jpg" style="width:25%; border-radius: 6px;">
 </div>
 ```
 
