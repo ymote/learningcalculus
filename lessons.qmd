@@ -1,0 +1,8 @@
+---
+title: "All Lessons"
+listing:
+  contents: lessons
+  sort: "date"
+  type: table
+  fields: [date, title]
+---

@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Learning Calculus"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: lessons.qmd
+        text: Lessons
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true

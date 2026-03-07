@@ -1,0 +1,14 @@
+---
+title: "Calculus Lecture — August 28, 2025"
+date: 2025-08-28
+---
+
+## Lecture Video
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="VIDEO_URL_PLACEHOLDER" type="video/mp4">
+</video>
+```
+
+*Content will be generated from transcript.*

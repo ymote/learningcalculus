@@ -1,0 +1,6 @@
+/.quarto/
+/docs/
+/audio/
+/videos/
+*.ipynb_checkpoints/
+.DS_Store
