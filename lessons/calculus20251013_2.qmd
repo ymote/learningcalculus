@@ -41,15 +41,14 @@ Today we'll solve several classic related rates problems using both calculus (im
 
 ## Key Frames from the Lecture
 
-::: {layout-ncol=2}
-![](../images/calculus20251013_2_frame1.jpg)
-
-![](../images/calculus20251013_2_frame2.jpg)
-
-![](../images/calculus20251013_2_frame3.jpg)
-
-![](../images/calculus20251013_2_frame4.jpg)
-:::
+```{=html}
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20251013_2_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251013_2_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251013_2_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251013_2_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
 
 
 ## What You Need to Know First

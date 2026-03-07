@@ -41,15 +41,14 @@ The number $e \approx 2.718$ is the "natural" base for all of this. Today we'll 
 
 ## Key Frames from the Lecture
 
-::: {layout-ncol=2}
-![](../images/calculus20250915_frame1.jpg)
-
-![](../images/calculus20250915_frame2.jpg)
-
-![](../images/calculus20250915_frame3.jpg)
-
-![](../images/calculus20250915_frame4.jpg)
-:::
+```{=html}
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250915_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250915_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250915_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250915_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
 
 
 ## What You Need to Know First
