@@ -3,18 +3,18 @@ title: "Derivative Techniques Review: Chain Rule, Logarithmic Differentiation & 
 date: 2025-10-02
 ---
 
-Think of today's lesson as loading up your calculus toolbox with every wrench and screwdriver you'll need for the rest of the course. We'll practice the chain rule, the product and quotient rules, and a sneaky trick called logarithmic differentiation that turns nightmarish products into simple sums. We'll also learn how to differentiate inverse functions -- and discover what happens when a derivative blows up to infinity (spoiler: your usual shortcuts stop working, and you need a Plan B).
+This lesson consolidates the core differentiation techniques needed for the remainder of the course. We review the chain rule, the product and quotient rules, and logarithmic differentiation — a technique that converts complicated products into manageable sums. We also develop the differentiation of inverse functions and examine what occurs when a derivative is unbounded, requiring alternative estimation strategies.
 
 ::: {.callout-tip collapse="true"}
-## Why Mastering Derivative Techniques Matters
+## Motivation
 
-Being able to take derivatives quickly and accurately is the gateway to the rest of calculus:
+Proficiency with derivative techniques is foundational for the rest of calculus:
 
-- **Physics**: velocity, acceleration, and force all come from taking derivatives of position — engineers chain-rule through complicated motion equations every day
-- **Medicine**: drug concentration in the bloodstream follows exponential and rational functions — doctors need derivatives to know when a drug is most effective
-- **Finance**: the rate at which an investment grows depends on derivatives of compound-interest formulas involving products and exponentials
-- **Computer graphics**: rendering realistic lighting on curved surfaces requires derivatives of composite trig and polynomial functions
-- **Climate science**: temperature models involve products and compositions of many functions — scientists differentiate them to predict rates of change
+- **Physics**: velocity, acceleration, and force are all obtained by differentiating position — engineers apply the chain rule to complicated motion equations routinely.
+- **Medicine**: drug concentration in the bloodstream follows exponential and rational functions — derivatives determine when a drug is most effective.
+- **Finance**: the rate at which an investment grows depends on derivatives of compound-interest formulas involving products and exponentials.
+- **Computer graphics**: rendering realistic lighting on curved surfaces requires derivatives of composite trigonometric and polynomial functions.
+- **Climate science**: temperature models involve products and compositions of many functions — scientists differentiate them to predict rates of change.
 :::
 
 ## Topics Covered
@@ -47,16 +47,16 @@ Being able to take derivatives quickly and accurately is the gateway to the rest
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is the chain rule?
 
-When one function is inside another — a **composite function** like $f(g(x))$ — the chain rule tells you how to differentiate:
+When one function is inside another — a **composite function** such as $f(g(x))$ — the chain rule prescribes how to differentiate:
 
 $$\frac{d}{dx}\bigl[f(g(x))\bigr] = f'(g(x)) \cdot g'(x)$$
 
-Think of it as peeling an onion: differentiate the outer layer first (leaving the inside alone), then multiply by the derivative of the inner layer.
+One proceeds layer by layer: differentiate the outer function first (leaving the inside unchanged), then multiply by the derivative of the inner function.
 
 **Example:** If $h(x) = (3x+1)^5$, then:
 
@@ -74,7 +74,7 @@ $$\frac{d}{dx}[u \cdot v] = u' v + u v'$$
 
 $$\frac{d}{dx}\!\left[\frac{u}{v}\right] = \frac{u'v - uv'}{v^2}$$
 
-These let you handle expressions that are built from simpler pieces multiplied or divided together.
+These rules handle expressions built from simpler components combined by multiplication or division.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -84,7 +84,7 @@ The **natural logarithm** $\ln(x)$ is the inverse of $e^x$. It has a key propert
 
 $$\ln(a \cdot b) = \ln a + \ln b, \qquad \ln\!\left(\frac{a}{b}\right) = \ln a - \ln b, \qquad \ln(a^n) = n\ln a$$
 
-This is why taking $\ln$ of both sides can convert a messy product of powers into a clean sum — exactly the trick used in **logarithmic differentiation**.
+This is why taking $\ln$ of both sides can convert a complicated product of powers into a clean sum — precisely the technique underlying **logarithmic differentiation**.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -110,7 +110,7 @@ Everything starts from the **binomial expansion**. For any exponent $r$ (positiv
 
 $$(x + dx)^r = x^r\!\left(1 + \frac{dx}{x}\right)^r \approx x^r\!\left(1 + r\,\frac{dx}{x}\right)$$
 
-We keep only the lowest-order infinitesimal. Subtracting $x^r$ and dividing by $dx$:
+We retain only the lowest-order infinitesimal. Subtracting $x^r$ and dividing by $dx$:
 
 $$\frac{d}{dx}\,x^r = r\,x^{r-1}$$
 
@@ -142,7 +142,7 @@ $$\frac{d}{dx}\,e^{3x + x^3\cos x} = e^{3x + x^3\cos x}\cdot \frac{d}{dx}(3x + x
 
 $$\frac{d}{dx}(3x + x^3\cos x) = 3 + 3x^2\cos x - x^3\sin x$$
 
-Assembling everything gives the full derivative — complicated, but each step is mechanical.
+Assembling all components yields the complete derivative — lengthy, but each step is mechanical.
 
 **Explore how the chain rule works on nested functions:**
 
@@ -165,7 +165,7 @@ calculator.setMathBounds({left: -7, right: 7, bottom: -2, top: 8});
 
 ### Logarithmic Differentiation
 
-When a function is a massive **product and quotient of powers**, direct use of the product rule is a nightmare. Instead, take $\ln$ of both sides.
+When a function is a large **product and quotient of powers**, direct application of the product rule is unwieldy. Instead, one takes $\ln$ of both sides.
 
 **Example from class:** Find $R'(1)$ where
 
@@ -187,19 +187,19 @@ On the left, the chain rule gives $\frac{1}{R}\cdot R'$. On the right, each loga
 
 ::: {.callout-important}
 ## Key Idea: Logarithmic Differentiation
-When a function is a huge product and quotient of powers, take $\ln$ of both sides first. This converts products into sums, making differentiation much simpler. Then solve for $R'$ by multiplying both sides by $R$.
+When a function is a large product and quotient of powers, take $\ln$ of both sides first. This converts products into sums, simplifying differentiation. Then solve for $R'$ by multiplying both sides by $R$.
 
 $$R'(x) = R(x)\left[\frac{7}{x+3} + \frac{12x}{2x^2-1} + \frac{2}{x} - \frac{4}{x+1} + \frac{2}{2-x}\right]$$
 :::
 
-To evaluate at $x = 1$: compute $R(1)$ once, then plug $x=1$ into each simple fraction and add them up. Much easier than expanding the product rule across five factors!
+To evaluate at $x = 1$: compute $R(1)$ once, then substitute $x=1$ into each simple fraction and sum. This is far more efficient than expanding the product rule across five factors.
 
 ::: {.callout-tip collapse="true"}
 ## Why does logarithmic differentiation work?
 
-Logarithmic differentiation exploits the **logarithm laws** to decompose a product into a sum. Differentiating a sum is trivial — you just differentiate term by term. The result is equivalent to the product rule, but organized so each factor contributes one clean fraction.
+Logarithmic differentiation exploits the **logarithm laws** to decompose a product into a sum. Differentiating a sum is straightforward — one differentiates term by term. The result is equivalent to the product rule, but organized so that each factor contributes one clean fraction.
 
-If you look at the formula, each term like $\frac{7}{x+3}$ comes from "fixing every other factor, differentiating just $(x+3)^7$, and dividing by the whole $R$." That is exactly what the generalized product rule does!
+Each term such as $\frac{7}{x+3}$ arises from "holding every other factor fixed, differentiating only $(x+3)^7$, and dividing by the whole $R$." This is precisely what the generalized product rule produces.
 :::
 
 **Visualize the function $R(x)$ and its derivative:**
@@ -224,7 +224,7 @@ If $y = f(x)$ has an inverse $x = f^{-1}(y)$, then:
 
 ::: {.callout-important}
 ## Key Idea: Inverse Function Derivative
-To differentiate an inverse function, just flip the derivative of the original function. If you know $f'$, then the derivative of $f^{-1}$ is one over $f'$ evaluated at the corresponding point.
+To differentiate an inverse function, take the reciprocal of the derivative of the original function. If $f'$ is known, then the derivative of $f^{-1}$ equals $1/f'$ evaluated at the corresponding point.
 
 $$\frac{d}{dy}\bigl[f^{-1}(y)\bigr] = \frac{1}{f'(x)} = \frac{1}{f'\!\bigl(f^{-1}(y)\bigr)}$$
 :::
@@ -254,19 +254,19 @@ calc3.setMathBounds({left: -1, right: 5, bottom: -1, top: 5});
 
 ### Estimating $\operatorname{arccosh}(1.001)$: When Derivatives Blow Up
 
-We want to estimate $\operatorname{arccosh}(1.001)$ to three significant figures.
+We seek to estimate $\operatorname{arccosh}(1.001)$ to three significant figures.
 
-**First attempt — use the derivative:**
+**First attempt — using the derivative:**
 
-Since $\operatorname{arccosh}(1) = 0$ (because $\cosh(0) = 1$), and $1.001$ is close to $1$, we might try:
+Since $\operatorname{arccosh}(1) = 0$ (because $\cosh(0) = 1$), and $1.001$ is close to $1$, one might attempt:
 
 $$\operatorname{arccosh}(1.001) \approx \operatorname{arccosh}(1) + 0.001 \cdot \frac{d}{dy}\operatorname{arccosh}(y)\Big|_{y=1}$$
 
-But the derivative of $\operatorname{arccosh}$ at $y=1$ is $\frac{1}{\sinh(\operatorname{arccosh}(1))} = \frac{1}{\sinh(0)} = \frac{1}{0} = \infty$!
+However, the derivative of $\operatorname{arccosh}$ at $y=1$ is $\frac{1}{\sinh(\operatorname{arccosh}(1))} = \frac{1}{\sinh(0)} = \frac{1}{0} = \infty$.
 
 Graphically, $\cosh x$ has a **horizontal tangent** at $x = 0$, so its inverse $\operatorname{arccosh}$ has a **vertical tangent** at $y = 1$. The linear approximation fails completely.
 
-**What does this mean?** The value $\operatorname{arccosh}(1.001)$ is much larger than $0.001$ would suggest — it grows as a **fractional power** of the increment, not linearly.
+**Consequence:** The value $\operatorname{arccosh}(1.001)$ is much larger than $0.001$ would suggest — it grows as a **fractional power** of the increment, not linearly.
 
 **Second attempt — solve directly from the definition:**
 
@@ -289,18 +289,18 @@ $$x = \ln(1.04573) \approx 0.04473 - \frac{0.04473^2}{2} + \cdots \approx 0.0447
 The answer $\operatorname{arccosh}(1.001) \approx 0.0447$ is **far** larger than $0.001$ — confirming that the linear derivative approach could not work here.
 
 ::: {.callout-tip collapse="true"}
-## The lesson: always check your derivatives before approximating!
+## Remark: Always verify derivatives before approximating
 
-Whenever you want to estimate $f(a + \epsilon)$ using calculus, the approximation $f(a + \epsilon) \approx f(a) + \epsilon\,f'(a)$ requires $f'(a)$ to be **finite**. If the derivative is infinite, the function changes by a fractional power of $\epsilon$ rather than linearly, and you need a different strategy — such as solving the defining equation directly.
+Whenever one estimates $f(a + \epsilon)$ using the linear approximation $f(a + \epsilon) \approx f(a) + \epsilon\,f'(a)$, this requires $f'(a)$ to be **finite**. If the derivative is unbounded, the function changes by a fractional power of $\epsilon$ rather than linearly, and an alternative strategy is needed — such as solving the defining equation directly.
 :::
 
 ### Cube Roots Near Zero: Another Infinite-Derivative Trap
 
-The same issue appears with $\sqrt[3]{0.007}$. If you try to expand $x^{1/3}$ around $x = 0$:
+The same issue arises with $\sqrt[3]{0.007}$. If one attempts to expand $x^{1/3}$ around $x = 0$:
 
 $$\frac{d}{dx}\,x^{1/3} = \frac{1}{3}\,x^{-2/3}$$
 
-At $x = 0$, this is $\infty$. The tangent line at the origin is **vertical**, so you cannot do a Taylor expansion there. Instead, you would expand around a nearby convenient point (like $x = 0.008 = 0.2^3$) where the derivative is finite.
+At $x = 0$, this is $\infty$. The tangent line at the origin is **vertical**, so a Taylor expansion at that point does not exist. Instead, one expands around a nearby convenient point (such as $x = 0.008 = 0.2^3$) where the derivative is finite.
 
 **See the vertical tangent of $y = x^{1/3}$ at the origin:**
 

@@ -3,20 +3,20 @@ title: "Related Rates: Connecting Changing Quantities with Derivatives"
 date: 2025-10-13
 ---
 
-Have you ever wondered how fast the distance between two moving cars is changing, even when neither car is driving directly toward the other? In this lesson, you will learn a powerful technique called "related rates" that lets you connect different changing quantities using derivatives. It is like solving a puzzle where knowing one speed helps you figure out another -- and it all comes from the Pythagorean theorem and the chain rule, tools you already know!
+This lesson introduces the method of related rates, a technique for connecting the rates of change of quantities that are linked by a geometric or physical relationship. Given information about how one quantity varies with time, one can determine how a related quantity changes by differentiating an appropriate equation -- using the Pythagorean theorem and the chain rule as foundational tools.
 
 ::: {.callout-tip collapse="true"}
-## Why Related Rates Matter
+## Motivation
 
-Related rates problems show up whenever two or more quantities change at the same time and are connected by an equation:
+Related rates problems arise whenever two or more quantities change simultaneously and are connected by an equation:
 
-- **Traffic safety**: engineers figure out how fast two cars are closing in on each other at an intersection to design safer traffic lights
-- **Medicine**: when a drug spreads through your body, doctors use related rates to predict how fast the concentration changes in your bloodstream
-- **Filling a pool**: if water flows in at a steady rate, related rates tell you how fast the water level rises — especially when the pool has a sloped bottom
-- **Shadows**: as you walk away from a streetlight, your shadow grows — related rates predict exactly how fast
-- **Weather balloons**: as a balloon rises, radar stations track the angle of elevation — related rates connect the balloon's altitude to how fast that angle changes
+- **Traffic engineering**: determining how fast two vehicles are closing on each other at an intersection informs traffic signal design
+- **Pharmacokinetics**: as a drug distributes through the body, related rates predict how rapidly the concentration changes in the bloodstream
+- **Fluid dynamics**: when water flows into a vessel at a steady rate, related rates determine how fast the water level rises -- particularly when the vessel has non-uniform cross-section
+- **Optics and shadows**: as an object moves away from a light source, the rate of shadow growth is determined by related rates
+- **Meteorology**: as a weather balloon ascends, related rates connect its altitude to the rate of change of the angle of elevation measured at a ground station
 
-These are all situations where knowing one rate of change lets you figure out another.
+These are all situations in which knowledge of one rate of change determines another.
 :::
 
 ## Topics Covered
@@ -48,12 +48,12 @@ These are all situations where knowing one rate of change lets you figure out an
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is a rate of change?
 
-A **rate of change** tells you how fast one quantity changes compared to another.
+A **rate of change** measures how fast one quantity changes with respect to another.
 
 - Speed is a rate: distance per time, like $60 \text{ mph}$
 - Growth rate: height per year
@@ -65,21 +65,21 @@ A rate is always "something per something." If a car travels 120 miles in 2 hour
 ::: {.callout-note collapse="true"}
 ## What is a derivative?
 
-The **derivative** of a function tells you its **instantaneous rate of change** — how fast the output changes at a single moment.
+The **derivative** of a function gives its **instantaneous rate of change** -- the rate at which the output changes at a given instant.
 
 We write it as $\frac{dy}{dx}$ or $f'(x)$.
 
-For example, if $y = x^2$, then $\frac{dy}{dx} = 2x$, which tells you that at $x = 3$, the function is changing at a rate of $6$ units of $y$ per unit of $x$.
+For example, if $y = x^2$, then $\frac{dy}{dx} = 2x$, which indicates that at $x = 3$, the function is changing at a rate of $6$ units of $y$ per unit of $x$.
 :::
 
 ::: {.callout-note collapse="true"}
 ## What is the chain rule?
 
-The **chain rule** lets you take the derivative of a composition of functions. If $y$ depends on $u$, and $u$ depends on $x$, then:
+The **chain rule** provides the derivative of a composition of functions. If $y$ depends on $u$, and $u$ depends on $x$, then:
 
 $$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$
 
-In related rates, everything changes with respect to **time** $t$. So if $C^2 = A^2 + B^2$, and both $A$ and $B$ change over time, you differentiate both sides with respect to $t$, using the chain rule on each term.
+In related rates, all quantities change with respect to **time** $t$. If $C^2 = A^2 + B^2$ and both $A$ and $B$ change over time, one differentiates both sides with respect to $t$, applying the chain rule to each term.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -89,7 +89,7 @@ For any right triangle with legs $a$ and $b$ and hypotenuse $c$:
 
 $$a^2 + b^2 = c^2$$
 
-Special right triangles you should memorize:
+Standard right triangles to recall:
 
 - **3-4-5**: $3^2 + 4^2 = 9 + 16 = 25 = 5^2$
 - **5-12-13**: $5^2 + 12^2 = 25 + 144 = 169 = 13^2$
@@ -100,13 +100,13 @@ These ratios scale: a 300-400-500 triangle is just a 3-4-5 triangle multiplied b
 ::: {.callout-note collapse="true"}
 ## What is implicit differentiation?
 
-Sometimes you cannot solve for $y$ as a simple formula in terms of $x$. **Implicit differentiation** lets you differentiate both sides of an equation as-is.
+When $y$ cannot be expressed explicitly as a function of $x$, **implicit differentiation** allows one to differentiate both sides of the equation as given.
 
 For example, given $x^2 + y^2 = 25$, differentiate both sides with respect to $x$:
 
 $$2x + 2y \frac{dy}{dx} = 0 \implies \frac{dy}{dx} = -\frac{x}{y}$$
 
-In related rates problems, you do the same thing but differentiate with respect to **time** $t$.
+In related rates problems, the same procedure is applied, differentiating with respect to **time** $t$.
 :::
 
 ## Key Concepts
@@ -132,10 +132,10 @@ Because they are linked, knowing the rate of change of one quantity lets you fin
 
 The general strategy is:
 
-1. **Draw a picture** and label all changing quantities with variables
+1. **Draw a diagram** and label all changing quantities with variables
 2. **Write an equation** that relates those variables (Pythagorean theorem, area formula, similar triangles, etc.)
 3. **Differentiate both sides** with respect to time $t$, using the chain rule
-4. **Plug in** all known values and solve for the unknown rate
+4. **Substitute** all known values and solve for the unknown rate
 
 ### The Two-Car Intersection Problem
 
@@ -147,7 +147,7 @@ Here is the classic setup from the lecture. Two cars approach an intersection (a
 
 The positions form a right triangle, with the distance between the cars as the hypotenuse.
 
-**Explore how the two cars' positions create a right triangle:**
+**Interactive demonstration -- the right triangle formed by the two cars' positions:**
 
 ::: {.desmos-container}
 ```{=html}
@@ -211,7 +211,7 @@ Suppose at the moment in question:
 - Therefore $C = \sqrt{500^2 + 375^2} = \sqrt{250000 + 140625} = \sqrt{390625} = 625$ m (which is $5 \times 125$)
 - Car A moves toward the intersection at $60$ mph, so $\frac{dA}{dt} = -60$ (negative because $A$ is *decreasing*)
 
-If we want to find $\frac{dC}{dt}$ (how fast the distance between the cars is changing), we plug in:
+If we want to find $\frac{dC}{dt}$ (the rate at which the distance between the cars is changing), we substitute:
 
 $$625 \cdot \frac{dC}{dt} = 500 \cdot (-60) + 375 \cdot \frac{dB}{dt}$$
 
@@ -222,12 +222,12 @@ With a known value for $\frac{dB}{dt}$ (the speed of Car B), we can solve for $\
 
 When a car moves **toward** the intersection, its distance from the intersection is *decreasing*. A decreasing quantity has a **negative** derivative. So if Car A approaches at 60 mph, we write $\frac{dA}{dt} = -60$.
 
-Getting the signs right is one of the trickiest parts of related rates. Always ask yourself: "Is this distance getting bigger or smaller?"
+Correctly assigning signs is one of the most common sources of error in related rates. One should always determine whether each distance is increasing or decreasing.
 :::
 
 ### General Strategy for Related Rates
 
-Here is a step-by-step method you can use for any related rates problem:
+The following is a step-by-step method applicable to any related rates problem:
 
 | Step | What to Do |
 |------|-----------|
@@ -239,11 +239,11 @@ Here is a step-by-step method you can use for any related rates problem:
 | 6 | **Solve** for the unknown rate |
 
 ::: {.callout-tip collapse="true"}
-## Common mistakes to avoid
+## Common errors to avoid
 
-- **Substituting values too early**: plug in numbers *after* differentiating, not before. If you substitute $A = 500$ before taking $\frac{d}{dt}$, you lose the $\frac{dA}{dt}$ term entirely because the derivative of a constant is zero.
-- **Forgetting the chain rule**: every variable that changes with time needs a $\frac{d(\cdot)}{dt}$ when you differentiate.
-- **Wrong signs**: a quantity that is decreasing has a negative rate. Always check whether each distance or measurement is growing or shrinking.
+- **Substituting values too early**: numerical values must be substituted *after* differentiating, not before. If one substitutes $A = 500$ before applying $\frac{d}{dt}$, the $\frac{dA}{dt}$ term is lost because the derivative of a constant is zero.
+- **Omitting the chain rule**: every variable that depends on time acquires a $\frac{d(\cdot)}{dt}$ factor upon differentiation.
+- **Incorrect signs**: a decreasing quantity has a negative rate. One must determine whether each distance or measurement is increasing or decreasing.
 :::
 
 ### Visualizing How $C$ Changes Over Time
@@ -293,7 +293,7 @@ If a circle's radius is growing, its area grows faster and faster because the ar
 $$\frac{dA}{dt} = 2\pi r \,\frac{dr}{dt}$$
 :::
 
-**Step 3** — Plug in $r = 10$ and $\frac{dr}{dt} = 2$:
+**Step 3** — Substitute $r = 10$ and $\frac{dr}{dt} = 2$:
 
 $$\frac{dA}{dt} = 2\pi(10)(2) = 40\pi \approx 125.7 \text{ m}^2/\text{s}$$
 

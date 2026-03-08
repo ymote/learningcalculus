@@ -3,16 +3,16 @@ title: "Product Rule, Chain Rule & Inverse Functions"
 date: 2025-08-25
 ---
 
-What happens when functions are multiplied together, nested inside each other, or run in reverse? In this lesson, you'll unlock three powerful rules — the Product Rule, the Chain Rule, and the Inverse Function Derivative — that let you handle all of these situations. Once you have these tools, there's almost no function you can't differentiate!
+This lesson addresses the differentiation of products, compositions, and inverses of functions. We develop three fundamental rules — the Product Rule, the Chain Rule, and the Inverse Function Derivative — that together provide the means to differentiate virtually any function encountered in practice.
 
 ::: {.callout-tip collapse="true"}
-## Real-World Connection: Why These Rules Matter
+## Motivation: Why These Rules Matter
 
-Every time engineers design something, they combine simpler pieces:
+In applications, functions are routinely built from simpler components:
 
-- **Product rule**: A factory's revenue is (price per unit) × (units sold). Both change over time — how fast does revenue change? You need the product rule!
-- **Chain rule**: Your phone's GPS converts satellite signals → position → speed. Each step feeds into the next, just like composite functions.
-- **Inverse functions**: A thermometer converts temperature → mercury height. But you *read* it backward: mercury height → temperature. That's an inverse function!
+- **Product rule**: A factory's revenue equals (price per unit) $\times$ (units sold). Both quantities change over time — the product rule determines the rate of change of revenue.
+- **Chain rule**: A GPS converts satellite signals to position, then position to speed. Each step feeds into the next, forming a composite function.
+- **Inverse functions**: A thermometer converts temperature to mercury height, but one *reads* it in reverse: mercury height to temperature. This reversal is an inverse function.
 :::
 
 ## Topics Covered
@@ -47,15 +47,15 @@ Every time engineers design something, they combine simpler pieces:
 
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Infinitesimals
+## Prerequisites: Infinitesimals
 
-An **infinitesimal** $dx$ is a quantity so tiny it's essentially zero — but not *exactly* zero. We use it to measure how much a function changes when we nudge its input by a hair.
+An **infinitesimal** $dx$ is a quantity so small it is essentially zero — but not *exactly* zero. We use it to measure the change in a function when its input is perturbed by an infinitesimal amount.
 
-Key idea: if $dx$ is infinitesimally small, then $dx^2$ (i.e., $dx \times dx$) is *overwhelmingly* smaller. Think of it this way: if $dx = 0.001$, then $dx^2 = 0.000001$ — a thousand times smaller! So we can safely **drop** terms with $dx^2$ or higher powers.
+Key idea: if $dx$ is infinitesimally small, then $dx^2$ (i.e., $dx \times dx$) is of a strictly smaller order. For instance, if $dx = 0.001$, then $dx^2 = 0.000001$ — a thousand times smaller. Consequently, we may safely **discard** terms involving $dx^2$ or higher powers.
 :::
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: The Quotient Rule
+## Prerequisites: The Quotient Rule
 
 We already derived the quotient rule in a previous lesson. Here is the result:
 
@@ -66,22 +66,22 @@ Read it as: "bottom times change-in-top, minus top times change-in-bottom, all o
 
 ## Quotient Rule Review & Orders of Infinitesimals
 
-When we derived the quotient rule, we expanded everything and then **dropped the higher-order terms** — the products like $df \cdot dg$ that are infinitesimally small compared to $df$ or $dg$ alone.
+When we derived the quotient rule, we expanded everything and then **discarded the higher-order terms** — the products like $df \cdot dg$ that are infinitesimally small compared to $df$ or $dg$ alone.
 
-**The rule of thumb**: always keep the **lowest-order** infinitesimal terms and throw away anything smaller.
+**The guiding principle**: always retain the **lowest-order** infinitesimal terms and neglect anything of higher order.
 
 | Term | Order | Keep or Drop? |
 |---|---|---|
 | $df$ | 1st order | Keep |
 | $dg$ | 1st order | Keep |
-| $df \cdot dg$ | 2nd order | Drop |
-| $df^2$ | 2nd order | Drop |
+| $df \cdot dg$ | 2nd order | Discard |
+| $df^2$ | 2nd order | Discard |
 
-> If you have a sum like $3\,df + 5\,dg + 2\,df\,dg$, the answer is just $3\,df + 5\,dg$.
+> If one has a sum such as $3\,df + 5\,dg + 2\,df\,dg$, the result is $3\,df + 5\,dg$.
 
 ## Extending the Quotient Rule: Differentiating $\frac{f}{g^2}$
 
-What if the denominator is $g^2$ instead of $g$? We can treat $g^2$ as a single function and apply the quotient rule:
+If the denominator is $g^2$ instead of $g$, we treat $g^2$ as a single function and apply the quotient rule:
 
 $$d\!\left(\frac{f}{g^2}\right) = \frac{g^2\,df - f\,d(g^2)}{g^4}$$
 
@@ -128,13 +128,13 @@ $$\boxed{d(fg) = g\,df + f\,dg}$$
 
 ### Geometric Interpretation
 
-Think of $f \cdot g$ as the **area of a rectangle** with sides $f$ and $g$.
+Consider $f \cdot g$ as the **area of a rectangle** with sides $f$ and $g$.
 
-When you stretch both sides a little, the new area gains:
+When both sides are increased by small amounts, the new area gains:
 
-- A **thin horizontal strip**: height $f$, width $dg$ → area $f\,dg$
-- A **thin vertical strip**: width $g$, height $df$ → area $g\,df$
-- A **tiny corner square**: $df \times dg$ → negligible!
+- A **thin horizontal strip**: height $f$, width $dg$ — area $f\,dg$
+- A **thin vertical strip**: width $g$, height $df$ — area $g\,df$
+- A **tiny corner square**: $df \times dg$ — negligible
 
 So the total change in area is $g\,df + f\,dg$.
 
@@ -160,20 +160,20 @@ So the total change in area is $g\,df + f\,dg$.
 
 ## Generalized Product Rule
 
-What if you have **many** factors multiplied together? The pattern extends naturally. To differentiate, go through each factor one at a time: **differentiate that one factor, leave the rest alone**, then add up all the pieces.
+When there are **many** factors multiplied together, the pattern extends naturally. To differentiate, one proceeds through each factor in turn: **differentiate that one factor, leave the rest unchanged**, then sum all the resulting terms.
 
 ### Example: $y = f^2 \cdot g^3 \cdot h^{-4}$
 
 $$dy = \underbrace{2f\,df \cdot g^3 \cdot h^{-4}}_{\text{differentiate } f^2} + \underbrace{f^2 \cdot 3g^2\,dg \cdot h^{-4}}_{\text{differentiate } g^3} + \underbrace{f^2 \cdot g^3 \cdot (-4)h^{-5}\,dh}_{\text{differentiate } h^{-4}}$$
 
 ::: {.callout-tip collapse="true"}
-## Trick: Logarithmic Shortcut
+## Remark: Logarithmic Shortcut
 
 Dividing both sides by $y = f^2 g^3 h^{-4}$:
 
 $$\frac{dy}{y} = \frac{2\,df}{f} + \frac{3\,dg}{g} - \frac{4\,dh}{h}$$
 
-Each term is just the **exponent** times the **relative change** of that factor. This is called **logarithmic differentiation** and makes complicated products much easier!
+Each term is the **exponent** times the **relative change** of that factor. This technique is called **logarithmic differentiation** and substantially simplifies the differentiation of complicated products.
 :::
 
 ## Composite Functions & the Chain Rule
@@ -194,12 +194,12 @@ In fraction form:
 
 ::: {.callout-important}
 ## Key Idea: The Chain Rule
-To differentiate a function inside another function, multiply the derivative of the outer function (evaluated at the inner function) by the derivative of the inner function. It's like a chain of gears — each rate multiplies the next.
+To differentiate a function inside another function, multiply the derivative of the outer function (evaluated at the inner function) by the derivative of the inner function. Intuitively, this corresponds to a chain of gears — each rate multiplies the next.
 
 $$\boxed{\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}}$$
 :::
 
-Think of it like a chain of gears: a tiny turn in $x$ causes a turn in $u$, which causes a turn in $y$. The total effect multiplies.
+Intuitively, a small change in $x$ induces a change in $u$, which in turn induces a change in $y$. The total effect is multiplicative.
 
 **Explore the chain rule — see how the inner function shapes the derivative:**
 
@@ -226,12 +226,12 @@ The derivative of the inverse has a beautifully simple formula:
 
 ::: {.callout-important}
 ## Key Idea: Inverse Function Derivative
-The slope of an inverse function is just the reciprocal of the original function's slope. If the original goes up steeply, the inverse goes up gently, and vice versa.
+The slope of an inverse function is the reciprocal of the original function's slope. If the original increases steeply, the inverse increases gently, and conversely.
 
 $$\boxed{\frac{dx}{dy} = \frac{1}{\dfrac{dy}{dx}}}$$
 :::
 
-This makes geometric sense: if $y$ changes 3 times as fast as $x$, then $x$ changes $\frac{1}{3}$ as fast as $y$.
+This is geometrically natural: if $y$ changes 3 times as fast as $x$, then $x$ changes $\frac{1}{3}$ as fast as $y$.
 
 ### Example
 
@@ -241,11 +241,11 @@ $$\frac{dx}{dy} = \frac{1}{3x^2}$$
 
 Since $x = y^{1/3}$, we can write $x^2 = y^{2/3}$, giving $\frac{dx}{dy} = \frac{1}{3y^{2/3}}$.
 
-This matches what we'd get from differentiating $x = y^{1/3}$ directly!
+This agrees with the result obtained by differentiating $x = y^{1/3}$ directly.
 
 ## Monotonicity and Invertibility
 
-A function is **invertible** only if it is **monotonic** — meaning it is always increasing or always decreasing. If it turns around (has a local max or min), then two different $x$-values give the same $y$, and you can't reverse the process uniquely.
+A function is **invertible** only if it is **monotonic** — meaning it is always increasing or always decreasing. If it reverses direction (has a local maximum or minimum), then two different $x$-values yield the same $y$, and the process cannot be reversed uniquely.
 
 ### How to Check: The Discriminant Test
 
@@ -257,7 +257,7 @@ This is a quadratic. The function is monotonic if this quadratic **never changes
 
 $$(2b)^2 - 4(3a)(c) < 0 \quad \Longrightarrow \quad 4b^2 - 12ac < 0$$
 
-No real roots means the derivative never crosses zero, so the function never turns around!
+No real roots means the derivative never crosses zero, so the function is strictly monotonic.
 
 **Explore — a cubic with adjustable coefficients. When is it invertible?**
 
@@ -279,11 +279,11 @@ No real roots means the derivative never crosses zero, so the function never tur
 ```
 
 ::: {.callout-tip collapse="true"}
-## Try It: Make the Cubic Non-Invertible
+## Interactive demonstration
 
-In the graph above, try setting $a = 1$, $b = 3$, $c = 1$. You should see the derivative (dashed red curve) dip below zero — meaning the cubic has a local max and min, and is **not** invertible!
+In the graph above, set $a = 1$, $b = 3$, $c = 1$. The derivative (dashed red curve) dips below zero, indicating that the cubic has a local maximum and minimum and is **not** invertible.
 
-Now try $a = 1$, $b = 0$, $c = 1$. The derivative stays positive everywhere — the cubic is strictly increasing and **is** invertible.
+Now set $a = 1$, $b = 0$, $c = 1$. The derivative remains positive everywhere — the cubic is strictly increasing and **is** invertible.
 :::
 
 ## Cheat Sheet

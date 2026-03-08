@@ -3,18 +3,19 @@ title: "Related Rates — Spheres, Cones, and Propagated Error"
 date: 2025-10-20
 ---
 
-How fast is a balloon's volume growing if you only know how fast its surface area is increasing? How quickly does water rise in a cone-shaped funnel? And when you measure a building's height using an angle, how much does a tiny mistake in the angle mess up your answer? This lesson tackles all of these questions using the same three-step recipe: relate the variables, differentiate, and solve. You will be amazed at how many different real-world problems this one method can handle!
+Given the rate of increase of a sphere's surface area, at what rate does its volume grow? How rapidly does the water level rise in a conical funnel? When measuring the height of a structure by observing an angle, how does a small angular error propagate into the computed height? This lesson addresses these questions using a unified three-step procedure: relate the variables, differentiate, and solve. The generality of this method is demonstrated through its applicability to a wide range of problems.
 
 ::: {.callout-tip collapse="true"}
-## Why Related Rates Matter
+## Motivation
 
-Related rates let you figure out how fast one quantity is changing when you know how fast a different, connected quantity is changing:
+Related rates determine how fast one quantity is changing given the rate of change of a different, connected quantity:
 
-- **Medicine**: when a spherical tumor grows, doctors need to know how fast the volume increases based on surface area measurements from imaging scans
-- **Construction**: filling a conical storage tank with gravel or water -- engineers need to predict how quickly the level rises to avoid overflow
-- **Architecture**: when redesigning a window while keeping the total framing material constant, related rates tell you how changing one dimension forces the other to adjust
-- **Surveying**: measuring the height of a tall building or flagpole from the ground using angles -- small measurement errors in the angle "propagate" into errors in the computed height
-These problems all follow the same three-step pattern: relate the variables, differentiate with respect to time, and solve!
+- **Medical imaging**: as a spherical tumor grows, physicians must determine how fast the volume increases based on surface area measurements from imaging scans
+- **Engineering**: filling a conical storage tank with material -- engineers must predict how quickly the level rises to prevent overflow
+- **Architectural design**: when modifying a window while keeping the total framing material constant, related rates determine how changing one dimension forces the other to adjust
+- **Surveying**: measuring the height of a tall structure from the ground using angles -- small measurement errors in the angle propagate into errors in the computed height
+
+These problems all follow the same three-step pattern: relate the variables, differentiate with respect to time, and solve.
 :::
 
 ## Topics Covered
@@ -45,7 +46,7 @@ These problems all follow the same three-step pattern: relate the variables, dif
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is implicit differentiation with respect to time?
@@ -54,7 +55,7 @@ When two variables are related by an equation like $A = 4\pi r^2$, and both $A$ 
 
 $$\frac{dA}{dt} = 8\pi r \,\frac{dr}{dt}$$
 
-Every variable that depends on time picks up a $\frac{d(\cdot)}{dt}$ factor via the chain rule. Constants just stay as constants.
+Every variable that depends on time acquires a $\frac{d(\cdot)}{dt}$ factor via the chain rule. Constants remain unchanged.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -64,7 +65,7 @@ When you have two functions multiplied together, the derivative is:
 
 $$\frac{d}{dt}[f(t) \cdot g(t)] = f'(t)\,g(t) + f(t)\,g'(t)$$
 
-This comes up constantly in related rates. For example, differentiating an area $A = 2rh$ where both $r$ and $h$ change over time gives:
+This arises frequently in related rates. For example, differentiating an area $A = 2rh$ where both $r$ and $h$ change over time gives:
 
 $$\frac{dA}{dt} = 2\frac{dr}{dt}\,h + 2r\,\frac{dh}{dt}$$
 :::
@@ -90,7 +91,7 @@ $$A = 4\pi r^2 \qquad V = \frac{4}{3}\pi r^3$$
 
 $$V = \frac{1}{3}\pi r^2 h$$
 
-You do not need to memorize these right now -- they will be proven later in the course using integration.
+These formulas need not be memorized at this stage -- they will be derived later in the course using integration.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -148,7 +149,7 @@ $$\boxed{\frac{dV}{dt} = \frac{7r}{2}}$$
 
 The answer depends on the current radius $r$. This makes physical sense: volume is measured in $\text{m}^3$ while surface area is in $\text{m}^2$, so the rate of volume change must carry an extra factor of length.
 
-**Explore -- how $\frac{dV}{dt}$ depends on the radius when $\frac{dA}{dt} = 7$:**
+**Interactive demonstration -- dependence of $\frac{dV}{dt}$ on the radius when $\frac{dA}{dt} = 7$:**
 
 ::: {.desmos-container}
 ```{=html}
@@ -207,7 +208,7 @@ The key lesson: when a constraint holds something constant, differentiating it g
 
 **Problem.** A cone has base radius $R = 4$ cm and height $H = 6$ cm, vertex at the bottom and opening at the top. Water is poured in at $\frac{dV_{\text{water}}}{dt} = 2 \text{ cm}^3/\text{s}$. When the water reaches $h = 3$ cm, find $\frac{dh}{dt}$.
 
-**The clever trick.** Instead of computing the frustum volume, focus on the **empty cone at the top**. Let $y$ be the height of the empty cone and $r$ its base radius:
+**Key observation.** Instead of computing the frustum volume, consider the **empty cone at the top**. Let $y$ be the height of the empty cone and $r$ its base radius:
 
 $$V_{\text{up}} = \frac{1}{3}\pi r^2 y$$
 
@@ -240,7 +241,7 @@ A cone's cross-section creates similar triangles, which lock the radius and heig
 $$\boxed{\frac{dh}{dt} = \frac{1}{2\pi} \approx 0.159 \text{ cm/s}}$$
 :::
 
-**Explore -- the conical container cross-section as water fills:**
+**Interactive demonstration -- the conical container cross-section as water fills:**
 
 ::: {.desmos-container}
 ```{=html}
@@ -275,7 +276,7 @@ $$\tan\theta = \frac{h}{50} \quad \Longrightarrow \quad h = 50\tan\theta$$
 
 $$dh = 50\sec^2\theta\,d\theta$$
 
-**Plug in the known values.** At $\theta = 45°$:
+**Substitute the known values.** At $\theta = 45°$:
 
 $$\cos 45° = \frac{1}{\sqrt{2}} \quad \Longrightarrow \quad \sec^2 45° = 2$$
 
@@ -292,10 +293,10 @@ So a $0.1°$ angular error causes about $\pm 0.175$ m of error in the height. Si
 ::: {.callout-tip collapse="true"}
 ## Propagated error vs. related rates
 
-Propagated error is just related rates without the time variable. Instead of $\frac{dh}{dt}$ and $\frac{d\theta}{dt}$, you work directly with differentials $dh$ and $d\theta$. The key insight: **do not** compute $h(45.1°) - h(45°)$ directly. Instead, treat the small deviation as a differential -- this is faster and gives a formula that works for any angle.
+Propagated error is related rates without the time variable. Instead of $\frac{dh}{dt}$ and $\frac{d\theta}{dt}$, one works directly with differentials $dh$ and $d\theta$. The key observation: one should **not** compute $h(45.1°) - h(45°)$ directly. Instead, treating the small deviation as a differential is more efficient and yields a formula valid for any angle.
 :::
 
-**Explore -- how the height error $dh$ depends on the measurement angle $\theta$:**
+**Interactive demonstration -- dependence of the height error $dh$ on the measurement angle $\theta$:**
 
 ::: {.desmos-container}
 ```{=html}

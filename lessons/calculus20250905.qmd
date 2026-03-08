@@ -3,19 +3,19 @@ title: "Optimization on Ellipses & 3D Surfaces"
 date: 2025-09-05
 ---
 
-Have you ever wondered how GPS figures out the closest road to where you're standing, or how a video game decides where a laser beam hits a curved spaceship? In this lesson, you'll learn how to find the closest point on a curve to any spot you pick. We'll start with ellipses in 2D, then level up to 3D surfaces called ellipsoids. The secret weapon? A simple geometric rule about perpendicular lines that makes even tricky optimization problems totally doable.
+This lesson addresses the problem of finding the closest point on a curve or surface to a given external point. We begin with ellipses in two dimensions, then extend the analysis to three-dimensional ellipsoids. The central technique is a geometric condition — perpendicularity of the line of closest approach — that renders these optimization problems tractable.
 
 ::: {.callout-tip collapse="true"}
-## Why Optimization on Curves Matters
+## Motivation
 
-Finding the closest point on a curve shows up everywhere:
+Finding the closest point on a curve arises in numerous applications:
 
-- **GPS navigation**: your phone finds the nearest point on a road to your location
-- **Robotics**: a robot arm calculates the closest approach to a curved surface
-- **Computer graphics**: ray tracing finds where light hits curved objects like helmets and planets
-- **Satellite orbits**: mission control calculates the closest approach of an elliptical orbit to a space station
+- **GPS navigation**: a device finds the nearest point on a road to the user's location.
+- **Robotics**: a robot arm computes the closest approach to a curved surface.
+- **Computer graphics**: ray tracing determines where light intersects curved objects such as helmets and planets.
+- **Satellite orbits**: mission control computes the closest approach of an elliptical orbit to a space station.
 
-Ellipses and ellipsoids are some of the most common shapes in nature --- planets, orbits, and even eggs are roughly ellipsoidal!
+Ellipses and ellipsoids are among the most common shapes in nature — planets, orbits, and even eggs are approximately ellipsoidal.
 :::
 
 ## Topics Covered
@@ -48,12 +48,12 @@ Ellipses and ellipsoids are some of the most common shapes in nature --- planets
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is an ellipse?
 
-An **ellipse** is a stretched circle. Think of squishing a circle so it's wider in one direction than the other.
+An **ellipse** is a curve obtained by scaling a circle by different factors along two perpendicular axes.
 
 The **standard form** of an ellipse centered at the origin is:
 
@@ -82,11 +82,11 @@ $$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}$$
 ::: {.callout-note collapse="true"}
 ## What is implicit differentiation?
 
-When you have an equation like $x^2 + y^2 = 25$ (a circle), $y$ isn't written as "$y = \dots$" --- it's mixed in with $x$. To find $\frac{dy}{dx}$, you differentiate **both sides** with respect to $x$, treating $y$ as a function of $x$:
+When an equation such as $x^2 + y^2 = 25$ (a circle) is given, $y$ is not expressed explicitly as a function of $x$. To find $\frac{dy}{dx}$, one differentiates **both sides** with respect to $x$, treating $y$ as a function of $x$:
 
 $$2x + 2y\frac{dy}{dx} = 0 \quad\Rightarrow\quad \frac{dy}{dx} = -\frac{x}{y}$$
 
-This gives you the slope of the tangent line at any point on the curve.
+This yields the slope of the tangent line at any point on the curve.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -96,7 +96,7 @@ A **tangent line** just touches a curve at a point and goes in the direction the
 
 If the tangent has slope $m$, the normal has slope $-\frac{1}{m}$ (the negative reciprocal).
 
-Normal vectors tell you which direction points "straight out" from the surface --- like an arrow sticking out of a ball.
+Normal vectors indicate the direction pointing "straight out" from the surface — perpendicular to the tangent at the point of contact.
 :::
 
 ## Key Concepts
@@ -150,7 +150,7 @@ The **tangent direction** at $(x_0, y_0)$ is along the vector $\left(1, \; -\fra
 
 ::: {.callout-important}
 ## Key Idea: Normal Vector to an Ellipse
-The normal vector points "straight out" from the ellipse at any point. You find it by taking the gradient of the ellipse equation. For an ellipse centered at $(h, k)$, the normal at $(x_0, y_0)$ is proportional to $\left(\frac{x_0 - h}{a^2}, \frac{y_0 - k}{b^2}\right)$.
+The normal vector points perpendicularly outward from the ellipse at any point. It is obtained by computing the gradient of the ellipse equation. For an ellipse centered at $(h, k)$, the normal at $(x_0, y_0)$ is proportional to $\left(\frac{x_0 - h}{a^2}, \frac{y_0 - k}{b^2}\right)$.
 
 $$\vec{n} = \left(\frac{x_0 - 5}{32}, \;\frac{y_0 + 3}{18}\right)$$
 :::
@@ -159,10 +159,10 @@ $$\vec{n} = \left(\frac{x_0 - 5}{32}, \;\frac{y_0 + 3}{18}\right)$$
 
 ::: {.callout-important}
 ## Key Idea: The Closest Point Condition
-At the closest point on a curve to an outside point, the line connecting them must be perpendicular to the curve. If it weren't, you could slide along the curve and get even closer. This means the direction from the closest point to the target must line up exactly with the normal vector.
+At the closest point on a curve to an external point, the line connecting them must be perpendicular to the curve. If it were not, one could slide along the curve and achieve a shorter distance. This means the direction from the closest point to the target must be parallel to the normal vector.
 :::
 
-At the closest point $P$ on the ellipse to $A$, the line from $P$ to $A$ must be **perpendicular to the ellipse** --- that is, it must be along the normal direction. If it weren't perpendicular, you could slide along the ellipse and get closer.
+At the closest point $P$ on the ellipse to $A$, the line from $P$ to $A$ must be **perpendicular to the ellipse** — that is, it must lie along the normal direction. If it were not perpendicular, one could slide along the ellipse and reduce the distance.
 
 This means the vector $\overrightarrow{PA} = (20 - x_0, \; 0 - y_0)$ must be **parallel** to the normal vector $\vec{n}$.
 
@@ -205,7 +205,7 @@ Solving this system (by substitution or numerical methods) gives the closest poi
 </script>
 ```
 
-*Drag the slider $t$ to move point $P$ around the ellipse and watch the distance change!*
+*Drag the slider $t$ to move point $P$ around the ellipse and observe how the distance changes.*
 
 ### Extension to 3D: Ellipsoids
 
@@ -249,11 +249,11 @@ $$\frac{5 - x_0}{x_0} = \frac{5 - y_0}{\frac{y_0}{4}} = \frac{5 - z_0}{\frac{z_0
 Combined with the ellipsoid equation $x_0^2 + \frac{y_0^2}{4} + \frac{z_0^2}{9} = 1$, this is a system we can solve.
 
 ::: {.callout-tip collapse="true"}
-## Why does the same trick work in 3D?
+## Justification
 
-The geometric reasoning is identical: if the line from the surface to the external point is **not** perpendicular to the surface, then you could nudge along the surface and get closer. At the true closest point, there is no "sideways" improvement --- the direction to $A$ is purely along the normal.
+The geometric reasoning is identical: if the line from the surface to the external point is **not** perpendicular to the surface, then one could perturb along the surface and reduce the distance. At the true closest point, there is no "lateral" improvement — the direction to $A$ lies entirely along the normal.
 
-This principle works in **any number of dimensions**!
+This principle holds in **any number of dimensions**.
 :::
 
 ## Cheat Sheet

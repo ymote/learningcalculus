@@ -3,20 +3,20 @@ title: "Antiderivative of the Semicircle: Geometry Meets Calculus"
 date: 2025-11-06
 ---
 
-What if you could find the area under a curve not by memorizing a formula, but by drawing a picture? In this lesson, you will discover that the area under a semicircle can be split into a pie-shaped sector and a right triangle -- two shapes whose areas you already know. This geometric trick gives you the antiderivative of $\sqrt{r^2 - x^2}$ without any complicated algebra, and then you will verify it works by differentiating with the product rule and chain rule.
+This lesson demonstrates that the area under a semicircle can be decomposed into a circular sector and a right triangle -- two regions whose areas have elementary formulas. This geometric decomposition yields the antiderivative of $\sqrt{r^2 - x^2}$ without algebraic substitution techniques, and the result is then verified by differentiating with the product rule and chain rule.
 
 ::: {.callout-tip collapse="true"}
-## Why Finding the Antiderivative of a Semicircle Matters
+## Motivation
 
-The integral $\int \sqrt{r^2 - x^2}\,dx$ looks scary, but it connects two beautiful ideas: geometry and calculus. Here is why it matters:
+The integral $\int \sqrt{r^2 - x^2}\,dx$ connects geometry and calculus in a fundamental way. It arises in numerous applications:
 
-- **GPS and navigation**: calculating distances along curved paths on Earth's surface uses integrals involving $\sqrt{r^2 - x^2}$
-- **Engineering**: designing arches, tunnels, and domes requires computing areas of circular cross-sections
-- **Medicine**: MRI and CT scanners reconstruct circular slices of your body using these exact integrals
-- **Astronomy**: orbital mechanics involves integrating expressions with $\sqrt{r^2 - x^2}$ to find swept areas (Kepler's second law!)
-- **Computer graphics**: rendering smooth curves and circles on screens requires breaking circular regions into tiny triangles and sectors -- exactly the decomposition we learn today
+- **Geodesy and navigation**: calculating distances along curved paths on Earth's surface involves integrals containing $\sqrt{r^2 - x^2}$
+- **Structural engineering**: designing arches, tunnels, and domes requires computing areas of circular cross-sections
+- **Medical imaging**: MRI and CT scanners reconstruct circular slices of the body using these integrals
+- **Celestial mechanics**: orbital mechanics involves integrating expressions with $\sqrt{r^2 - x^2}$ to compute swept areas (Kepler's second law)
+- **Computer graphics**: rendering curves and circles on screens requires decomposing circular regions into triangles and sectors -- precisely the decomposition developed in this lesson
 
-Today we discover that by thinking geometrically -- splitting a region under a semicircle into a sector and a triangle -- we can write down the antiderivative without any algebraic tricks, and then verify it using the product rule and chain rule.
+By decomposing the region under a semicircle into a sector and a triangle, we obtain the antiderivative through geometric reasoning, and then verify the result using the product rule and chain rule.
 :::
 
 ## Topics Covered
@@ -49,7 +49,7 @@ Today we discover that by thinking geometrically -- splitting a region under a s
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is an antiderivative?
@@ -62,7 +62,7 @@ We write this using integral notation:
 
 $$\int f(x)\,dx = F(x) + C$$
 
-The $C$ is the **constant of integration** -- since the derivative of any constant is zero, there are infinitely many antiderivatives that differ by a constant. We can pin down $C$ by using a **boundary condition** (plugging in a known value).
+The $C$ is the **constant of integration** -- since the derivative of any constant is zero, there are infinitely many antiderivatives that differ by a constant. The value of $C$ is determined by imposing a **boundary condition** (substituting a known value).
 :::
 
 ::: {.callout-note collapse="true"}
@@ -97,17 +97,17 @@ These derivatives are why arcsine and arccosine show up naturally when integrati
 ::: {.callout-note collapse="true"}
 ## What are the product rule and chain rule?
 
-The **product rule** says that the derivative of a product $f(x) \cdot g(x)$ is:
+The **product rule** states that the derivative of a product $f(x) \cdot g(x)$ is:
 
 $$\frac{d}{dx}[f(x)\cdot g(x)] = f'(x)\cdot g(x) + f(x)\cdot g'(x)$$
 
-You differentiate each factor in turn while keeping the other one fixed, then add the results. It is **not** $f'(x) \cdot g'(x)$!
+Each factor is differentiated in turn while the other is held fixed, and the results are summed. Note that the derivative is **not** $f'(x) \cdot g'(x)$.
 
-The **chain rule** says that the derivative of a composition $h(g(x))$ is:
+The **chain rule** states that the derivative of a composition $h(g(x))$ is:
 
 $$\frac{d}{dx}[h(g(x))] = h'(g(x)) \cdot g'(x)$$
 
-You take the derivative of the **outer function** (evaluated at the inner function), then multiply by the derivative of the **inner function**. For example:
+One takes the derivative of the **outer function** (evaluated at the inner function), then multiplies by the derivative of the **inner function**. For example:
 
 $$\frac{d}{dx}\sqrt{r^2 - x^2} = \frac{1}{2}(r^2 - x^2)^{-1/2} \cdot (-2x) = \frac{-x}{\sqrt{r^2 - x^2}}$$
 
@@ -136,7 +136,7 @@ $$\int \sqrt{r^2 - x^2}\,dx$$
 
 The function $y = \sqrt{r^2 - x^2}$ is the upper semicircle of radius $r$. Geometrically, the antiderivative $A(x)$ represents the **area swept under the curve** from $x = -r$ up to the moving boundary $x$.
 
-**Explore -- the upper semicircle $y = \sqrt{r^2 - x^2}$ with adjustable radius:**
+**Interactive demonstration -- the upper semicircle $y = \sqrt{r^2 - x^2}$ with adjustable radius:**
 
 ```{=html}
 <div id="calc1" class="desmos-container"></div>
@@ -155,7 +155,7 @@ The function $y = \sqrt{r^2 - x^2}$ is the upper semicircle of radius $r$. Geome
 </script>
 ```
 
-*Drag the slider $a$ to sweep the shaded area $A(a)$ from $-r$ to $a$. This swept area is exactly the antiderivative we are computing!*
+*Drag the slider $a$ to sweep the shaded area $A(a)$ from $-r$ to $a$. This swept area is precisely the antiderivative being computed.*
 
 ### Connecting Area to Antiderivative
 
@@ -176,7 +176,7 @@ Instead of using algebraic substitution tricks, we decompose the shaded region g
 1. A **circular sector** (the "pie slice" from the negative $x$-axis to the radius drawn to the point)
 2. A **right triangle** (the remaining piece between the radius and the vertical line at $x$)
 
-**Explore -- see the sector and triangle decomposition:**
+**Interactive demonstration -- the sector and triangle decomposition:**
 
 ```{=html}
 <div id="calc2" class="desmos-container"></div>
@@ -229,7 +229,7 @@ Adding the two pieces:
 
 ::: {.callout-important}
 ## Key Idea: Area = Sector + Triangle
-The area under a semicircle from $-r$ to $x$ splits neatly into a circular sector (a pie slice) and a right triangle. Each piece has a simple formula, and adding them gives the full antiderivative -- no algebraic tricks required.
+The area under a semicircle from $-r$ to $x$ decomposes into a circular sector and a right triangle. Each piece has an elementary formula, and their sum gives the full antiderivative -- no algebraic substitution is required.
 
 $$\boxed{A(x) = \frac{1}{2}r^2\!\left[\pi - \arccos\!\left(\frac{x}{r}\right)\right] + \frac{1}{2}\,x\sqrt{r^2 - x^2}}$$
 :::
@@ -239,11 +239,11 @@ $$\boxed{A(x) = \frac{1}{2}r^2\!\left[\pi - \arccos\!\left(\frac{x}{r}\right)\ri
 - $\arccos(-r/r) = \arccos(-1) = \pi$, so the sector term gives $\frac{1}{2}r^2[\pi - \pi] = 0$.
 - $\sqrt{r^2 - r^2} = 0$, so the triangle term gives $0$.
 
-Indeed $A(-r) = 0$. Our formula checks out!
+Indeed $A(-r) = 0$, confirming the formula.
 
 ### Connection to Arcsine
 
-Earlier work showed that part of the antiderivative involves $\arcsin(x/r)$. Is there a contradiction? No! The identity
+Earlier work showed that part of the antiderivative involves $\arcsin(x/r)$. There is no contradiction, as the following identity shows:
 
 ::: {.callout-important}
 ## Key Idea: Arcsine and Arccosine Are Complementary
@@ -301,7 +301,7 @@ $$= \frac{2(r^2 - x^2)}{2\sqrt{r^2 - x^2}} = \frac{r^2 - x^2}{\sqrt{r^2 - x^2}} 
 When you differentiate the geometric formula (sector + triangle) using the product rule and chain rule, you get back the semicircle $\sqrt{r^2 - x^2}$. This confirms that the geometric decomposition is a valid antiderivative -- two completely different approaches give the same answer.
 :::
 
-It works! The derivative of our geometrically derived $A(x)$ is indeed $\sqrt{r^2 - x^2}$. Geometry and calculus agree perfectly.
+The derivative of the geometrically derived $A(x)$ is indeed $\sqrt{r^2 - x^2}$. Geometry and calculus yield the same result.
 
 ### Why the Constant Does Not Matter
 

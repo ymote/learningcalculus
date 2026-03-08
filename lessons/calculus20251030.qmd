@@ -3,18 +3,18 @@ title: "Parametric Motion, Speed vs. Velocity & Proving the Circumference"
 date: 2025-10-30
 ---
 
-You have known the formula $C = 2\pi r$ for the circumference of a circle since elementary school -- but have you ever seen a real proof of why it is true? In this lesson, you will use parametric equations to describe a point moving around a circle, compute its speed using derivatives, and then prove the circumference formula from scratch using calculus. Along the way, you will also learn how to recover an object's position from its velocity by running differentiation in reverse.
+The formula $C = 2\pi r$ for the circumference of a circle is familiar from elementary geometry, but a rigorous derivation requires calculus. This lesson uses parametric equations to describe circular motion, computes the speed using derivatives, and then proves the circumference formula. We also develop the technique of recovering an object's position from its velocity via antidifferentiation.
 
 ::: {.callout-tip collapse="true"}
-## Why Parametric Motion Matters
+## Motivation
 
-Parametric equations describe how objects actually move through space over time:
+Parametric equations describe how objects move through space over time:
 
-- **GPS navigation**: your phone tracks your position as separate $x(t)$ and $y(t)$ coordinates to plot your route on a map
-- **Video games**: every character and projectile on screen moves using parametric equations that update each frame
-- **Weather tracking**: hurricane paths are modeled as parametric curves, with meteorologists computing speed and direction at each moment
-- **Robotics**: a robot arm traces a path through space, and engineers need to know both how fast and in what direction each joint is moving
-- **Roller coasters**: designers use parametric curves to ensure the speed and direction of the car produce thrilling but safe forces on riders
+- **Navigation systems**: GPS devices track position as separate $x(t)$ and $y(t)$ coordinates to plot routes on a map
+- **Computer graphics**: characters and projectiles on screen move according to parametric equations that update each frame
+- **Meteorology**: hurricane paths are modeled as parametric curves, with speed and direction computed at each moment
+- **Robotics**: a robot arm traces a path through space, and engineers must determine both the speed and direction of each joint
+- **Mechanical design**: parametric curves are used to ensure that moving parts follow trajectories producing acceptable forces
 :::
 
 ## Topics Covered
@@ -47,7 +47,7 @@ Parametric equations describe how objects actually move through space over time:
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is a parametric equation?
@@ -67,26 +67,26 @@ For example, $x = \cos t$, $y = \sin t$ traces the unit circle as $t$ goes from 
 - **Velocity** is a **vector** -- it has both magnitude and direction. In 2D, $\vec{v} = (v_x, v_y)$.
 - **Speed** is a **scalar** -- it is the magnitude of velocity: $|\vec{v}| = \sqrt{v_x^2 + v_y^2}$.
 
-A car driving at 60 mph north has a velocity of 60 mph north and a speed of 60 mph. If it turns around and drives south at 60 mph, the velocity changed (different direction) but the speed stayed the same.
+A car traveling at 60 mph north has a velocity of 60 mph north and a speed of 60 mph. If it reverses direction and travels south at 60 mph, the velocity has changed (different direction) but the speed remains the same.
 :::
 
 ::: {.callout-note collapse="true"}
 ## What is the chain rule?
 
-When you have a function inside another function, the **chain rule** tells you how to differentiate:
+For a composition of functions, the **chain rule** provides the derivative:
 
 $$\frac{d}{dt}\, f\!\bigl(g(t)\bigr) = f'\!\bigl(g(t)\bigr) \cdot g'(t)$$
 
 For example: $\frac{d}{dt}\cos(2t) = -\sin(2t) \cdot 2 = -2\sin(2t)$.
 
-You differentiate the outer function, then multiply by the derivative of the inner function.
+One differentiates the outer function, then multiplies by the derivative of the inner function.
 :::
 
 ::: {.callout-note collapse="true"}
 ## What is displacement vs. distance?
 
-- **Displacement** is the straight-line vector from start to finish. If you walk 3 blocks east then 3 blocks west, your displacement is zero.
-- **Distance traveled** is the total length of the path you actually walked. In the example above, the distance is 6 blocks.
+- **Displacement** is the straight-line vector from start to finish. Walking 3 blocks east then 3 blocks west yields a displacement of zero.
+- **Distance traveled** is the total length of the path actually traversed. In the example above, the distance is 6 blocks.
 
 Distance is always greater than or equal to the magnitude of displacement.
 :::
@@ -101,17 +101,17 @@ For example, since $\frac{d}{dt}\left(\frac{3}{2}t^2\right) = 3t$, the anti-deri
 
 ## From a Circle to Motion: Parametric Equations
 
-We all know the equation of a circle centered at the origin with radius $r$:
+The equation of a circle centered at the origin with radius $r$ is:
 
 $$x^2 + y^2 = r^2$$
 
-But this is just an **orbit** -- a static shape. To turn it into **motion**, we introduce time. Using the definitions of cosine and sine on a circle of radius $r$:
+This is a static shape -- an **orbit**. To describe **motion** along this curve, we introduce time as a parameter. Using the definitions of cosine and sine on a circle of radius $r$:
 
 $$x(t) = r\cos(2t), \quad y(t) = r\sin(2t)$$
 
 The factor of $2$ inside the argument controls how fast the point moves around the circle. Different choices would give different speeds but trace the same path.
 
-**Explore the parametric circle -- drag the slider to watch the point move:**
+**Interactive demonstration -- the parametric circle:**
 
 ```{=html}
 <div id="calc1" class="desmos-container"></div>
@@ -154,7 +154,7 @@ Speed is the magnitude of the velocity vector:
 
 $$|\vec{v}| = \sqrt{\dot{x}^2 + \dot{y}^2} = \sqrt{(-2r\sin 2t)^2 + (2r\cos 2t)^2}$$
 
-**Pull out common factors first** to simplify the Pythagorean sum (always a good habit!):
+**Factoring out common terms first** simplifies the Pythagorean sum:
 
 $$= \sqrt{(2r)^2\bigl(\sin^2(2t) + \cos^2(2t)\bigr)}$$
 
@@ -184,12 +184,12 @@ So the **period** -- the time for one complete circle -- is $T = \pi$.
 ::: {.callout-tip collapse="true"}
 ## Why not 360 degrees?
 
-Time cannot equal a number of degrees. The equation $2t = 2\pi$ works because $2\pi$ is a **dimensionless number** (radians are unitless). Writing $t = 180°$ would be a unit mismatch. This is one of the deep reasons calculus always uses radians.
+Time cannot equal a number of degrees. The equation $2t = 2\pi$ is valid because $2\pi$ is a **dimensionless number** (radians are unitless). Writing $t = 180°$ would constitute a unit mismatch. This is one of the fundamental reasons calculus employs radians.
 :::
 
 ## Proving the Circumference: $C = 2\pi r$
 
-We know the speed $|\vec{v}| = 2r$ is constant, and the period is $T = \pi$. The total distance traveled in one revolution is:
+Since the speed $|\vec{v}| = 2r$ is constant and the period is $T = \pi$, the total distance traveled in one revolution is:
 
 ::: {.callout-important}
 ## Key Idea: Proving the Circumference Formula with Calculus
@@ -198,9 +198,9 @@ Distance equals speed times time. Since the speed around the circle is constant 
 $$C = \int_0^{\pi} |\vec{v}|\, dt = \int_0^{\pi} 2r\, dt = 2r \cdot \pi = 2\pi r$$
 :::
 
-This is just the familiar formula for circumference, but now we have **proven** it from calculus rather than stating it as a fact.
+This is the familiar formula for circumference, but now it has been **proved** from calculus rather than stated as a fact.
 
-Think of it this way: if you drive at a constant speed of $2r$ for a duration of $\pi$, you cover a distance of $2r \times \pi$. It is the area of the rectangle under the constant velocity graph.
+Observe that traveling at a constant speed of $2r$ for a duration of $\pi$ yields a distance of $2r \times \pi$. Geometrically, this is the area of the rectangle under the constant velocity graph.
 
 **See the velocity graph -- the area of the rectangle is the circumference:**
 
@@ -270,7 +270,7 @@ The position at $t = 100$ is $B \approx (15{,}000,\; -333{,}233)$.
 ::: {.callout-tip collapse="true"}
 ## Why does the constant $C$ cancel?
 
-When computing a **change** in position, the constant drops out:
+When computing a **change** in position, the constant cancels:
 
 $$\Delta x = x(t_f) - x(t_0) = \left[\frac{3}{2}t_f^2 + C\right] - \left[\frac{3}{2}t_0^2 + C\right] = \frac{3}{2}(t_f^2 - t_0^2)$$
 
@@ -287,7 +287,7 @@ $$= \int_0^{100} \sqrt{t^4 + 7t^2 + 1}\, dt$$
 
 This integral does not simplify to a nice closed form, which is typical for real-world motion. In practice, we would evaluate it numerically.
 
-**Explore the trajectory -- drag the slider to watch the point trace out the path:**
+**Interactive demonstration -- the trajectory of the particle:**
 
 ```{=html}
 <div id="calc3" class="desmos-container"></div>

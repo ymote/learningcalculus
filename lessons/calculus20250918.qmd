@@ -3,20 +3,20 @@ title: "Taylor/Maclaurin Series & Power Series of ln(1+x)"
 date: 2025-09-18
 ---
 
-What if you could find the 2025th derivative of a function without differentiating even once? In this lesson, you'll learn how to turn $\ln(1+x)$ into an infinite polynomial using a clever integration trick, and then use that polynomial to instantly read off any derivative you want. Along the way, you'll also see the beautiful cycle that happens when you keep taking derivatives of sine and cosine. This is where algebra and calculus start to feel like superpowers.
+This lesson demonstrates how to determine the 2025th derivative of a function without performing a single differentiation. We derive the power series for $\ln(1+x)$ by integrating a geometric series term by term, then use the Maclaurin coefficient formula to read off derivatives of arbitrary order. We also establish the periodic cycle of higher-order derivatives of sine and cosine.
 
 ::: {.callout-tip collapse="true"}
-## Why Power Series for ln(1+x) Matter
+## Motivation
 
-Power series let us turn complicated functions into infinite polynomials we can work with easily. The function $\ln(1+x)$ shows up everywhere:
+Power series convert complicated functions into infinite polynomials that are amenable to analysis. The function $\ln(1+x)$ arises in numerous contexts:
 
-- **Computer science**: algorithms measure efficiency using logarithms — understanding $\ln(1+x)$ for small $x$ helps approximate running times
-- **Finance**: when interest rates are small, $\ln(1+r) \approx r$ — bankers use this shortcut daily
-- **Physics**: sensors measure tiny changes, and $\ln(1+x) \approx x$ for small $x$ simplifies calculations enormously
-- **Engineering**: signal processing uses logarithmic series to analyze audio and radio waves
-- **Biology**: population models use $\ln(1+\text{growth rate})$ to predict how species change over time
+- **Computer science**: algorithm complexity is often measured using logarithms — the approximation $\ln(1+x) \approx x$ for small $x$ simplifies running-time estimates.
+- **Finance**: for small interest rates, $\ln(1+r) \approx r$ provides a useful approximation.
+- **Physics**: when measuring small perturbations, $\ln(1+x) \approx x$ greatly simplifies calculations.
+- **Engineering**: signal processing employs logarithmic series to analyze audio and radio waves.
+- **Biology**: population models use $\ln(1+\text{growth rate})$ to predict species dynamics.
 
-Today we'll discover how to build the power series for $\ln(1+x)$ from a geometric series, and we'll use Maclaurin series to find ridiculously high-order derivatives without actually differentiating!
+We derive the power series for $\ln(1+x)$ from a geometric series and then apply Maclaurin series to compute high-order derivatives without performing any differentiation.
 :::
 
 ## Topics Covered
@@ -50,7 +50,7 @@ Today we'll discover how to build the power series for $\ln(1+x)$ from a geometr
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is Euler's formula?
@@ -149,7 +149,7 @@ That's exactly $-\sin x$!
 
 ### The Derivative Cycle: Higher Derivatives of sin
 
-Something beautiful happens when you keep differentiating $\sin x$:
+A notable pattern emerges upon repeated differentiation of $\sin x$:
 
 | Derivative | Result |
 |---|---|
@@ -159,11 +159,11 @@ Something beautiful happens when you keep differentiating $\sin x$:
 | $f'''(x)$ | $-\cos x$ |
 | $f^{(4)}(x)$ | $\sin x$ |
 
-After **4 derivatives**, we're back to $\sin x$! The cycle repeats forever:
+After **4 derivatives**, we return to $\sin x$. The cycle repeats indefinitely:
 
 $$\sin x \;\to\; \cos x \;\to\; -\sin x \;\to\; -\cos x \;\to\; \sin x \;\to\; \cdots$$
 
-So to find the $n$th derivative, just divide $n$ by 4 and look at the remainder:
+To find the $n$th derivative, one divides $n$ by 4 and examines the remainder:
 
 | Remainder ($n \bmod 4$) | $f^{(n)}(x)$ |
 |---|---|
@@ -184,7 +184,7 @@ Now substitute $r = -x$:
 
 $$\frac{1}{1+x} = 1 - x + x^2 - x^3 + x^4 - \cdots = \sum_{k=0}^{\infty} (-1)^k x^k$$
 
-This is valid for $|x| < 1$. We've turned $\frac{1}{1+x}$ into a power series!
+This is valid for $|x| < 1$. We have expressed $\frac{1}{1+x}$ as a power series.
 
 **Explore -- see how partial sums of the series approximate $\frac{1}{1+x}$:**
 
@@ -208,19 +208,19 @@ This is valid for $|x| < 1$. We've turned $\frac{1}{1+x}$ into a power series!
 
 ### From Geometric Series to ln(1+x)
 
-Here's the key idea: we know that $\frac{d}{dx}\ln(1+x) = \frac{1}{1+x}$. So if we **integrate** the geometric series term by term, we should get $\ln(1+x)$!
+The key observation is that $\frac{d}{dx}\ln(1+x) = \frac{1}{1+x}$. Therefore, if we **integrate** the geometric series term by term, we obtain $\ln(1+x)$:
 
 $$\int \frac{1}{1+x}\,dx = \int \left(1 - x + x^2 - x^3 + \cdots\right) dx$$
 
 $$= C + x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots$$
 
-**Determining the constant $C$**: plug in $x = 0$:
+**Determining the constant $C$**: substitute $x = 0$:
 
 $$\ln(1+0) = C + 0 - 0 + 0 - \cdots$$
 $$\ln(1) = C$$
 $$0 = C$$
 
-So $C = 0$, and we get the beautiful result:
+So $C = 0$, and we obtain:
 
 ::: {.callout-important}
 ## Key Idea: Power Series for ln(1+x)
@@ -254,7 +254,7 @@ This is valid for $-1 < x \le 1$.
 
 Suppose someone gives you a function and tells you $f'(x) = -\frac{1}{1+x}$. How do you find $f(x)$?
 
-You recognize that:
+We recognize that:
 
 $$\frac{d}{dx}\ln(1+x) = \frac{1}{1+x}$$
 
@@ -262,11 +262,11 @@ So $-\frac{1}{1+x}$ is the derivative of $-\ln(1+x)$. Therefore:
 
 $$f(x) = -\ln(1+x) + C$$
 
-This is the art of "working backwards" from a derivative -- a preview of integration!
+This technique of "working backwards" from a derivative is a preview of integration.
 
 ### Matching Maclaurin Coefficients
 
-This is one of the most powerful tricks in the course. If a function has a Maclaurin series:
+This is one of the most powerful techniques in the course. If a function has a Maclaurin series:
 
 $$f(x) = a_0 + a_1 x + a_2 x^2 + a_3 x^3 + \cdots$$
 
@@ -274,20 +274,20 @@ then each coefficient is related to a derivative at zero:
 
 ::: {.callout-important}
 ## Key Idea: Reading Off Derivatives from a Power Series
-If you already know a function's power series, you can instantly find any derivative at $x = 0$ without doing any differentiation at all. Just read off the coefficient and multiply by $n!$.
+If a function's power series is known, one can immediately determine any derivative at $x = 0$ without performing any differentiation. One reads off the coefficient and multiplies by $n!$.
 
 $$\boxed{a_n = \frac{f^{(n)}(0)}{n!}}$$
 :::
 
-This means: **if you know the power series, you automatically know every derivative at $x = 0$**. You can rearrange:
+This means: **if the power series is known, every derivative at $x = 0$ is determined**. Rearranging:
 
 $$f^{(n)}(0) = n! \cdot a_n$$
 
 ### Finding Crazy-High Derivatives Without Differentiating
 
-This is where things get amazing. Suppose we want the **2025th derivative of $\ln(1+x)$ at $x = 0$**.
+As an illustration, suppose we seek the **2025th derivative of $\ln(1+x)$ at $x = 0$**.
 
-Differentiating $\ln(1+x)$ two thousand and twenty-five times by hand? No way! But we know the power series:
+Differentiating $\ln(1+x)$ two thousand and twenty-five times by hand is impractical. However, we know the power series:
 
 $$\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots$$
 
@@ -297,15 +297,15 @@ Using $f^{(n)}(0) = n! \cdot a_n$:
 
 $$f^{(2025)}(0) = 2025! \cdot \frac{(-1)^{2026}}{2025} = 2025! \cdot \frac{1}{2025} = \frac{2025!}{2025} = 2024!$$
 
-So the 2025th derivative of $\ln(1+x)$ at $x = 0$ is $2024!$. We never differentiated even once!
+Thus the 2025th derivative of $\ln(1+x)$ at $x = 0$ is $2024!$ — obtained without differentiating even once.
 
 **Why does $(-1)^{2026} = 1$?** Because 2026 is even, and $(-1)^{\text{even}} = 1$.
 
-Let's try another: the **4th derivative of $\ln(1+x)$ at $x = 0$**:
+As another example, the **4th derivative of $\ln(1+x)$ at $x = 0$**:
 
 $$f^{(4)}(0) = 4! \cdot \frac{(-1)^{5}}{4} = 24 \cdot \frac{-1}{4} = -6$$
 
-You can verify this by differentiating $\ln(1+x)$ four times the hard way -- you'll get the same answer!
+One may verify this by differentiating $\ln(1+x)$ four times directly — the result is the same.
 
 ## Cheat Sheet
 

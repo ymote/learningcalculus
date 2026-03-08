@@ -3,18 +3,18 @@ title: "From Trajectories to Integrals — Antiderivatives and the Area of a Cir
 date: 2025-11-03
 ---
 
-How do scientists measure the area of something curved? Today you will see how slicing a circle into infinitely thin strips lets calculus compute areas that geometry alone cannot easily handle. You will also learn how to "undo" a derivative -- a skill called antidifferentiation -- and discover that inverse trig functions like arcsine pop up in surprising places when you work with circles. Along the way, you will prove the trajectory of a thrown ball is a parabola.
+This lesson demonstrates how slicing a circle into infinitesimally thin vertical strips allows calculus to compute curved areas that geometry alone cannot easily handle. We develop the technique of antidifferentiation -- the inverse operation to differentiation -- and show that inverse trigonometric functions such as arcsine arise naturally in the integration of expressions involving circles. As an additional application, we prove that the trajectory of a horizontally launched projectile is a parabola.
 
 ::: {.callout-tip collapse="true"}
-## Why Antiderivatives and Integration Matter
+## Motivation
 
-Integration is the second great pillar of calculus — it lets you add up infinitely many tiny pieces to find totals:
+Integration is the second fundamental operation of calculus -- it assembles infinitely many infinitesimal contributions to compute totals:
 
-- **Medicine**: doctors calculate the total amount of a drug absorbed by your body over time by integrating the absorption rate — getting the dosage wrong could be dangerous
-- **Space travel**: NASA engineers integrate acceleration data to figure out how far a rocket has traveled and how fast it is going at every moment
-- **Architecture**: architects compute the area of curved surfaces (like domes and arches) by slicing them into thin strips and adding up the pieces — that is integration
-- **Sports analytics**: tracking how far a soccer player runs during a match means integrating their speed over time
-- **Animation**: Pixar uses integration to calculate how light bounces off curved surfaces, making 3D characters look realistic
+- **Pharmacokinetics**: the total amount of a drug absorbed by the body over time is obtained by integrating the absorption rate -- accurate dosage depends on this calculation
+- **Aerospace engineering**: engineers integrate acceleration data to determine how far a rocket has traveled and its velocity at each instant
+- **Architectural design**: the area of curved surfaces (such as domes and arches) is computed by slicing them into thin strips and summing -- this is integration
+- **Motion analysis**: determining the total distance traveled by a moving object requires integrating its speed over time
+- **Computer graphics**: rendering engines use integration to calculate how light reflects off curved surfaces, producing realistic images
 :::
 
 ## Topics Covered
@@ -48,7 +48,7 @@ Integration is the second great pillar of calculus — it lets you add up infini
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is an antiderivative?
@@ -59,16 +59,16 @@ $$F'(x) = f(x)$$
 
 For example, if $f(x) = 2x$, then $F(x) = x^2$ is an antiderivative because $\frac{d}{dx}(x^2) = 2x$.
 
-But $F(x) = x^2 + 7$ also works! Any constant added to an antiderivative is still an antiderivative, because constants vanish when you differentiate. That is why we write $+C$ (an arbitrary constant) at the end.
+However, $F(x) = x^2 + 7$ also satisfies this condition. Any constant added to an antiderivative yields another valid antiderivative, because constants vanish upon differentiation. This is why one writes $+C$ (an arbitrary constant) at the end.
 :::
 
 ::: {.callout-note collapse="true"}
 ## What is projectile motion?
 
-When you throw a ball horizontally, two things happen at once:
+When a ball is thrown horizontally, two independent motions occur simultaneously:
 
-1. **Horizontally**, the ball keeps moving at a constant speed $u$ (no force pushes or pulls it sideways)
-2. **Vertically**, gravity pulls the ball downward with constant acceleration $g \approx 9.8\;\text{m/s}^2$
+1. **Horizontally**, the ball moves at a constant speed $u$ (no horizontal force acts on it)
+2. **Vertically**, gravity accelerates the ball downward at a constant rate $g \approx 9.8\;\text{m/s}^2$
 
 The horizontal and vertical motions are independent. We describe them with separate equations:
 
@@ -81,9 +81,9 @@ The dot notation $\dot{x}$ means $\frac{dx}{dt}$, the rate of change with respec
 ::: {.callout-note collapse="true"}
 ## What does "eliminating the parameter" mean?
 
-Often in physics, position is given as two separate equations in time: $x(t)$ and $y(t)$. The variable $t$ is called a **parameter**.
+In physics, position is often given as two separate equations in time: $x(t)$ and $y(t)$. The variable $t$ is called a **parameter**.
 
-To find the **trajectory** (the path the object traces in the $xy$-plane), we eliminate $t$ by solving one equation for $t$ and substituting into the other. The result is a direct relationship $y = f(x)$ — the shape of the path, independent of when the object was at each point.
+To find the **trajectory** (the path the object traces in the $xy$-plane), one eliminates $t$ by solving one equation for $t$ and substituting into the other. The result is a direct relationship $y = f(x)$ -- the shape of the path, independent of when the object was at each point.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -107,14 +107,14 @@ If the derivative of $x^n$ is $nx^{n-1}$, then running the rule in reverse gives
 
 $$\int x^n\,dx = \frac{x^{n+1}}{n+1} + C \qquad (n \neq -1)$$
 
-For example, if you know that $\frac{d}{dt}(t^2) = 2t$, then the antiderivative of $2t$ is $t^2 + C$. Equivalently, the antiderivative of $t$ is $\frac{t^2}{2} + C$.
+For example, since $\frac{d}{dt}(t^2) = 2t$, the antiderivative of $2t$ is $t^2 + C$. Equivalently, the antiderivative of $t$ is $\frac{t^2}{2} + C$.
 :::
 
 ## Key Concepts
 
 ### Projectile Motion: From Velocity to Position
 
-We are given the velocity components of a ball thrown horizontally with initial speed $u$ in a gravitational field:
+Consider the velocity components of a ball thrown horizontally with initial speed $u$ in a gravitational field:
 
 $$\dot{x} = u \qquad \dot{y} = g\,t$$
 
@@ -149,7 +149,7 @@ $$\boxed{y = \frac{g}{2u^2}\,x^2}$$
 
 This is a **parabola**. Larger $g$ makes it steeper (the ball drops faster); larger $u$ makes it flatter (the ball travels farther before falling).
 
-**Explore -- how $g$ and $u$ change the trajectory:**
+**Interactive demonstration -- effect of $g$ and $u$ on the trajectory:**
 
 ```{=html}
 <div id="calc1" class="desmos-container"></div>
@@ -167,15 +167,15 @@ This is a **parabola**. Larger $g$ makes it steeper (the ball drops faster); lar
 </script>
 ```
 
-*Drag $g$ to increase gravity (the parabola steepens) or increase $u$ to throw faster (the parabola flattens). The ball always follows a parabolic path!*
+*Drag $g$ to increase gravity (the parabola steepens) or increase $u$ to increase the horizontal speed (the parabola flattens). The ball always follows a parabolic path.*
 
 ### From Differential to Integral Calculus
 
-Up to this point we have been doing **differential calculus**: chopping quantities into infinitesimals and finding rates of change. Now we begin **integral calculus**: assembling infinitesimals back together to find totals. The key insight is that differentiation and antidifferentiation are **inverse operations** — just as we recovered position from velocity in the projectile problem above.
+Up to this point, the focus has been on **differential calculus**: decomposing quantities into infinitesimals and finding rates of change. We now begin **integral calculus**: assembling infinitesimals to compute totals. The key insight is that differentiation and antidifferentiation are **inverse operations** -- as demonstrated by recovering position from velocity in the projectile problem above.
 
 ### Finding the Area of a Circle
 
-How do we prove that the area of a circle of radius $r$ is $\pi r^2$? We slice it into infinitesimally thin vertical strips and add them up.
+To prove that the area of a circle of radius $r$ is $\pi r^2$, we slice it into infinitesimally thin vertical strips and sum their contributions.
 
 **Setup.** Place the circle $x^2 + y^2 = r^2$ at the origin. Define $A(x)$ as the area swept from $-r$ up to position $x$:
 
@@ -196,7 +196,7 @@ $$\boxed{A'(x) = 2\sqrt{r^2 - x^2}}$$
 
 Now the problem reduces to finding the antiderivative of $2\sqrt{r^2 - x^2}$.
 
-**Explore -- see the vertical slicing of a circle:**
+**Interactive demonstration -- vertical slicing of a circle:**
 
 ```{=html}
 <div id="calc2" class="desmos-container"></div>
@@ -231,7 +231,7 @@ Before tackling the antiderivative of $\sqrt{r^2 - x^2}$, we review which functi
 | Exponential | $a^x$ | $a^x \ln a$ | Yes |
 | Logarithmic | $\ln x$ | $\dfrac{1}{x}$ | **No** — gives a rational function |
 
-The crucial observation: **when you see a radical like $\frac{1}{\sqrt{1-x^2}}$ and need its antiderivative, think inverse trig. When you see $\frac{1}{x}$, think logarithm.** The derivative goes "out" of the family, so the antiderivative goes back "in."
+The crucial observation: **when an expression of the form $\frac{1}{\sqrt{1-x^2}}$ appears and its antiderivative is needed, the answer involves inverse trigonometric functions. When $\frac{1}{x}$ appears, the answer involves a logarithm.** The derivative leaves the family, so the antiderivative returns to it.
 
 ### Deriving the Derivative of $\arcsin x$
 
@@ -252,7 +252,7 @@ The derivative of $\arcsin x$ produces a radical expression -- it "leaves" the i
 $$\boxed{\frac{d}{dx}\arcsin x = \frac{1}{\sqrt{1 - x^2}}}$$
 :::
 
-**Explore -- see $\arcsin x$ and its derivative:**
+**Interactive demonstration -- $\arcsin x$ and its derivative:**
 
 ```{=html}
 <div id="calc3" class="desmos-container"></div>
@@ -270,7 +270,7 @@ $$\boxed{\frac{d}{dx}\arcsin x = \frac{1}{\sqrt{1 - x^2}}}$$
 </script>
 ```
 
-*Drag $a$ between $-1$ and $1$. The green tangent line to $\arcsin x$ (blue) has slope $\frac{1}{\sqrt{1-a^2}}$ (red dashed). Notice the slope blows up near $x = \pm 1$ — the curve becomes vertical there!*
+*Drag $a$ between $-1$ and $1$. The green tangent line to $\arcsin x$ (blue) has slope $\frac{1}{\sqrt{1-a^2}}$ (red dashed). Observe that the slope diverges near $x = \pm 1$ -- the curve becomes vertical there.*
 
 ### Deriving the Derivative of $\ln x$ and $a^x$
 
@@ -292,7 +292,7 @@ Returning to the circle area problem, we need the antiderivative of $\sqrt{r^2 -
 
 $$\frac{1}{\sqrt{r^2 - x^2}} = \frac{1}{r\,\sqrt{1 - (x/r)^2}}$$
 
-**Step 2 — Guess the antiderivative.**  Since $\frac{d}{dx}\arcsin(x) = \frac{1}{\sqrt{1 - x^2}}$, try $\arcsin\!\left(\frac{x}{r}\right)$. By the chain rule:
+**Step 2 — Conjecture the antiderivative.**  Since $\frac{d}{dx}\arcsin(x) = \frac{1}{\sqrt{1 - x^2}}$, consider $\arcsin\!\left(\frac{x}{r}\right)$. By the chain rule:
 
 $$\frac{d}{dx}\arcsin\!\left(\frac{x}{r}\right) = \frac{1}{\sqrt{1 - (x/r)^2}} \cdot \frac{1}{r} = \frac{1}{\sqrt{r^2 - x^2}}$$
 
@@ -304,9 +304,9 @@ $$\boxed{\int \frac{dx}{\sqrt{r^2 - x^2}} = \arcsin\!\left(\frac{x}{r}\right) + 
 
 $$\int \frac{r^2}{\sqrt{r^2 - x^2}}\,dx = r^2\,\arcsin\!\left(\frac{x}{r}\right) + C$$
 
-The remaining piece of the circle area (involving $x\sqrt{r^2 - x^2}$) has a geometric interpretation as a triangular region — interpreting the arcsine term as a **circular sector area** reveals what the second term must be.
+The remaining piece of the circle area (involving $x\sqrt{r^2 - x^2}$) has a geometric interpretation as a triangular region -- interpreting the arcsine term as a **circular sector area** reveals the form of the second term.
 
-**Explore -- the arcsine antiderivative vs. the integrand:**
+**Interactive demonstration -- the arcsine antiderivative and the integrand:**
 
 ```{=html}
 <div id="calc4" class="desmos-container"></div>

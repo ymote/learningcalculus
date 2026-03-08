@@ -3,19 +3,19 @@ title: "Derivatives of tan & sec — Graphical and Algebraic"
 date: 2025-09-25
 ---
 
-Have you ever wondered why some functions grow so much faster than others? Today we're going to figure out the derivatives of tangent and secant -- two trig functions that can shoot off to infinity in the blink of an eye. The coolest part? We'll prove the same result three completely different ways: with algebra, with a picture on the unit circle, and with complex exponentials. By the end, you'll see how all three roads lead to the same beautiful answer.
+This lesson derives the derivatives of tangent and secant — two trigonometric functions that exhibit unbounded growth near their vertical asymptotes. We establish these results through three independent methods: algebraic computation via the quotient rule, geometric reasoning on the unit circle, and complex exponential techniques. All three approaches yield the same formulas.
 
 ::: {.callout-tip collapse="true"}
-## Why Derivatives of tan and sec Matter
+## Motivation
 
-The tangent and secant functions show up whenever you deal with slopes and stretching:
+The tangent and secant functions arise in contexts involving slopes and angular dependence:
 
-- **Navigation**: GPS systems use tangent functions to convert between angles and distances on a map — their derivatives help correct course in real time
-- **Architecture**: the slope of a roof is a tangent ratio — the derivative tells you how sensitive the slope is to changes in angle
-- **Optics**: lenses bend light at angles described by tangent — understanding how fast that angle changes is key to designing cameras and telescopes
-- **Roller coasters**: at steep sections, the track angle is large and tangent grows fast — its derivative (sec^2) tells engineers how rapidly the slope is increasing
+- **Navigation**: GPS systems use tangent functions to convert between angles and distances — their derivatives enable real-time course corrections.
+- **Architecture**: the slope of a roof is a tangent ratio — the derivative quantifies the sensitivity of the slope to changes in angle.
+- **Optics**: lenses bend light at angles described by tangent — understanding how rapidly that angle changes is essential to camera and telescope design.
+- **Mechanical engineering**: at steep track sections, the tangent grows rapidly — its derivative ($\sec^2$) quantifies how fast the slope is increasing.
 
-Once you know the derivatives of sin and cos, the derivatives of tan and sec follow — and today we'll prove them three different ways!
+Given the derivatives of sine and cosine, the derivatives of tangent and secant follow — and we establish them by three distinct methods.
 :::
 
 ## Topics Covered
@@ -47,7 +47,7 @@ Once you know the derivatives of sin and cos, the derivatives of tan and sec fol
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What are tangent and secant?
@@ -148,7 +148,7 @@ $$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
 </script>
 ```
 
-*Drag the slider for $a$. The green dashed line is tangent to $\tan x$ (blue), and its slope always equals $\sec^2(a)$ (red dashed curve). Notice how the slope is always at least 1 — $\tan x$ is always getting steeper!*
+*Drag the slider for $a$. The green dashed line is tangent to $\tan x$ (blue), and its slope always equals $\sec^2(a)$ (red dashed curve). Observe that the slope is always at least 1 — $\tan x$ is always increasing.*
 
 ### Graphical Derivation on the Unit Circle
 
@@ -186,11 +186,11 @@ So $\frac{d(\tan\theta)}{d\theta} = \sec^2\theta$ — the same answer, straight 
 </script>
 ```
 
-*Drag $\theta$ and watch the tangent height (red segment) and the secant length (purple label) change. Notice how fast $\tan\theta$ grows as $\theta$ approaches $\pm\frac{\pi}{2}$!*
+*Drag $\theta$ and observe the tangent height (red segment) and the secant length (purple label). Note the rapid growth of $\tan\theta$ as $\theta$ approaches $\pm\frac{\pi}{2}$.*
 
 ### Derivative of $\sec\theta$ via Similar Triangles
 
-We want $\frac{d}{d\theta}(\sec\theta)$. Using the same unit circle picture:
+We seek $\frac{d}{d\theta}(\sec\theta)$. Using the same unit circle construction:
 
 $\sec\theta$ is the distance from the origin to the point $(1, \tan\theta)$ on the vertical tangent line.
 
@@ -212,7 +212,7 @@ $$\boxed{\frac{d}{d\theta}(\sec\theta) = \sec\theta \cdot \tan\theta}$$
 :::
 
 ::: {.callout-tip collapse="true"}
-## A quick algebraic check
+## Remark: Algebraic verification
 
 We can verify this using the chain rule on $\sec\theta = (\cos\theta)^{-1}$:
 
@@ -221,7 +221,7 @@ $$\frac{d}{d\theta}(\cos\theta)^{-1} = -1 \cdot (\cos\theta)^{-2} \cdot (-\sin\t
 
 ### Complex Exponential Approach to $\frac{d}{d\theta}(\tan\theta)$
 
-Here's a slick algebraic method. Write tangent using Euler's formula:
+An alternative algebraic method proceeds by expressing tangent via Euler's formula:
 
 $$\tan\theta = \frac{e^{i\theta} - e^{-i\theta}}{i(e^{i\theta} + e^{-i\theta})}$$
 
@@ -263,15 +263,15 @@ When working with expressions like $\frac{e^{i\theta} - e^{-i\theta}}{e^{i\theta
 
 $$\frac{e^{i\theta} - e^{-i\theta}}{e^{i\theta} + e^{-i\theta}} = \frac{e^{2i\theta} - 1}{e^{2i\theta} + 1}$$
 
-You can also let $w = e^{i\theta}$ to turn everything into a clean polynomial-style fraction:
+One may also let $w = e^{i\theta}$ to convert everything into a clean polynomial-style fraction:
 
 $$\tan\theta = \frac{w^2 - 1}{i(w^2 + 1)} \quad \text{where } w = e^{i\theta}$$
 
-This substitution makes the quotient rule much cleaner and reduces the chance of errors. The key trick is **choosing a good substitution** to simplify the algebra before you differentiate.
+This substitution simplifies the quotient rule computation and reduces the likelihood of errors. The key technique is **choosing a good substitution** to simplify the algebra before differentiating.
 
 ### Power Expansion for Differentials
 
-Another approach is to plug $\theta + d\theta$ directly into the function and keep only first-order terms (dropping anything with $(d\theta)^2$ or higher):
+Another approach is to substitute $\theta + d\theta$ directly into the function and retain only first-order terms (discarding anything with $(d\theta)^2$ or higher):
 
 For $\tan(\theta + d\theta)$, recall that:
 
@@ -289,16 +289,16 @@ Expanding the denominator:
 
 $$i\left[(e^{i\theta} + e^{-i\theta}) + i\,d\theta\,(e^{i\theta} - e^{-i\theta})\right]$$
 
-After careful algebra (dividing and dropping second-order terms), the result is:
+After careful algebra (dividing and discarding second-order terms), the result is:
 
 $$\tan(\theta + d\theta) - \tan\theta = \sec^2\theta \cdot d\theta$$
 
-This "infinitesimal substitution" method is very hands-on: you see exactly where each piece of the derivative comes from.
+This "infinitesimal substitution" method is quite explicit: one sees exactly where each component of the derivative originates.
 
 ::: {.callout-tip collapse="true"}
-## Why can we drop $(d\theta)^2$?
+## Justification for discarding $(d\theta)^2$
 
-An infinitesimal $d\theta$ is thought of as "so small that its square is essentially zero." More precisely, when we take the limit as $d\theta \to 0$ in $\frac{\Delta f}{d\theta}$, any term with $(d\theta)^2$ in the numerator contributes $0$ after dividing by $d\theta$. So we only need to track first-order terms — everything else vanishes.
+An infinitesimal $d\theta$ is regarded as so small that its square is negligible. More precisely, when one takes the limit as $d\theta \to 0$ in $\frac{\Delta f}{d\theta}$, any term with $(d\theta)^2$ in the numerator contributes $0$ after division by $d\theta$. Therefore, only first-order terms need to be retained — all higher-order terms vanish.
 :::
 
 **Explore -- compare $\tan(x)$ with its linear approximation at a point:**
@@ -351,5 +351,5 @@ To find the derivative of $f(\theta)$:
 1. Compute $f(\theta + d\theta)$ using $e^{i\,d\theta} \approx 1 + i\,d\theta$
 2. Subtract $f(\theta)$
 3. Keep only terms with one factor of $d\theta$
-4. Divide by $d\theta$ — that's your derivative!
+4. Divide by $d\theta$ — the result is the derivative.
 :::

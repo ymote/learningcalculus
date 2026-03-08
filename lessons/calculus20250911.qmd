@@ -3,12 +3,12 @@ title: "The Number e & Binomial Expansion"
 date: 2025-09-11
 ---
 
-What happens if a bank pays you interest on your interest on your interest, over and over, faster and faster? You might expect your money to grow forever, but it actually settles down to a specific magical number: $e \approx 2.71828$. In this lesson, you'll discover where $e$ comes from, learn the binomial expansion trick that unlocks it, and see why $e$ is one of the most important numbers in all of math.
+This lesson traces the origin of the number $e \approx 2.71828$ through the compound interest limit. We develop the binomial expansion as a tool for analyzing $\left(1 + \frac{r}{k}\right)^k$ as $k \to \infty$, arriving at the exponential series and the defining properties of $e$.
 
 ::: {.callout-tip collapse="true"}
-## Real-World Connection: Where Does the Number e Come From?
+## Motivation: Where Does the Number $e$ Come From?
 
-Imagine you put \$1 in a bank account that pays 100% interest per year. If the bank compounds once a year, you get \$2. But what if they compound every month? Every day? Every second? As you compound more and more frequently, the amount you end up with gets closer and closer to a mysterious number: $e \approx 2.71828...$. This number shows up everywhere — in population growth, radioactive decay, and even in how social media posts go viral. Today we will see exactly where it comes from and why it is so special.
+Consider placing \$1 in a bank account that pays 100% interest per year. If the bank compounds once a year, the balance becomes \$2. Compounding monthly, daily, or every second yields progressively larger amounts, but the balance does not grow without bound — it converges to the constant $e \approx 2.71828...$. This number appears throughout mathematics and the sciences: in population growth, radioactive decay, and the modeling of viral phenomena. This lesson establishes precisely where $e$ comes from and why it is distinguished among all constants.
 :::
 
 ## Topics Covered
@@ -42,9 +42,9 @@ Imagine you put \$1 in a bank account that pays 100% interest per year. If the b
 
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Exponent Rules
+## Prerequisites: Exponent Rules
 
-You should be comfortable with the basic laws of exponents:
+The reader should be familiar with the basic laws of exponents:
 
 - $a^m \cdot a^n = a^{m+n}$
 - $(a^m)^n = a^{mn}$
@@ -54,7 +54,7 @@ These rules are essential for understanding how $(1 + r/k)^k$ behaves as we chan
 :::
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Factorials
+## Prerequisites: Factorials
 
 A **factorial** is written $n!$ and means the product of all positive integers up to $n$:
 
@@ -71,7 +71,7 @@ Suppose you invest \$1 at 100% annual interest rate ($r = 1$). If the bank compo
 
 $$A = \left(1 + \frac{1}{k}\right)^k$$
 
-Let us see what happens as $k$ grows:
+We examine the behavior as $k$ grows:
 
 | Compounding ($k$) | Expression | Value |
 |---|---|---|
@@ -104,14 +104,14 @@ The number never blows up to infinity — it settles down to the special constan
 ```
 
 ::: {.callout-tip collapse="true"}
-## Try this with the slider
+## Interactive demonstration
 
-Start with $k = 1$ and slowly increase it. Notice how quickly the value gets close to $e$ — by $k = 100$ you are already within a few hundredths. But it never quite reaches $e$; it just gets closer and closer forever. That is what a **limit** means.
+Start with $k = 1$ and gradually increase it. Observe how rapidly the value approaches $e$ — by $k = 100$ the approximation is already within a few hundredths. The value never reaches $e$ exactly; it approaches it asymptotically. This is the nature of a **limit**.
 :::
 
 ## Generalizing: The Rate $r$
 
-What if the interest rate is not 100% but some general rate $r$? Then after one year with $k$ compoundings:
+If the interest rate is not 100% but some general rate $r$, then after one year with $k$ compoundings:
 
 $$A = \left(1 + \frac{r}{k}\right)^k$$
 
@@ -135,11 +135,11 @@ $$\binom{5}{3} = \frac{5!}{3! \cdot 2!} = \frac{120}{6 \cdot 2} = 10$$
 
 ### Complementarity: $\binom{n}{k} = \binom{n}{n-k}$
 
-Here is a beautiful fact: **choosing which items to take is the same as choosing which items to leave behind**.
+An elegant observation: **choosing which items to take is equivalent to choosing which items to leave behind**.
 
 $$\binom{100}{96} = \binom{100}{4}$$
 
-Think about it: picking 96 people from 100 to be on a team is the same as picking 4 people to *not* be on the team. Instead of listing 96 names, you just list the 4 who sit out. Same number of ways, much less writing!
+Selecting 96 people from 100 for a team is equivalent to selecting the 4 who are excluded. Both choices count the same number of subsets, but the latter requires specifying far fewer elements.
 
 This is why $\binom{n}{k} = \binom{n}{n-k}$ — the formula is symmetric.
 
@@ -148,7 +148,7 @@ This is why $\binom{n}{k} = \binom{n}{n-k}$ — the formula is symmetric.
 
 $$\binom{n}{n-k} = \frac{n!}{(n-k)!\left(n-(n-k)\right)!} = \frac{n!}{(n-k)! \cdot k!}$$
 
-That is exactly the same as $\binom{n}{k} = \frac{n!}{k!(n-k)!}$, just with the two factors in the denominator swapped. Multiplication is commutative, so they are equal.
+This is exactly $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ with the two factors in the denominator transposed. Since multiplication is commutative, the expressions are equal.
 :::
 
 ## The Binomial Expansion
@@ -184,7 +184,7 @@ When we write out $\binom{n}{k}$ for a general $n$, something useful happens. Le
 
 $$\binom{n}{0} = 1, \qquad \binom{n}{1} = \frac{n}{1}, \qquad \binom{n}{2} = \frac{n(n-1)}{2!}, \qquad \binom{n}{3} = \frac{n(n-1)(n-2)}{3!}$$
 
-The pattern: $\binom{n}{k}$ has exactly $k$ factors on top (starting at $n$ and counting down) and $k!$ on the bottom. This form will be critical when we plug in $n = k$ and take $k \to \infty$.
+The pattern: $\binom{n}{k}$ has exactly $k$ factors on top (starting at $n$ and counting down) and $k!$ on the bottom. This form will be critical when we substitute $n = k$ and take $k \to \infty$.
 
 ## Building Toward the Limit: Applying Binomial Expansion to $(1 + r/k)^k$
 
@@ -246,9 +246,9 @@ No other function grows at a rate exactly equal to its current value. If you hav
 ```
 
 ::: {.callout-tip collapse="true"}
-## Try this with the slider
+## Interactive demonstration
 
-Adjust $b$ and notice that for most bases, the derivative (dashed) is a different curve from the function (solid). But set $b = 2.72$ (close to $e$) and they nearly overlap. Only at $b = e$ exactly are they identical.
+Adjust $b$ and observe that for most bases, the derivative (dashed) differs from the function (solid). Setting $b = 2.72$ (close to $e$) causes the curves to nearly overlap. Only at $b = e$ exactly are they identical.
 :::
 
 ## Cheat Sheet

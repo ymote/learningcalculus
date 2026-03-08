@@ -3,18 +3,18 @@ title: "Euler's Formula & Functional Equations"
 date: 2025-09-29
 ---
 
-Today's lesson reveals one of the most beautiful equations in all of mathematics -- Euler's formula. It connects three seemingly unrelated ideas (exponentials, trig, and imaginary numbers) into one elegant package. We'll get there by asking a surprisingly simple question: "What kind of function turns addition into multiplication?" The answer leads us straight to $e^{i\theta} = \cos\theta + i\sin\theta$, and along the way you'll see why logarithms are the secret bridge between two worlds.
+This lesson derives Euler's formula, one of the most celebrated identities in mathematics. It connects three seemingly unrelated domains — exponentials, trigonometry, and imaginary numbers — into a single identity. We arrive at it by investigating the functional equation "what type of function converts addition into multiplication?" The answer leads directly to $e^{i\theta} = \cos\theta + i\sin\theta$, with logarithms serving as the bridge between multiplicative and additive structures.
 
 ::: {.callout-tip collapse="true"}
-## Why Euler's Formula & Functional Equations Matter
+## Motivation
 
-Euler's formula connects exponentials, trigonometry, and complex numbers in one elegant equation -- and functional equations let us reverse-engineer what a function must be from its behavior alone:
+Euler's formula connects exponentials, trigonometry, and complex numbers in a single identity. Functional equations allow one to deduce what a function must be from its algebraic properties alone:
 
-- **Electrical engineering**: AC circuits use $e^{i\omega t}$ to represent oscillating voltages and currents -- Euler's formula is the reason engineers can treat sine waves as exponentials
-- **Signal processing**: MP3 compression and noise-canceling headphones rely on the Fourier transform, which is built directly on $e^{i\theta}$
-- **Cryptography**: modern encryption algorithms use properties of exponential and logarithmic functions over number fields -- the same functional equation ideas at work
-- **Physics**: quantum mechanics writes the state of every particle using complex exponentials; Euler's formula is the bridge between waves and algebra
-- **Finance**: continuously compounded interest is modeled by $e^{rt}$, and logarithms let you solve for how long it takes your money to grow to a target
+- **Electrical engineering**: AC circuits use $e^{i\omega t}$ to represent oscillating voltages and currents — Euler's formula is the reason engineers treat sine waves as exponentials.
+- **Signal processing**: MP3 compression and noise-canceling headphones rely on the Fourier transform, which is built directly on $e^{i\theta}$.
+- **Cryptography**: modern encryption algorithms exploit properties of exponential and logarithmic functions over number fields — the same functional equation ideas at work.
+- **Physics**: quantum mechanics describes the state of every particle using complex exponentials; Euler's formula provides the bridge between waves and algebra.
+- **Finance**: continuously compounded interest is modeled by $e^{rt}$, and logarithms determine the time required for an investment to reach a target value.
 :::
 
 ## Topics Covered
@@ -47,7 +47,7 @@ Euler's formula connects exponentials, trigonometry, and complex numbers in one 
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is a functional equation?
@@ -72,7 +72,7 @@ $$f(x_0) = \lim_{h \to 0} f(x_0 + h)$$
 
 This means: for any desired closeness $\delta$ in the output, you can find a small enough window $\epsilon$ around $x_0$ so that all inputs in that window give outputs within $\delta$ of $f(x_0)$.
 
-Graphically, you can draw the function without lifting your pencil.
+Graphically, a continuous function can be drawn without lifting the pencil from the paper.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -136,7 +136,7 @@ So $Z$ satisfies the **multiplicative functional equation**:
 
 ::: {.callout-important}
 ## Key Idea: The Multiplicative Functional Equation
-When you multiply two unit complex numbers, their angles add. This means the function $Z(\theta) = \cos\theta + i\sin\theta$ turns addition of angles into multiplication of numbers -- a property that will force $Z$ to be an exponential.
+When two unit complex numbers are multiplied, their angles add. This means the function $Z(\theta) = \cos\theta + i\sin\theta$ converts addition of angles into multiplication of numbers — a property that forces $Z$ to be an exponential.
 
 $$\boxed{Z(\theta) \cdot Z(\phi) = Z(\theta + \phi)}$$
 :::
@@ -226,7 +226,7 @@ Define a new function $f(\theta) = \ln Z(\theta)$. Using the logarithm identity 
 
 $$f(\theta) + f(\phi) = \ln Z(\theta) + \ln Z(\phi) = \ln\!\big(Z(\theta) \cdot Z(\phi)\big) = \ln Z(\theta + \phi) = f(\theta + \phi)$$
 
-The logarithm converts the **multiplicative** equation into an **additive** one! Since $Z$ is continuous (it traces a smooth curve on the unit circle) and $\ln$ is continuous, $f$ is also continuous. By our theorem from Steps 1--3:
+The logarithm converts the **multiplicative** equation into an **additive** one. Since $Z$ is continuous (it traces a smooth curve on the unit circle) and $\ln$ is continuous, $f$ is also continuous. By our theorem from Steps 1--3:
 
 $$f(\theta) = k\theta \implies \ln Z(\theta) = k\theta$$
 
@@ -262,12 +262,12 @@ Set $\ln a = x$ and $\ln b = y$. Then $a = e^x$ and $b = e^y$, so:
 
 $$ab = e^x \cdot e^y = e^{x+y}$$
 
-Taking logarithms: $\ln(ab) = x + y = \ln a + \ln b$. The key step is that exponentials turn addition into multiplication -- logarithms reverse this.
+Taking logarithms: $\ln(ab) = x + y = \ln a + \ln b$. The key step is that exponentials convert addition into multiplication — logarithms reverse this correspondence.
 :::
 
 ### Step 5: Finding $k = i$
 
-We have shown $Z(\theta) = e^{k\theta}$ but we still need to determine $k$. Use the power series expansion for an infinitesimal angle $d\theta$:
+We have established that $Z(\theta) = e^{k\theta}$ but the constant $k$ remains to be determined. We use the power series expansion for an infinitesimal angle $d\theta$:
 
 $$Z(d\theta) = e^{k\,d\theta} = 1 + k\,d\theta + \frac{(k\,d\theta)^2}{2!} + \cdots \approx 1 + k\,d\theta$$
 
@@ -284,7 +284,7 @@ Therefore:
 
 ::: {.callout-important}
 ## Key Idea: Euler's Formula
-This is the grand finale -- exponentials, trig functions, and imaginary numbers all unified in a single equation. It says that $e^{i\theta}$ traces the unit circle, with cosine as the real part and sine as the imaginary part.
+This is the culmination of the argument — exponentials, trigonometric functions, and imaginary numbers are unified in a single equation. It states that $e^{i\theta}$ traces the unit circle, with cosine as the real part and sine as the imaginary part.
 
 $$\boxed{e^{i\theta} = \cos\theta + i\sin\theta}$$
 :::
@@ -324,7 +324,7 @@ $$e^{i\pi} = \cos\pi + i\sin\pi = -1 + 0 = -1$$
 
 ::: {.callout-important}
 ## Key Idea: Euler's Identity
-Plug $\theta = \pi$ into Euler's formula and you get the most famous equation in mathematics -- one that ties together five fundamental constants using three basic operations.
+Setting $\theta = \pi$ in Euler's formula yields one of the most celebrated equations in mathematics — one that relates five fundamental constants using three basic operations.
 
 $$\boxed{e^{i\pi} + 1 = 0}$$
 :::

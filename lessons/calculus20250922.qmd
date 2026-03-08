@@ -3,19 +3,19 @@ title: "Derivatives of Trig Functions & sin(x)/x Limit"
 date: 2025-09-22
 ---
 
-Sine and cosine are everywhere: sound waves, roller coasters, ocean tides, and even the electricity powering your phone. In this lesson, you'll discover why the derivative of $\sin x$ is $\cos x$ using three completely different methods, explore a sneaky limit that makes it all work, and find out why radians are the only angle measurement that plays nicely with calculus. Once you understand these ideas, you'll have the tools to analyze anything that moves in a cycle.
+This lesson establishes the derivatives of the trigonometric functions $\sin x$ and $\cos x$ via three independent methods. We examine the fundamental limit $\lim_{x \to 0} \frac{\sin x}{x} = 1$, which underlies these results, and explain why radians are the natural angle measure for calculus. These tools are essential for analyzing any periodic phenomenon.
 
 ::: {.callout-tip collapse="true"}
-## Why Trig Derivatives Matter
+## Motivation
 
-Trigonometric functions describe anything that repeats in a cycle:
+Trigonometric functions model any phenomenon that repeats in a cycle:
 
-- **Music**: sound waves are sine and cosine curves — their derivatives tell you how fast the air pressure is changing
-- **Roller coasters**: the slope of the track at any point is a trig derivative
-- **Tides**: ocean levels follow sine-like patterns — the derivative tells you when the tide is rising fastest
-- **Electricity**: household AC current is a sine wave — engineers need its derivative to design circuits
+- **Acoustics**: sound waves are sine and cosine curves — their derivatives describe the rate of change of air pressure.
+- **Mechanical design**: the slope of a curved track at any point involves trigonometric derivatives.
+- **Oceanography**: tidal levels follow sinusoidal patterns — the derivative indicates when the tide rises most rapidly.
+- **Electrical engineering**: household AC current is a sine wave — circuit design requires its derivative.
 
-Knowing that the derivative of $\sin x$ is $\cos x$ is one of the most-used facts in all of science and engineering.
+The fact that the derivative of $\sin x$ is $\cos x$ is among the most frequently used results in science and engineering.
 :::
 
 ## Topics Covered
@@ -48,7 +48,7 @@ Knowing that the derivative of $\sin x$ is $\cos x$ is one of the most-used fact
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is the unit circle?
@@ -74,7 +74,7 @@ If you take the radius of a circle and wrap it along the edge (the arc), the ang
 - $\pi$ radians = $180°$
 - To convert: multiply degrees by $\frac{\pi}{180}$
 
-**Why radians matter for calculus:** the beautiful formula $\frac{d}{dx}(\sin x) = \cos x$ only works when $x$ is in radians!
+**Why radians matter for calculus:** the identity $\frac{d}{dx}(\sin x) = \cos x$ holds only when $x$ is measured in radians.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -103,14 +103,14 @@ Factorials grow incredibly fast and show up in series expansions.
 
 ::: {.callout-important}
 ## Key Idea: Derivative of Sine
-The derivative of $\sin x$ is $\cos x$. You can see this geometrically: as an angle increases by a tiny amount on the unit circle, the vertical coordinate (sine) changes at a rate equal to the horizontal coordinate (cosine).
+The derivative of $\sin x$ is $\cos x$. Geometrically, as an angle increases by an infinitesimal amount on the unit circle, the vertical coordinate (sine) changes at a rate equal to the horizontal coordinate (cosine).
 
 $$\frac{d}{dx}(\sin x) = \cos x$$
 :::
 
 ### Geometric Derivation: $\frac{d}{dx}(\sin x) = \cos x$
 
-Picture a point moving around the unit circle. As the angle $\theta$ increases by a tiny amount $\Delta\theta$:
+Consider a point moving around the unit circle. As the angle $\theta$ increases by a small amount $\Delta\theta$:
 
 1. The point moves along a tiny **arc** of length $\Delta\theta$ (since radius = 1, arc length = angle in radians)
 2. For very small angles, the arc is practically a straight line segment — **arc $\approx$ chord**
@@ -161,9 +161,9 @@ The same argument, but now we look at the **horizontal component**:
 $$\frac{d}{d\theta}(\cos\theta) = -\sin\theta$$
 
 ::: {.callout-tip collapse="true"}
-## Why the negative sign?
+## Justification of the negative sign
 
-Think about it: when $\theta$ is between $0$ and $\pi/2$, the point is moving **upward and to the left**. So $\sin\theta$ is increasing (positive derivative) while $\cos\theta$ is decreasing (negative derivative). The $-\sin\theta$ captures exactly this: cosine decreases wherever sine is positive.
+When $\theta$ is between $0$ and $\pi/2$, the point on the unit circle moves **upward and to the left**. Consequently, $\sin\theta$ is increasing (positive derivative) while $\cos\theta$ is decreasing (negative derivative). The factor $-\sin\theta$ captures precisely this: cosine decreases wherever sine is positive.
 :::
 
 ::: {.callout-important}
@@ -214,7 +214,7 @@ $$\lim_{x \to 0} \frac{\sin_{\text{deg}}(x)}{x} = \frac{\pi}{180} \approx 0.0174
 ::: {.callout-tip collapse="true"}
 ## Numerical Example: $\frac{\sin(0.0047°)}{0.0047}$
 
-Don't be tricked! If the angle is in degrees, you must convert:
+If the angle is given in degrees, one must convert to radians:
 
 $$0.0047° = 0.0047 \times \frac{\pi}{180} \approx 8.203 \times 10^{-5} \text{ radians}$$
 
@@ -237,7 +237,7 @@ There are three completely different ways to prove $\frac{d}{dx}(\sin x) = \cos 
 | **Geometric (unit circle)** | Arc $\approx$ chord for small angles, project onto vertical axis |
 | **Maclaurin series** | Differentiate $x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$ term by term |
 
-All three give the same result — a good sign that it must be true!
+All three yield the same result — strong evidence of its correctness.
 
 ### Maclaurin Series for Sine and Cosine
 
@@ -248,12 +248,12 @@ $$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots = \sum_
 $$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots = \sum_{n=0}^{\infty} \frac{(-1)^n \, x^{2n}}{(2n)!}$$
 
 ::: {.callout-tip collapse="true"}
-## Notice the pattern!
+## Remark
 
-- $\sin x$ has only **odd** powers: $x^1, x^3, x^5, \ldots$
-- $\cos x$ has only **even** powers: $x^0, x^2, x^4, \ldots$
+- $\sin x$ contains only **odd** powers: $x^1, x^3, x^5, \ldots$
+- $\cos x$ contains only **even** powers: $x^0, x^2, x^4, \ldots$
 - The signs alternate: $+, -, +, -, \ldots$
-- If you differentiate the $\sin x$ series term by term, you get exactly the $\cos x$ series!
+- Differentiating the $\sin x$ series term by term yields exactly the $\cos x$ series.
 :::
 
 **See how adding more terms gets closer to the true curve:**
@@ -280,7 +280,7 @@ When working with very small angles:
 
 - $\sin x \approx x$ for small $x$ (in radians) — the smaller $x$ is, the better the approximation
 - The number of **significant figures** you can trust depends on how small $x$ is
-- Always check: are your angles in **radians** or **degrees** before computing?
+- Always verify whether angles are in **radians** or **degrees** before computing.
 
 ## Cheat Sheet
 
@@ -288,7 +288,7 @@ When working with very small angles:
 | Formula | Notes |
 |---|---|
 | $\frac{d}{dx}(\sin x) = \cos x$ | $x$ must be in radians |
-| $\frac{d}{dx}(\cos x) = -\sin x$ | Don't forget the negative! |
+| $\frac{d}{dx}(\cos x) = -\sin x$ | Note the negative sign |
 | $\lim_{x \to 0} \frac{\sin x}{x} = 1$ | Only in radians |
 | $\lim_{x \to 0} \frac{\sin_{\text{deg}} x}{x} = \frac{\pi}{180}$ | In degrees |
 | $\sin x \approx x$ for small $x$ | First-order approximation |

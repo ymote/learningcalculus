@@ -3,12 +3,12 @@ title: "Derivative Analysis & Quotient Rule"
 date: 2025-08-21
 ---
 
-Ready to become a graph detective? In this lesson, you'll sharpen your skills at reading derivative graphs to figure out where a function goes up, goes down, and hits its peaks and valleys. You'll also learn the Quotient Rule — a formula for taking the derivative of a fraction — which shows up any time one changing quantity is divided by another.
+This lesson focuses on reading derivative graphs to determine where a function increases, decreases, and attains its local extrema. We also develop the Quotient Rule — a formula for differentiating a fraction — which arises whenever one changing quantity is divided by another.
 
 ::: {.callout-tip collapse="true"}
-## Real-World Connection: Reading Graphs Like a Pro
+## Motivation: Reading Graphs in Practice
 
-When engineers design roller coasters, they don't just care about the shape of the track — they care about where it goes up, where it goes down, and where the peaks and valleys are. That's exactly what derivatives tell us! And the quotient rule? It shows up every time you compute a rate like "miles per gallon" or "points per game" — any time you divide one changing quantity by another.
+When engineers design structures, they must determine where a curve rises, falls, and attains its peaks and valleys — precisely the information that derivatives encode. The quotient rule arises whenever one computes a rate such as "miles per gallon" or "points per game" — any situation involving the division of one changing quantity by another.
 :::
 
 ## Topics Covered
@@ -43,13 +43,13 @@ When engineers design roller coasters, they don't just care about the shape of t
 ## Polynomial Graphing: The Snaking Method
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Factoring Polynomials
+## Prerequisites: Factoring Polynomials
 
-To use the snaking method, you first need to write the polynomial in factored form. For example:
+To use the snaking method, one must first write the polynomial in factored form. For example:
 
 $$x^3 - 4x = x(x-2)(x+2)$$
 
-The factors tell you the **roots** (where the graph touches or crosses the x-axis). Once you have the roots, you can snake through them.
+The factors determine the **roots** (where the graph touches or crosses the x-axis). Once the roots are known, one can snake through them.
 :::
 
 The **snaking method** is a quick way to sketch a polynomial:
@@ -100,12 +100,12 @@ Why? Because $(x - r)^{\text{even}}$ is always $\geq 0$ — a square (or fourth 
 ## Critical Points and Reading the Derivative Graph
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: What Is a Derivative?
+## Prerequisites: What Is a Derivative?
 
-The derivative $f'(x)$ tells you the **slope** of $f(x)$ at every point. If $f'(x) > 0$, the original function is going uphill. If $f'(x) < 0$, it's going downhill. If $f'(x) = 0$, the function is momentarily flat — a **critical point**.
+The derivative $f'(x)$ gives the **slope** of $f(x)$ at every point. If $f'(x) > 0$, the original function is increasing. If $f'(x) < 0$, it is decreasing. If $f'(x) = 0$, the function is momentarily flat — a **critical point**.
 :::
 
-The derivative graph $f'(x)$ is like a **dashboard** for the original function $f(x)$:
+The derivative graph $f'(x)$ serves as a complete summary of the behavior of the original function $f(x)$:
 
 | What $f'(x)$ does | What $f(x)$ does |
 |---|---|
@@ -115,25 +115,25 @@ The derivative graph $f'(x)$ is like a **dashboard** for the original function $
 
 ## Identifying Maxima, Minima, and Stationary Points
 
-A critical point (where $f'(x) = 0$) can be one of three things. You figure out which by looking at how $f'(x)$ changes sign:
+A critical point (where $f'(x) = 0$) can be one of three types. One determines the classification by examining how $f'(x)$ changes sign:
 
 ::: {.callout-important}
 ## Key Idea: The First Derivative Test
-Check the sign of the derivative just before and just after a critical point. The sign change (or lack of one) tells you exactly what type of critical point you have.
+Examine the sign of the derivative immediately before and after a critical point. The sign change (or lack thereof) determines exactly what type of critical point is present.
 
 | Sign change in $f'(x)$ | Type of critical point |
 |---|---|
-| $+ \to -$ (positive then negative) | **Local maximum** (hilltop) |
-| $- \to +$ (negative then positive) | **Local minimum** (valley) |
-| No sign change ($+ \to +$ or $- \to -$) | **Stationary inflection point** (flat but keeps going) |
+| $+ \to -$ (positive then negative) | **Local maximum** |
+| $- \to +$ (negative then positive) | **Local minimum** |
+| No sign change ($+ \to +$ or $- \to -$) | **Stationary inflection point** |
 :::
 
 ::: {.callout-tip collapse="true"}
-## Think of it like driving
+## Remark
 
-- **Maximum**: You were going uphill ($f' > 0$), hit the top, then go downhill ($f' < 0$).
-- **Minimum**: You were going downhill ($f' < 0$), hit the bottom, then go uphill ($f' > 0$).
-- **Stationary inflection**: You slow down to zero speed momentarily, then keep going the same direction — like pausing at a flat spot on a winding road.
+- **Maximum**: The function was increasing ($f' > 0$), reaches a peak, then begins decreasing ($f' < 0$).
+- **Minimum**: The function was decreasing ($f' < 0$), reaches a trough, then begins increasing ($f' > 0$).
+- **Stationary inflection**: The derivative momentarily equals zero, but the function continues in the same direction — intuitively, this corresponds to a brief flattening along the curve.
 :::
 
 **Explore: see $f(x)$ and $f'(x)$ side by side:**
@@ -155,17 +155,17 @@ Check the sign of the derivative just before and just after a critical point. Th
 </script>
 ```
 
-Notice: $f'(x) = 0$ at $x = -1$ and $x = 1$ — exactly where $f(x)$ has its max and min!
+Observe that $f'(x) = 0$ at $x = -1$ and $x = 1$ — precisely where $f(x)$ attains its local maximum and minimum.
 
 ## Differentiating Fractions: Rewriting as Powers
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Negative Exponents
+## Prerequisites: Negative Exponents
 
-Remember that $\dfrac{1}{x^n} = x^{-n}$. This lets us turn fractions into power functions that we already know how to differentiate using the power rule.
+Recall that $\dfrac{1}{x^n} = x^{-n}$. This identity allows us to convert fractions into power functions that can be differentiated using the power rule.
 :::
 
-Before learning the quotient rule, there's a simpler trick that works when the denominator is just a power of $x$: **rewrite the fraction as a sum of powers**.
+Before developing the quotient rule, we note a simpler technique that applies when the denominator is a power of $x$: **rewrite the fraction as a sum of powers**.
 
 **Example:** Differentiate $\dfrac{1 + x}{x^2}$.
 
@@ -177,12 +177,12 @@ $$\frac{1 + x}{x^2} = \frac{1}{x^2} + \frac{x}{x^2} = x^{-2} + x^{-1}$$
 
 $$\frac{d}{dx}\left(x^{-2} + x^{-1}\right) = -2x^{-3} + (-1)x^{-2} = -\frac{2}{x^3} - \frac{1}{x^2}$$
 
-This shortcut avoids the quotient rule entirely! Use it whenever you can.
+This approach avoids the quotient rule entirely and should be used whenever applicable.
 
 ## The Quotient Rule
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: The Product Rule
+## Prerequisites: The Product Rule
 
 The quotient rule is built on the product rule. Recall: if $y = P \cdot Q$, then
 
@@ -191,7 +191,7 @@ $$\frac{dy}{dx} = P \cdot \frac{dQ}{dx} + Q \cdot \frac{dP}{dx}$$
 The quotient rule handles $P/Q$ instead of $P \cdot Q$.
 :::
 
-When you have a fraction $\dfrac{P}{Q}$ where both $P$ and $Q$ are functions of $x$, the **quotient rule** says:
+Given a fraction $\dfrac{P}{Q}$ where both $P$ and $Q$ are functions of $x$, the **quotient rule** states:
 
 ::: {.callout-important}
 ## Key Idea: The Quotient Rule
@@ -256,6 +256,6 @@ $$\frac{d}{dx}\!\left(\frac{x^2+1}{x-3}\right) = \frac{(x-3)(2x) - (x^2+1)(1)}{(
 | $f'(x) = 0$, sign $+ \to -$ | Local **maximum** |
 | $f'(x) = 0$, sign $- \to +$ | Local **minimum** |
 | $f'(x) = 0$, no sign change | Stationary inflection point |
-| Fraction shortcut | $\dfrac{1+x}{x^2} = x^{-2} + x^{-1}$, then use power rule |
+| Rewriting fractions | $\dfrac{1+x}{x^2} = x^{-2} + x^{-1}$, then use power rule |
 | Quotient Rule | $\dfrac{d}{dx}\!\left(\dfrac{P}{Q}\right) = \dfrac{Q \cdot dP - P \cdot dQ}{Q^2}$ |
 :::

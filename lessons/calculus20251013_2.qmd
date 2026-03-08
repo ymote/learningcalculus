@@ -3,20 +3,20 @@ title: "Related Rates: Distance, Shadows & Velocity Decomposition"
 date: 2025-10-13
 ---
 
-In this lesson, you will tackle real related rates problems from start to finish -- two cars at a crossroad, a boat being pulled toward a cliff, and even the mystery of how fast your shadow moves when you walk away from a streetlight. Along the way, you will discover a cool shortcut from physics called "velocity decomposition" that sometimes lets you skip the algebra entirely. By the end, you will have a reliable step-by-step method for any related rates problem.
+This lesson presents several complete related rates problems -- two cars at a crossroad, a boat being pulled toward a cliff, and the rate at which a shadow moves when a person walks away from a streetlight. We also introduce the technique of velocity decomposition from physics, which in certain cases bypasses the algebraic computation entirely. The lesson concludes with a systematic procedure applicable to any related rates problem.
 
 ::: {.callout-tip collapse="true"}
-## Why Related Rates Matter
+## Motivation
 
-Related rates problems ask: "If one quantity is changing, how fast is a connected quantity changing?" This shows up constantly in the real world:
+Related rates problems address the question: given that one quantity is changing, at what rate does a connected quantity change? Such problems arise in numerous applied settings:
 
-- **Navigation**: Air traffic controllers track how fast the distance between two planes is changing to prevent collisions
-- **Construction**: Engineers calculate how fast a shadow moves to plan lighting for buildings and stadiums
-- **Rescue operations**: Coast guard teams figure out how quickly to reel in a towline to bring a boat to shore at the right speed
-- **Medicine**: Doctors model how fast a drug concentration in the blood is changing based on IV drip rates
-- **Sports**: Coaches analyze how quickly the gap between two runners is closing during a relay race
+- **Navigation**: air traffic controllers monitor how rapidly the distance between two aircraft is changing to ensure safe separation
+- **Civil engineering**: engineers compute how fast a shadow moves to plan lighting for structures and stadiums
+- **Rescue operations**: coast guard teams determine the required rate of reeling in a towline to bring a boat to shore at an appropriate speed
+- **Pharmacokinetics**: physicians model how rapidly drug concentration in the blood changes based on IV drip rates
+- **Kinematics**: the rate at which the gap between two moving objects closes is determined by related rates
 
-Today we'll solve several classic related rates problems using both calculus (implicit differentiation) and physics (velocity decomposition).
+In this lesson, we solve several classic related rates problems using both calculus (implicit differentiation) and physics (velocity decomposition).
 :::
 
 ## Topics Covered
@@ -51,12 +51,12 @@ Today we'll solve several classic related rates problems using both calculus (im
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is implicit differentiation?
 
-When you have an equation like $x^2 + y^2 = s^2$ and both $x$, $y$, and $s$ depend on time $t$, you can't just "take the derivative with respect to $x$." Instead, you **differentiate** each term with respect to its own variable:
+Given an equation such as $x^2 + y^2 = s^2$ in which $x$, $y$, and $s$ all depend on time $t$, one cannot simply differentiate with respect to $x$. Instead, each term is **differentiated** with respect to its own variable:
 
 $$2x\,dx + 2y\,dy = 2s\,ds$$
 
@@ -90,7 +90,7 @@ Shadow problems almost always involve similar triangles formed by a light source
 ::: {.callout-note collapse="true"}
 ## What is vector decomposition?
 
-Any velocity vector can be broken into two perpendicular components. If you want to know how motion affects a particular direction (say, the distance between two objects), you **project** the velocity onto that direction:
+Any velocity vector can be broken into two perpendicular components. To determine how motion affects a particular direction (say, the distance between two objects), one **projects** the velocity onto that direction:
 
 $$v_{\text{radial}} = v \cos\theta$$
 
@@ -154,7 +154,7 @@ $$s^2 = x^2 + y^2$$
 
 $$2s\,ds = 2x\,dx + 2y\,dy \quad \Longrightarrow \quad s\frac{ds}{dt} = x\frac{dx}{dt} + y\frac{dy}{dt}$$
 
-**Plug in.** Notice $x : y = 375 : 500 = 3 : 4$, so $s$ corresponds to $5$ in the ratio. We only need the ratios:
+**Substitute.** Notice $x : y = 375 : 500 = 3 : 4$, so $s$ corresponds to $5$ in the ratio. We need only the ratios:
 
 $$\frac{ds}{dt} = \frac{x}{s}\cdot\frac{dx}{dt} + \frac{y}{s}\cdot\frac{dy}{dt} = \frac{3}{5}(-40) + \frac{4}{5}(60) = -24 + 48 = 24 \text{ mph}$$
 
@@ -183,7 +183,7 @@ The net rate of change:
 
 $$\frac{ds}{dt} = 48 - 24 = 24 \text{ mph}$$
 
-Same answer -- but we could almost eyeball it once we spotted the $3$-$4$-$5$ ratio.
+The same answer is obtained -- and the computation is nearly immediate once one recognizes the $3$-$4$-$5$ ratio.
 
 ## Problem 2: Boat and Cliff (Rope Problem)
 
@@ -245,7 +245,7 @@ The rope shrinks at $2$ m/s -- that is the **radial** component of the boat's ve
 
 $$v = 2 \times \frac{13}{12} = \frac{13}{6} \text{ m/s}$$
 
-Eyeball it once you spot the $5$-$12$-$13$ triangle.
+The result follows immediately upon recognizing the $5$-$12$-$13$ triangle.
 
 ## Problem 3: Shadow of a Walking Person
 
@@ -325,7 +325,7 @@ $$\frac{x}{4 - x} = \frac{3 - 2.5}{y - 3} \quad \Longrightarrow \quad x(y - 3) =
 
 $$y\frac{dx}{dt} + x\frac{dy}{dt} = 2.5\frac{dx}{dt}$$
 
-**Plug in.** At $x = 1$: $y = 2 + 2.5 = 4.5$ m.
+**Substitute.** At $x = 1$: $y = 2 + 2.5 = 4.5$ m.
 
 $$4.5(3) + 1 \cdot \frac{dy}{dt} = 2.5(3) \quad \Longrightarrow \quad \frac{dy}{dt} = 7.5 - 13.5 = -6$$
 
@@ -335,13 +335,13 @@ The negative sign means the shadow is moving **down** the wall at $6$ m/s. Unlik
 
 ## Common Mistakes to Avoid
 
-1. **Plugging in numbers too early.** If you substitute $x = 3$ before differentiating, you get $\frac{d}{dt}(3) = 0$ -- nonsense. The equation must hold at every instant.
+1. **Substituting numerical values too early.** Substituting $x = 3$ before differentiating yields $\frac{d}{dt}(3) = 0$ -- a meaningless result. The equation must hold at every instant.
 
-2. **Confusing variables and constants.** The cliff height $h = 50$ never changes, so $dh = 0$. The person's position $x$ does change, so $dx \neq 0$. Label everything at the start.
+2. **Confusing variables and constants.** The cliff height $h = 50$ is fixed, so $dh = 0$. The position $x$ varies, so $dx \neq 0$. All quantities should be classified at the outset.
 
-3. **Forgetting the sign.** If a quantity is decreasing, its rate is **negative**. Car B approaching means $\frac{dx}{dt} < 0$; rope pulled in means $\frac{dr}{dt} < 0$.
+3. **Incorrect signs.** If a quantity is decreasing, its rate is **negative**. Car B approaching means $\frac{dx}{dt} < 0$; rope being reeled in means $\frac{dr}{dt} < 0$.
 
-4. **Taking the derivative instead of the differential.** Give each variable its own differential ($2r\,dr = 2x\,dx$), then divide by $dt$. Do not decide "with respect to what" prematurely.
+4. **Differentiating prematurely with respect to a single variable.** Each variable should receive its own differential ($2r\,dr = 2x\,dx$); division by $dt$ is performed afterward.
 
 ## Cheat Sheet
 

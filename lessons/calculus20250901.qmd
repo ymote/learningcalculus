@@ -3,19 +3,19 @@ title: "Optimization & Distance to Curves"
 date: 2025-09-01
 ---
 
-Imagine you're standing in a field and you want to find the closest point on a curved fence — how would you do it without measuring every single spot? Calculus gives you a shortcut! In this lesson, you'll learn how to use derivatives to find the absolute best answer to problems like these, whether it's the shortest distance, the lowest cost, or the strongest design.
+This lesson develops optimization techniques using derivatives — methods for finding the shortest distance, the lowest cost, or the optimal design. We study the problem of minimizing the distance from an external point to a curve as a motivating example.
 
 ::: {.callout-tip collapse="true"}
-## Why Optimization Matters
+## Motivation
 
-Optimization is about finding the **best** answer — the shortest path, the cheapest design, the fastest route.
+Optimization concerns finding the **best** value — the shortest path, the cheapest design, the fastest route.
 
-- **GPS navigation**: finds the shortest route from home to school
-- **Amazon warehouses**: pack the most boxes into each delivery truck
-- **Architects**: design the strongest bridge with the least material
-- **Game designers**: find the best camera angle to show the action
+- **GPS navigation**: determines the shortest route between two locations.
+- **Logistics**: maximizes the number of items packed into a delivery vehicle.
+- **Architecture**: designs the strongest bridge using the least material.
+- **Computer graphics**: determines the optimal camera angle for a scene.
 
-Calculus gives us a superpower: instead of trying every possibility, we can use derivatives to jump straight to the best one!
+The power of calculus lies in replacing exhaustive search with a direct computation: derivatives identify the optimal solution.
 :::
 
 ## Topics Covered
@@ -48,7 +48,7 @@ Calculus gives us a superpower: instead of trying every possibility, we can use 
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is optimization?
@@ -59,17 +59,17 @@ In calculus, we use the fact that at a max or min, the **derivative equals zero*
 
 $$f'(x) = 0$$
 
-Why? Because the derivative measures the slope of the curve. At the very top of a hill or bottom of a valley, the slope is flat — it's zero! That's the key insight that makes calculus so powerful for optimization.
+The reason is that the derivative measures the slope of the curve. At a local extremum, the slope is zero. This observation is the key insight that makes calculus effective for optimization.
 :::
 
 ::: {.callout-note collapse="true"}
-## What is a derivative, again?
+## What is a derivative?
 
-The **derivative** $f'(x)$ tells you the **rate of change** — how fast $f(x)$ is increasing or decreasing at any point $x$.
+The **derivative** $f'(x)$ gives the **rate of change** — how rapidly $f(x)$ is increasing or decreasing at any point $x$.
 
-- $f'(x) > 0$: function is going **up** (increasing)
-- $f'(x) < 0$: function is going **down** (decreasing)
-- $f'(x) = 0$: function is **flat** (potential max or min!)
+- $f'(x) > 0$: function is **increasing**
+- $f'(x) < 0$: function is **decreasing**
+- $f'(x) = 0$: function is **flat** (potential extremum)
 
 For $f(x) = x^n$, the derivative is $f'(x) = nx^{n-1}$. For example, $f(x) = x^2$ gives $f'(x) = 2x$.
 :::
@@ -100,7 +100,7 @@ The **AM-GM inequality** says that for positive numbers $a$ and $b$:
 
 $$\frac{a + b}{2} \geq \sqrt{ab}$$
 
-The arithmetic mean is always at least as large as the geometric mean! We can prove this with calculus. For a fixed product $ab = P$, we want to minimize $a + b = a + \frac{P}{a}$:
+The arithmetic mean is always at least as large as the geometric mean. We can prove this using calculus. For a fixed product $ab = P$, we seek to minimize $a + b = a + \frac{P}{a}$:
 
 $$f(a) = a + \frac{P}{a}$$
 
@@ -135,15 +135,15 @@ The distance from $P(3,1)$ to a point $(x, x^2)$ on the parabola is:
 $$D = \sqrt{(x - 3)^2 + (x^2 - 1)^2}$$
 
 ::: {.callout-tip collapse="true"}
-## The $D^2$ Trick — Why It Works
+## Remark: The $D^2$ Technique
 
-The square root in the distance formula makes the derivative messy. Here's the key insight: **$D$ is smallest exactly when $D^2$ is smallest** (since $D \geq 0$ and squaring preserves order for non-negative numbers).
+The square root in the distance formula complicates differentiation. The key observation is that **$D$ is minimized exactly when $D^2$ is minimized** (since $D \geq 0$ and squaring preserves order for non-negative numbers).
 
-So instead of minimizing $D$, we minimize:
+Therefore, instead of minimizing $D$, we minimize:
 
 $$D^2 = (x - 3)^2 + (x^2 - 1)^2$$
 
-No square root means a much cleaner derivative!
+Eliminating the square root yields a much cleaner derivative.
 :::
 
 ::: {.callout-important}
@@ -211,12 +211,12 @@ There is a beautiful geometric shortcut. At the closest point on the curve, the 
 The shortest path from an external point to a curve always hits the curve at a right angle. If it arrived at any other angle, you could slide along the curve to get closer, so it wouldn't be the minimum.
 :::
 
-Why? If the line from $P$ hit the curve at an angle (not perpendicular), you could slide along the curve to get even closer — so it wouldn't be the minimum!
+The reason is that if the line from $P$ met the curve at a non-perpendicular angle, one could slide along the curve to achieve a shorter distance — contradicting the assumption of minimality.
 
 ::: {.callout-note collapse="true"}
 ## Vocabulary: Tangent and Normal
 
-- **Tangent line**: the line that just "touches" the curve at a point, going in the same direction as the curve
+- **Tangent line**: the line that is tangent to the curve at a point, sharing its direction at that point
 - **Normal line**: the line perpendicular (at a right angle) to the tangent line at that point
 :::
 
@@ -260,7 +260,7 @@ This gives us the same cubic equation — but we arrived at it geometrically ins
 </script>
 ```
 
-*Drag the slider for $a$ until the normal line (purple) passes through $P$ — that's the closest point!*
+*Drag the slider for $a$ until the normal line (purple) passes through $P$ — that identifies the closest point.*
 
 ### Homework: Ellipse Distance Problem
 
@@ -278,7 +278,7 @@ So the tangent vector is $(2y, -\frac{x}{2})$ and the normal vector is $(\frac{x
 | What you want | What to do |
 |---|---|
 | Find max or min of $f(x)$ | Solve $f'(x) = 0$ |
-| Minimize a distance | Minimize $D^2$ instead (avoids the square root!) |
+| Minimize a distance | Minimize $D^2$ instead (avoids the square root) |
 | AM-GM inequality | $\frac{a+b}{2} \geq \sqrt{ab}$, equality when $a = b$ |
 | Tangent vector to $y = f(x)$ | $(1, \; f'(x))$ |
 | Normal vector to $y = f(x)$ | $(-f'(x), \; 1)$ |

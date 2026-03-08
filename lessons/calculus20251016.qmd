@@ -3,18 +3,18 @@ title: "Related Rates via the Physics (Vector Projection) Method"
 date: 2025-10-16
 ---
 
-What if you could figure out how fast something is moving without taking a single derivative? In this lesson, you will learn the "physics method" -- a technique that uses vector projection to solve related rates problems for rigid objects like rods and beams. You will also prove the Law of Sines using circles, which is one of the most beautiful results in geometry. Get ready for a lesson where physics and math team up!
+This lesson presents the vector projection method for solving related rates problems involving rigid objects such as rods and beams -- a technique that determines velocities without explicit differentiation. We also prove the Law of Sines using the circumscribed circle, establishing one of the fundamental results in triangle geometry.
 
 ::: {.callout-tip collapse="true"}
-## Why Vector Projection and Related Rates Matter
+## Motivation
 
-Understanding how velocities of connected objects relate to each other shows up everywhere in the real world:
+Understanding how the velocities of connected objects relate to each other arises in numerous engineering and physical applications:
 
-- **Robotics**: a robotic arm has rigid links connected at joints -- engineers use velocity projections to figure out how fast the end of the arm moves when a motor turns one joint
-- **Car engines**: pistons and crankshafts are connected by rigid rods, and the piston speed depends on projecting the crankshaft's velocity along the rod direction
-- **Sports**: when a baseball bat swings, every point on the bat moves at a different speed -- the rigid-body constraint determines exactly how fast the tip moves relative to the handle
-- **Construction cranes**: as the crane arm rotates, the cable attachment point moves along a circle, and the load swings -- predicting the load's velocity requires decomposing motion along and perpendicular to the cable
-- **Video games**: physics engines simulate rigid bodies by enforcing constraints on how connected parts move, using exactly the projection ideas from this lesson
+- **Robotics**: a robotic arm consists of rigid links connected at joints -- engineers use velocity projections to determine how fast the end effector moves when a motor actuates one joint
+- **Mechanical engineering**: pistons and crankshafts are connected by rigid rods, and the piston speed is determined by projecting the crankshaft's velocity along the rod direction
+- **Biomechanics**: when a bat swings, every point on the bat moves at a different speed -- the rigid-body constraint determines the tip velocity relative to the handle
+- **Structural engineering**: as a crane arm rotates, the cable attachment point moves along a circle and the load swings -- predicting the load's velocity requires decomposing motion along and perpendicular to the cable
+- **Computational physics**: physics engines simulate rigid bodies by enforcing constraints on the motion of connected parts, using the projection methods developed in this lesson
 :::
 
 ## Topics Covered
@@ -49,7 +49,7 @@ Understanding how velocities of connected objects relate to each other shows up 
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is the Law of Cosines?
@@ -58,7 +58,7 @@ The **Law of Cosines** generalizes the Pythagorean theorem to any triangle. For 
 
 $$a^2 = b^2 + c^2 - 2bc\cos A$$
 
-When $A = 90°$, we get $\cos A = 0$ and this reduces to $a^2 = b^2 + c^2$, which is just the Pythagorean theorem. This formula lets you find a missing side when you know two sides and the included angle, or find a missing angle when you know all three sides.
+When $A = 90°$, we get $\cos A = 0$ and this reduces to $a^2 = b^2 + c^2$, which is just the Pythagorean theorem. This formula determines a missing side given two sides and the included angle, or a missing angle given all three sides.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -73,7 +73,7 @@ where:
 - $v_{\text{radial}} = |\vec{v}|\cos\alpha$ is the component **along** the reference direction
 - $v_{\text{tangential}} = |\vec{v}|\sin\alpha$ is the component **perpendicular** to it
 
-Here $\alpha$ is the angle between $\vec{v}$ and the reference direction. This is just the idea of projecting a vector onto a line using cosine.
+Here $\alpha$ is the angle between $\vec{v}$ and the reference direction. This is the standard projection of a vector onto a line using the cosine function.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -127,7 +127,7 @@ $$AB^2 = 1 + 4 - 2(1)(2)\!\left(-\frac{1}{2}\right) = 5 + 2 = 7$$
 
 $$\boxed{AB = \sqrt{7}}$$
 
-**Explore -- see the L-shaped wall configuration:**
+**Interactive demonstration -- the L-shaped wall configuration:**
 
 ::: {.desmos-container}
 ```{=html}
@@ -151,7 +151,7 @@ calculator.setMathBounds({left: -3, right: 3, bottom: -1, top: 4});
 
 ### The Physics (Vector Projection) Method
 
-Now suppose point $A$ is pulled along its wall with a horizontal velocity $u = 2$ m/s. We want to find the velocity $v$ of point $B$ along the other wall.
+Now suppose point $A$ is pulled along its wall with a horizontal velocity $u = 2$ m/s. We seek the velocity $v$ of point $B$ along the other wall.
 
 The key insight of the **physics method** is:
 
@@ -194,12 +194,12 @@ Solving for $v$:
 
 ::: {.callout-important}
 ## Key Idea: The Rigid Body Velocity Formula
-For a rigid rod that cannot stretch or compress, the components of velocity along the rod at each end must be equal. This gives you a simple formula to find one endpoint's speed from the other -- no calculus required!
+For a rigid rod that cannot stretch or compress, the components of velocity along the rod at each end must be equal. This yields a direct formula relating the speeds of the two endpoints -- without recourse to calculus.
 
 $$\boxed{v = u \cdot \frac{\cos\theta}{\cos\phi}}$$
 :::
 
-No derivatives were taken. We related the velocities purely through geometric projection.
+No derivatives were required. The velocities are related purely through geometric projection.
 
 ### Solving the Triangle: Finding $\cos\theta$ and $\cos\phi$
 
@@ -275,7 +275,7 @@ In any triangle, the ratio of a side to the sine of its opposite angle is the sa
 $$\boxed{\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C} = 2R}$$
 :::
 
-**Explore -- the circumcircle and the inscribed angle theorem:**
+**Interactive demonstration -- the circumcircle and the inscribed angle theorem:**
 
 ::: {.desmos-container}
 ```{=html}
@@ -302,13 +302,13 @@ calc2.setMathBounds({left: -4, right: 4, bottom: -3.5, top: 3.5});
 
 ## Rigid Rod on a Circle (Homework Problem)
 
-Here is the second example from class, left as homework:
+The following is the second example from class, assigned as homework:
 
 A rod $AB$ has length equal to one side of a regular hexagon inscribed in a given circle (so the arc $AB$ subtends $60°$, meaning $AB$ equals the radius $r$).
 
 Point $B$ moves **radially outward** from the center at $v = 2$ m/s. Point $A$ is constrained to move **along the circle** (tangentially). Find the speed of $A$.
 
-**Hints to get you started:**
+**Hints:**
 
 1. Since arc $AB$ subtends $60°$ at the center, the triangle $OAB$ (where $O$ is the center) is **equilateral** -- all sides equal $r$ and all angles equal $60°$
 2. The velocity of $A$ must be along the **tangent line** to the circle at $A$ (perpendicular to the radius $OA$)

@@ -3,20 +3,20 @@ title: "Motion in 2D: Velocity, Speed, Trajectories & Acceleration"
 date: 2025-10-27
 ---
 
-Have you ever wondered how a video game knows where a projectile will land, or how NASA plots a satellite's orbit? The secret is describing motion with equations that track the x- and y-coordinates separately over time. In this lesson, you will learn how to find an object's speed and direction from its position, how to figure out the shape of its path, and how to tell whether it is speeding up or slowing down -- all skills that unlock the physics of everything from roller coasters to rocket launches.
+Describing motion in two dimensions requires equations that track the $x$- and $y$-coordinates separately as functions of time. This lesson develops the methods for determining an object's speed and direction from its position vector, eliminating the time parameter to identify the geometric shape of the trajectory, and distinguishing intervals of acceleration from intervals of deceleration -- techniques fundamental to the analysis of motion in physics and engineering.
 
 ::: {.callout-tip collapse="true"}
-## Why Motion in 2D Matters
+## Motivation
 
-Understanding how objects move through space is the foundation of physics and engineering. Here's where 2D motion shows up in the real world:
+Understanding how objects move through space is foundational to physics and engineering. Two-dimensional motion arises in numerous contexts:
 
-- **Video games & animation**: every character, projectile, and camera path is described by parametric equations that give position as a function of time
-- **Space exploration**: NASA uses exactly these equations to plot satellite orbits (which are ellipses!) and calculate when to fire thrusters
-- **Sports science**: tracking a soccer ball's curved path or a runner on a track requires breaking velocity into components
-- **Robotics**: self-driving cars must know their speed (magnitude) and direction (velocity vector) separately to navigate safely
-- **Weather forecasting**: hurricanes and wind patterns are described by velocity fields in 2D and 3D, and meteorologists need to know when storms are accelerating
+- **Computer graphics and animation**: every character, projectile, and camera path is described by parametric equations giving position as a function of time
+- **Orbital mechanics**: satellite orbits (ellipses) are computed from parametric equations, and thrust timing depends on velocity analysis
+- **Sports science**: tracking a ball's curved path or a runner on a track requires decomposing velocity into components
+- **Autonomous navigation**: self-driving vehicles must determine both speed (magnitude) and heading (velocity vector) to navigate safely
+- **Meteorology**: hurricanes and wind patterns are described by velocity fields in 2D and 3D, and forecasters must determine when storms are accelerating
 
-Today we'll learn how to describe motion with vectors, eliminate time to find trajectory shapes, and determine when an object is speeding up or slowing down!
+This lesson covers describing motion with vectors, eliminating time to identify trajectory shapes, and determining when an object is speeding up or slowing down.
 :::
 
 ## Topics Covered
@@ -51,7 +51,7 @@ Today we'll learn how to describe motion with vectors, eliminate time to find tr
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is a vector?
@@ -88,7 +88,7 @@ $$\cos^2\theta + \sin^2\theta = 1$$
 
 This comes directly from the unit circle: any point $(\cos\theta, \sin\theta)$ lies on the circle $x^2 + y^2 = 1$.
 
-We use this identity constantly to **eliminate** the parameter $t$ from parametric equations involving sine and cosine.
+This identity is used frequently to **eliminate** the parameter $t$ from parametric equations involving sine and cosine.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -115,7 +115,7 @@ The **velocity vector** is the derivative of position with respect to time:
 
 $$\vec{v}(t) = \frac{d\vec{r}}{dt} = \big(\dot{x}(t),\; \dot{y}(t),\; \dot{z}(t)\big)$$
 
-Here the dot notation $\dot{x}$ means $\frac{dx}{dt}$. Velocity tells us both how fast and in which direction we're moving. It is a **vector** -- it points along the tangent to the trajectory.
+Here the dot notation $\dot{x}$ means $\frac{dx}{dt}$. Velocity specifies both the rate and direction of motion. It is a **vector** -- it points along the tangent to the trajectory.
 
 The **speed** is the magnitude of velocity -- it tells us only how fast, with no direction:
 
@@ -146,7 +146,7 @@ $$\boxed{\frac{x^2}{16} + \frac{y^2}{9} = 1}$$
 
 This is an **ellipse** with semi-major axis $a = 4$ (along $x$) and semi-minor axis $b = 3$ (along $y$).
 
-**Explore -- see the elliptical trajectory traced out over time:**
+**Interactive demonstration -- the elliptical trajectory traced out over time:**
 
 ```{=html}
 <div id="calc1" class="desmos-container"></div>
@@ -165,7 +165,7 @@ This is an **ellipse** with semi-major axis $a = 4$ (along $x$) and semi-minor a
 </script>
 ```
 
-*Drag the slider for $t_{\max}$ to watch the particle trace out the ellipse. It starts at $(4, 0)$ and moves counterclockwise!*
+*Drag the slider for $t_{\max}$ to observe the particle tracing out the ellipse. It starts at $(4, 0)$ and moves counterclockwise.*
 
 ### Starting Point and Direction of Motion
 
@@ -201,7 +201,7 @@ Since $\sin^2(3t) \ge 0$, the minimum speed is $v_{\min} = \sqrt{81} = 9$ (when 
 
 ### Accelerating vs. Decelerating: The Subtle Distinction
 
-An object is **accelerating** when its speed is increasing, and **decelerating** when its speed is decreasing. This is trickier than it sounds!
+An object is **accelerating** when its speed is increasing, and **decelerating** when its speed is decreasing. This distinction requires careful analysis.
 
 #### The 1D Trap
 
@@ -209,7 +209,7 @@ Consider the 1D velocity $v(t) = 7t^2 - 100t$. The acceleration is:
 
 $$a(t) = \frac{dv}{dt} = 14t - 100$$
 
-Setting $a > 0$ gives $t > \frac{50}{7}$. But positive acceleration does **not** always mean the object is speeding up!
+Setting $a > 0$ gives $t > \frac{50}{7}$. However, positive acceleration does **not** always mean the object is speeding up.
 
 The velocity $v(t)$ is a parabola with roots at $t = 0$ and $t = \frac{100}{7}$. Between these roots the velocity is **negative** (moving left). Even though the acceleration becomes positive at $t = \frac{50}{7}$, the object is still moving left and getting slower at that moment.
 
@@ -225,7 +225,7 @@ An object speeds up when its velocity and acceleration point the same way, and s
 $$\boxed{\text{Accelerating:} \quad a(t) \cdot v(t) > 0 \qquad\qquad \text{Decelerating:} \quad a(t) \cdot v(t) < 0}$$
 :::
 
-**Explore -- see how speed differs from velocity for $v(t) = 7t^2 - 100t$:**
+**Interactive demonstration -- speed versus velocity for $v(t) = 7t^2 - 100t$:**
 
 ```{=html}
 <div id="calc2" class="desmos-container"></div>
@@ -249,7 +249,7 @@ $$\boxed{\text{Accelerating:} \quad a(t) \cdot v(t) > 0 \qquad\qquad \text{Decel
 
 For our ellipse, we found $v(t) = \sqrt{81 + 63\sin^2(3t)}$. To determine when the speed increases or decreases, we do **not** need to differentiate this complicated expression!
 
-**The trick**: the speed $v$ increases when $\sin^2(3t)$ increases, which happens when $|\sin(3t)|$ increases. So we just graph $|\sin(3t)|$ and read off where it is rising or falling.
+**The key observation**: the speed $v$ increases when $\sin^2(3t)$ increases, which occurs when $|\sin(3t)|$ increases. It therefore suffices to graph $|\sin(3t)|$ and identify where it is increasing or decreasing.
 
 ```{=html}
 <div id="calc3" class="desmos-container"></div>
@@ -287,7 +287,7 @@ where $\theta = 2t$ and $a$ is a positive constant. Instead of differentiating, 
 3. Both denominator terms are increasing functions of $u$, so they decrease when $u$ decreases, i.e., when $|\cos\theta|$ decreases.
 4. Graph $|\cos\theta|$ and read off where it is decreasing -- those are the intervals where the object accelerates.
 
-This approach completely avoids chain rule nightmares!
+This approach entirely avoids the difficulties of explicit differentiation.
 
 ### Turning Points in 1D Motion
 
@@ -295,7 +295,7 @@ A **turning point** is where a 1D object reverses direction. It requires two con
 
 $$\dot{x}(t_0) = 0 \qquad \text{and} \qquad \dot{x}(t) \text{ changes sign at } t_0$$
 
-Simply having $\dot{x} = 0$ is not enough -- the velocity must switch from positive to negative (the object was moving right, now moves left) or vice versa. This is like a local maximum or minimum of the position $x(t)$.
+The condition $\dot{x} = 0$ alone is not sufficient -- the velocity must change sign (from positive to negative, or conversely). This corresponds to a local maximum or minimum of the position $x(t)$.
 
 In **2D motion**, there is no single rigorous definition of a turning point. Whether a point counts as a "turn" depends on which coordinate direction you are analyzing. On the ellipse, for example, the top and bottom could be turning points for the $y$-coordinate, while the left and right extremes are turning points for the $x$-coordinate.
 
@@ -303,9 +303,9 @@ In **2D motion**, there is no single rigorous definition of a turning point. Whe
 
 For the ellipse $\frac{x^2}{16} + \frac{y^2}{9} = 1$, find the point(s) at maximum and minimum distance from the center using differential calculus (optimization).
 
-**Hint**: Maximize and minimize $r^2 = x^2 + y^2$ subject to the ellipse constraint. You can substitute $y^2 = 9\left(1 - \frac{x^2}{16}\right)$ and optimize over $x$.
+**Hint**: Maximize and minimize $r^2 = x^2 + y^2$ subject to the ellipse constraint. One may substitute $y^2 = 9\left(1 - \frac{x^2}{16}\right)$ and optimize over $x$.
 
-Your intuition says the farthest point is at $(\pm 4, 0)$ and the closest is at $(0, \pm 3)$ -- prove it rigorously!
+Intuition suggests the farthest points are $(\pm 4, 0)$ and the closest are $(0, \pm 3)$ -- this should be proved rigorously.
 
 ## Cheat Sheet
 

@@ -3,18 +3,18 @@ title: "Polynomial Graphing, Critical Points & Quotient Rule"
 date: 2025-08-19
 ---
 
-Ever wonder how roller coaster designers know exactly where the highest and scariest points will be? In this lesson, you'll learn to sketch polynomial graphs like a pro, find the peaks and valleys of any curve using derivatives, and pick up a powerful formula for dividing functions called the Quotient Rule. These tools show up everywhere — from engineering to economics — and they all start here.
+This lesson develops techniques for sketching polynomial graphs, locating critical points via derivatives, and deriving the Quotient Rule for differentiating rational expressions. These methods arise throughout engineering, economics, and the sciences.
 
 ::: {.callout-tip collapse="true"}
-## Real-World Connection: Why Derivatives Matter for Graphing
+## Applications: Why Derivatives Matter for Graphing
 
-Derivatives aren't just abstract math — they help people solve real problems every day:
+Derivatives provide essential tools for solving applied problems:
 
-- **Roller coaster design**: Engineers use critical points to locate the highest climbs and fastest drops on a track, making sure the ride is thrilling but safe.
-- **GPS navigation**: Your phone calculates derivatives of your position over time to figure out your speed and direction, then updates your route in real time.
-- **Stock market analysis**: Traders look at how fast a stock price is rising or falling (its derivative!) to decide when to buy or sell.
-- **Bridge and building design**: Structural engineers find maximum stress points in beams and cables — those are critical points of a stress function.
-- **Medicine and biology**: Researchers track how quickly a drug concentration in the bloodstream is increasing or decreasing to determine the right dosage and timing.
+- **Roller coaster design**: Engineers use critical points to locate the highest climbs and fastest drops on a track, ensuring the ride is both thrilling and safe.
+- **GPS navigation**: Derivatives of position with respect to time yield speed and direction, enabling real-time route updates.
+- **Stock market analysis**: Traders examine the rate of change of a stock price (its derivative) to inform buying and selling decisions.
+- **Bridge and building design**: Structural engineers locate maximum stress points in beams and cables — these correspond to critical points of a stress function.
+- **Medicine and biology**: Researchers track the rate at which drug concentration in the bloodstream increases or decreases, informing dosage and timing decisions.
 :::
 
 ## Topics Covered
@@ -47,19 +47,19 @@ Derivatives aren't just abstract math — they help people solve real problems e
 
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Factoring Polynomials
+## Prerequisites: Factoring Polynomials
 
-To graph a polynomial, you need to find its **roots** (x-intercepts) by factoring. For example:
+To graph a polynomial, one must first find its **roots** (x-intercepts) by factoring. For example:
 
 $$f(x) = x^3 - 4x = x(x-2)(x+2)$$
 
-The roots are $x = 0, 2, -2$. If you are not comfortable factoring, review that first — it is the foundation for everything in this lesson.
+The roots are $x = 0, 2, -2$. Readers who are not comfortable with factoring should review that topic first, as it is the foundation for everything in this lesson.
 :::
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Basic Derivatives
+## Prerequisites: Basic Derivatives
 
-You should already know how to take derivatives of polynomials using the power rule:
+The reader should already be familiar with differentiating polynomials using the power rule:
 
 $$\frac{d}{dx}(x^n) = n \cdot x^{n-1}$$
 
@@ -68,7 +68,7 @@ For example, if $f(x) = 3x^4 - 2x^2 + x$, then $f'(x) = 12x^3 - 4x + 1$.
 
 ## The Snaking Method for Polynomial Graphs
 
-Here is the key idea: once you know the **roots** and the **leading term**, you can sketch the graph by "snaking" through the x-intercepts.
+The key idea is as follows: once the **roots** and the **leading term** are known, one can sketch the graph by "snaking" through the x-intercepts.
 
 **Steps:**
 
@@ -84,9 +84,9 @@ Here is the key idea: once you know the **roots** and the **leading term**, you 
 | Even (2, 4, 6, ...) | Graph **bounces** off the x-axis | No |
 
 ::: {.callout-tip collapse="true"}
-## Why does this work?
+## Justification
 
-Think about $(x - r)^2$. A square is always non-negative, so the factor never changes sign — the graph touches the axis and bounces back. But $(x - r)^1$ changes from negative to positive as $x$ crosses $r$, so the graph must cross through. It is the same idea as multiplying by a negative number: odd number of negatives flips the sign, even number keeps it the same.
+Consider $(x - r)^2$. A square is always non-negative, so the factor never changes sign — the graph touches the axis and bounces back. By contrast, $(x - r)^1$ changes from negative to positive as $x$ crosses $r$, so the graph must cross through. Intuitively, this corresponds to the observation that an odd number of negative factors reverses the sign, while an even number preserves it.
 :::
 
 **Explore the snaking method — drag the sliders to move roots and change multiplicities:**
@@ -115,7 +115,7 @@ To find critical points:
 
 1. Compute $f'(x)$
 2. Set $f'(x) = 0$ and solve for $x$
-3. Plug each $x$ back into $f(x)$ to get the $(x, y)$ coordinates
+3. Substitute each $x$ back into $f(x)$ to obtain the $(x, y)$ coordinates
 
 ### Example: Find the critical points of $f(x) = x^3 - 3x$
 
@@ -151,14 +151,14 @@ The graph of $f'(x)$ tells you everything about the shape of $f(x)$:
 
 | $f'(x)$ | $f(x)$ is... |
 |---|---|
-| Positive ($f'(x) > 0$) | **Increasing** (going uphill) |
-| Negative ($f'(x) < 0$) | **Decreasing** (going downhill) |
+| Positive ($f'(x) > 0$) | **Increasing** |
+| Negative ($f'(x) < 0$) | **Decreasing** |
 | Zero ($f'(x) = 0$) | **Flat** (horizontal tangent) |
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: Positive and Negative Regions
+## Prerequisites: Positive and Negative Regions
 
-When we say $f'(x) > 0$, we mean the derivative graph is **above** the x-axis. When $f'(x) < 0$, the derivative graph is **below** the x-axis. Look at where the derivative crosses zero — those are the critical points of the original function.
+When we write $f'(x) > 0$, the derivative graph lies **above** the x-axis. When $f'(x) < 0$, the derivative graph lies **below** the x-axis. The points where the derivative crosses zero correspond to the critical points of the original function.
 :::
 
 ## Local Max, Local Min, and Stationary Points
@@ -167,16 +167,16 @@ When the derivative equals zero, three things can happen:
 
 ::: {.callout-important}
 ## Key Idea: Classifying Critical Points by Sign Change
-The sign of the derivative on either side of a critical point tells you what kind of point it is. Watch whether the derivative flips from positive to negative, negative to positive, or stays the same.
+The sign of the derivative on either side of a critical point determines its classification. One examines whether the derivative changes from positive to negative, negative to positive, or remains the same.
 
 | $f'(x)$ changes from... | The critical point is a... |
 |---|---|
-| Positive to negative ($+ \to -$) | **Local maximum** (hilltop) |
-| Negative to positive ($- \to +$) | **Local minimum** (valley) |
+| Positive to negative ($+ \to -$) | **Local maximum** |
+| Negative to positive ($- \to +$) | **Local minimum** |
 | No sign change ($+ \to +$ or $- \to -$) | **Stationary point** (flat but keeps going) |
 :::
 
-A stationary point with no sign change is like a road that briefly flattens out but keeps going in the same direction — think of $f(x) = x^3$ at the origin.
+Intuitively, a stationary point with no sign change corresponds to a curve that briefly flattens but continues in the same direction — as exemplified by $f(x) = x^3$ at the origin.
 
 **Explore — adjust $a$ to see how the critical points change:**
 
@@ -197,30 +197,30 @@ A stationary point with no sign change is like a road that briefly flattens out 
 ```
 
 ::: {.callout-tip collapse="true"}
-## Try this with the slider
+## Interactive demonstration
 
-Set $a = 0$. Notice that $f(x) = x^3$ has a critical point at $x = 0$, but it is a **stationary point** — the derivative touches zero without changing sign. Now increase $a$ to see a local max and local min appear.
+Set $a = 0$. Observe that $f(x) = x^3$ has a critical point at $x = 0$, but it is a **stationary point** — the derivative touches zero without changing sign. Increasing $a$ causes a local maximum and local minimum to appear.
 :::
 
 ## The Quotient Rule
 
-When you need to differentiate a fraction $\frac{P(x)}{Q(x)}$, use the Quotient Rule:
+To differentiate a fraction $\frac{P(x)}{Q(x)}$, we apply the Quotient Rule:
 
 ::: {.callout-important}
 ## Key Idea: The Quotient Rule
-Whenever you need the derivative of one function divided by another, use this formula. Think of it as "bottom times derivative of top, minus top times derivative of bottom, all over bottom squared."
+To compute the derivative of one function divided by another, apply the following formula. It may be remembered as "bottom times derivative of top, minus top times derivative of bottom, all over bottom squared."
 
 $$\frac{d}{dx}\left(\frac{P}{Q}\right) = \frac{Q \cdot P' - P \cdot Q'}{Q^2}$$
 :::
 
 ::: {.callout-note collapse="true"}
-## What You Need to Know First: The Product Rule
+## Prerequisites: The Product Rule
 
 The Quotient Rule is built from the Product Rule. Recall:
 
 $$\frac{d}{dx}(P \cdot Q) = P' \cdot Q + P \cdot Q'$$
 
-We can derive the Quotient Rule by writing $\frac{P}{Q} = P \cdot Q^{-1}$ and applying the Product Rule together with the Chain Rule.
+One may derive the Quotient Rule by writing $\frac{P}{Q} = P \cdot Q^{-1}$ and applying the Product Rule together with the Chain Rule.
 :::
 
 ### Deriving the Quotient Rule

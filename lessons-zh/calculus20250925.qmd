@@ -3,7 +3,7 @@ title: "tan 与 sec 的导数 —— 图形与代数方法"
 date: 2025-09-25
 ---
 
-你是否想过，为什么有些函数比其他函数增长得快得多？今天我们将推导正切和正割的导数——这两个三角函数可以在一瞬间趋向无穷大。最酷的是什么？我们将用三种完全不同的方法证明同一个结论：代数方法、单位圆上的几何图形方法，以及复指数方法。学完之后，你会发现三条道路都通向同一个美丽的答案。
+本节课将推导正切和正割的导数——这两个三角函数可以在有限区间内趋向无穷大。我们将用三种不同的方法证明同一个结论：代数方法、单位圆上的几何方法以及复指数方法，三条路径最终都给出相同的结果。
 
 ::: {.callout-tip collapse="true"}
 ## 为什么 tan 和 sec 的导数很重要
@@ -11,11 +11,11 @@ date: 2025-09-25
 正切和正割函数在涉及斜率和伸缩的场景中无处不在：
 
 - **导航**：GPS 系统使用正切函数在角度和地图距离之间进行转换——它们的导数帮助实时修正航向
-- **建筑**：屋顶的坡度是一个正切比——导数告诉你坡度对角度变化有多敏感
+- **建筑**：屋顶的坡度是一个正切比，导数反映坡度对角度变化的敏感程度
 - **光学**：透镜以正切描述的角度折射光线——理解角度变化的速度是设计相机和望远镜的关键
 - **过山车**：在陡峭段，轨道角度大且正切增长快——其导数（sec²）告诉工程师斜率增加的速度有多快
 
-一旦你知道了 sin 和 cos 的导数，tan 和 sec 的导数就水到渠成——今天我们将用三种不同的方法来证明它们！
+在已知 sin 和 cos 的导数的基础上，tan 和 sec 的导数可以自然地推导出来。本节课将用三种不同的方法对此加以验证。
 :::
 
 ## 本课内容
@@ -66,7 +66,7 @@ $$\sec\theta = \frac{1}{\cos\theta}$$
 ::: {.callout-note collapse="true"}
 ## 什么是商法则？
 
-**商法则**告诉你如何对两个函数的商求导：
+**商法则**给出两个函数之商的求导方法：
 
 $$\frac{d}{dx}\left(\frac{f(x)}{g(x)}\right) = \frac{f'(x)\,g(x) - f(x)\,g'(x)}{[g(x)]^2}$$
 
@@ -86,7 +86,7 @@ $$\sin\theta = \frac{e^{i\theta} - e^{-i\theta}}{2i}, \qquad \cos\theta = \frac{
 
 $$\tan\theta = \frac{e^{i\theta} - e^{-i\theta}}{i(e^{i\theta} + e^{-i\theta})}$$
 
-复指数的强大之处在于 $e^{i\theta}$ 的导数就是 $ie^{i\theta}$——不需要记忆符号变换！
+复指数的优势在于 $e^{i\theta}$ 的导数就是 $ie^{i\theta}$，无需额外记忆符号变换规则。
 :::
 
 ::: {.callout-note collapse="true"}
@@ -128,7 +128,7 @@ $$= \frac{\cos^2\theta + \sin^2\theta}{\cos^2\theta} = \frac{1}{\cos^2\theta}$$
 $$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
 :::
 
-**探索——观察 $\tan\theta$ 及其导数 $\sec^2\theta$：**
+**交互演示——观察 $\tan\theta$ 及其导数 $\sec^2\theta$：**
 
 ```{=html}
 <div id="calc1" class="desmos-container"></div>
@@ -148,7 +148,7 @@ $$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
 </script>
 ```
 
-*拖动滑块 $a$。绿色虚线是 $\tan x$（蓝色）的切线，其斜率始终等于 $\sec^2(a)$（红色虚线曲线）。注意斜率始终至少为 1——$\tan x$ 总是越来越陡！*
+*拖动滑块 $a$。绿色虚线是 $\tan x$（蓝色）的切线，其斜率始终等于 $\sec^2(a)$（红色虚线曲线）。可以观察到斜率始终不小于 1，即 $\tan x$ 的增长率单调不减。*
 
 ### 单位圆上的图形推导
 
@@ -163,9 +163,9 @@ $$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
 3. 沿切线的微小位移为 $\sec^2\theta \cdot d\theta$
 4. 该位移等于 $d(\tan\theta)$
 
-因此 $\frac{d(\tan\theta)}{d\theta} = \sec^2\theta$——同样的答案，直接来自几何！
+因此 $\frac{d(\tan\theta)}{d\theta} = \sec^2\theta$，与代数方法的结果一致，此处直接来自几何推导。
 
-**探索——观察 $\tan\theta$ 和 $\sec\theta$ 的单位圆构造：**
+**交互演示——观察 $\tan\theta$ 和 $\sec\theta$ 的单位圆构造：**
 
 ```{=html}
 <div id="calc2" class="desmos-container"></div>
@@ -186,7 +186,7 @@ $$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
 </script>
 ```
 
-*拖动 $\theta$，观察正切高度（红色线段）和正割长度（紫色标签）的变化。注意当 $\theta$ 趋近 $\pm\frac{\pi}{2}$ 时，$\tan\theta$ 增长得有多快！*
+*拖动 $\theta$，观察正切高度（红色线段）和正割长度（紫色标签）的变化。可以观察到当 $\theta$ 趋近 $\pm\frac{\pi}{2}$ 时，$\tan\theta$ 增长极为迅速。*
 
 ### 通过相似三角形求 $\sec\theta$ 的导数
 
@@ -206,7 +206,7 @@ $$d(\sec\theta) = \sec\theta \cdot \tan\theta \cdot d\theta$$
 
 ::: {.callout-important}
 ## 核心要点：正割的导数
-正割的导数是正割乘以正切。你可以用单位圆上的相似三角形进行几何证明，也可以用链式法则对 $(\cos\theta)^{-1}$ 进行代数证明。
+正割的导数是正割乘以正切。可以用单位圆上的相似三角形进行几何证明，也可以用链式法则对 $(\cos\theta)^{-1}$ 进行代数证明。
 
 $$\boxed{\frac{d}{d\theta}(\sec\theta) = \sec\theta \cdot \tan\theta}$$
 :::
@@ -221,7 +221,7 @@ $$\frac{d}{d\theta}(\cos\theta)^{-1} = -1 \cdot (\cos\theta)^{-2} \cdot (-\sin\t
 
 ### 用复指数方法求 $\frac{d}{d\theta}(\tan\theta)$
 
-这里有一个巧妙的代数方法。用欧拉公式写出正切：
+下面介绍一种代数方法。用欧拉公式写出正切：
 
 $$\tan\theta = \frac{e^{i\theta} - e^{-i\theta}}{i(e^{i\theta} + e^{-i\theta})}$$
 
@@ -259,11 +259,11 @@ $$\frac{d}{d\theta}(\tan\theta) = \frac{-4}{-4\cos^2\theta} = \frac{1}{\cos^2\th
 
 ### 复指数的长除法
 
-在处理像 $\frac{e^{i\theta} - e^{-i\theta}}{e^{i\theta} + e^{-i\theta}}$ 这样的表达式时，你可以通过将分子和分母同除以 $e^{-i\theta}$ 来化简：
+在处理形如 $\frac{e^{i\theta} - e^{-i\theta}}{e^{i\theta} + e^{-i\theta}}$ 的表达式时，可以将分子和分母同除以 $e^{-i\theta}$ 来化简：
 
 $$\frac{e^{i\theta} - e^{-i\theta}}{e^{i\theta} + e^{-i\theta}} = \frac{e^{2i\theta} - 1}{e^{2i\theta} + 1}$$
 
-你也可以令 $w = e^{i\theta}$，将所有内容转化为简洁的多项式形式的分数：
+也可以令 $w = e^{i\theta}$，将所有内容转化为简洁的多项式形式的分数：
 
 $$\tan\theta = \frac{w^2 - 1}{i(w^2 + 1)} \quad \text{其中 } w = e^{i\theta}$$
 
@@ -289,19 +289,19 @@ $$(e^{i\theta} - e^{-i\theta}) + i\,d\theta\,(e^{i\theta} + e^{-i\theta})$$
 
 $$i\left[(e^{i\theta} + e^{-i\theta}) + i\,d\theta\,(e^{i\theta} - e^{-i\theta})\right]$$
 
-经过仔细的代数运算（除法并舍去二阶项），结果为：
+经过代数运算（除法并忽略二阶项），结果为：
 
 $$\tan(\theta + d\theta) - \tan\theta = \sec^2\theta \cdot d\theta$$
 
-这种"无穷小代入"方法非常直观：你可以确切地看到导数的每一部分从何而来。
+这种"无穷小代入"方法较为直观，可以清晰地看到导数的每一部分从何而来。
 
 ::: {.callout-tip collapse="true"}
-## 为什么可以舍去 $(d\theta)^2$？
+## 为什么可以忽略 $(d\theta)^2$？
 
-无穷小量 $d\theta$ 被认为是"小到其平方本质上为零"。更准确地说，当我们在 $\frac{\Delta f}{d\theta}$ 中取 $d\theta \to 0$ 的极限时，分子中含 $(d\theta)^2$ 的任何项在除以 $d\theta$ 后贡献为 $0$。因此我们只需追踪一阶项——其他所有项都消失了。
+无穷小量 $d\theta$ 的平方在取极限后趋于零。更准确地说，当在 $\frac{\Delta f}{d\theta}$ 中令 $d\theta \to 0$ 时，分子中含 $(d\theta)^2$ 的任何项在除以 $d\theta$ 后贡献为 $0$。因此只需保留一阶项，其余各项均可忽略。
 :::
 
-**探索——比较 $\tan(x)$ 与其在某点的线性近似：**
+**交互演示——比较 $\tan(x)$ 与其在某点的线性近似：**
 
 ```{=html}
 <div id="calc3" class="desmos-container"></div>
@@ -351,5 +351,5 @@ $$\frac{d}{d\theta}(\tan\theta) = \sec^2\theta \qquad \frac{d}{d\theta}(\sec\the
 1. 用 $e^{i\,d\theta} \approx 1 + i\,d\theta$ 计算 $f(\theta + d\theta)$
 2. 减去 $f(\theta)$
 3. 只保留含一个 $d\theta$ 因子的项
-4. 除以 $d\theta$——这就是你的导数！
+4. 除以 $d\theta$，即得导数
 :::

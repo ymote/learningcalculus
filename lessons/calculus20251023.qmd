@@ -3,20 +3,20 @@ title: "Propagated Error & Combining Measurements"
 date: 2025-10-23
 ---
 
-Every measurement you make has a little bit of uncertainty -- maybe your ruler is only accurate to the nearest millimeter, or your scale is off by a gram. So what happens when you plug those slightly-off numbers into a formula? The errors "propagate" into your final answer, and this lesson teaches you exactly how to predict how much. You will also learn a surprising trick: taking the same measurement multiple times and averaging can make your answer more precise, and calculus explains exactly why!
+Every measurement carries some degree of uncertainty -- a ruler is accurate only to the nearest millimeter, a scale may be imprecise by a gram. When these imprecise values are substituted into a formula, the errors propagate into the computed result. This lesson develops the theory for predicting the magnitude of such propagated errors. We also establish that averaging repeated independent measurements reduces uncertainty, and provide the calculus-based derivation explaining why.
 
 ::: {.callout-tip collapse="true"}
-## Why Propagated Error Matters
+## Motivation
 
-Every measurement in the real world has some uncertainty. Propagated error tells us how those small uncertainties combine to affect our final answer:
+Every measurement in practice has some uncertainty. Propagated error analysis determines how those small uncertainties combine to affect the computed result:
 
-- **Space missions**: NASA must know how tiny errors in speed, angle, and timing combine so a spacecraft doesn't miss Mars by thousands of miles
-- **Medicine**: when a pharmacist measures ingredients for a prescription, small errors in each ingredient add up --- propagated error ensures the dose stays safe
-- **Construction**: builders measure lengths, widths, and angles --- understanding combined error prevents a bridge from being dangerously off-spec
-- **Lab science**: in chemistry class, every measurement (mass, volume, temperature) carries error --- scientists use propagated error to report honest results
-- **Sports analytics**: tracking systems measure player positions many times per second --- averaging those measurements reduces error, which is exactly what this lesson explains
+- **Aerospace engineering**: engineers must quantify how errors in speed, angle, and timing combine so that a spacecraft does not deviate from its intended trajectory
+- **Pharmacology**: when a pharmacist measures ingredients for a prescription, small errors in each ingredient accumulate -- propagated error analysis ensures the dose remains within safe bounds
+- **Civil engineering**: builders measure lengths, widths, and angles -- understanding combined error prevents a structure from falling outside design specifications
+- **Laboratory science**: every measurement (mass, volume, temperature) carries error -- scientists use propagated error to report results with appropriate precision
+- **Data acquisition**: tracking systems measure positions many times per second -- averaging those measurements reduces error, as this lesson demonstrates
 
-If you can't quantify how much your answer might be off, you can't trust it at all.
+Without quantifying how much a computed result may deviate from the true value, one cannot assess the reliability of the result.
 :::
 
 ## Topics Covered
@@ -48,27 +48,27 @@ If you can't quantify how much your answer might be off, you can't trust it at a
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is a percent error?
 
-**Percent error** tells you how big a measurement's uncertainty is *relative* to the measurement itself.
+**Percent error** expresses a measurement's uncertainty *relative* to the measurement itself.
 
 $$\text{Percent error} = \frac{\delta x}{x} \times 100\%$$
 
 where $\delta x$ is the absolute error (uncertainty) and $x$ is the measured value.
 
-- A 1 cm error on a 100 cm table is a 1% error --- not bad.
-- A 1 cm error on a 2 cm bolt is a 50% error --- terrible!
+- A 1 cm error on a 100 cm table is a 1% error -- acceptable in most contexts.
+- A 1 cm error on a 2 cm bolt is a 50% error -- unacceptable in practice.
 
-Percent error lets you compare the quality of measurements that have different units or sizes.
+Percent error provides a meaningful comparison of measurement quality across different units and scales.
 :::
 
 ::: {.callout-note collapse="true"}
 ## What is Newton's Law of Gravitation?
 
-Newton's Law of Universal Gravitation says that every object with mass attracts every other object with mass:
+Newton's Law of Universal Gravitation states that every object with mass attracts every other object with mass:
 
 $$F_g = \frac{G \, m_1 \, m_2}{r^2}$$
 
@@ -77,7 +77,7 @@ $$F_g = \frac{G \, m_1 \, m_2}{r^2}$$
 - $m_1, m_2$ = the masses of the two objects (in kg)
 - $r$ = the distance between their centers (in m)
 
-For a person standing on Earth, $m_1$ is the Earth's mass, $m_2$ is your mass, and $r$ is the Earth's radius. The result $F_g$ is your **weight**.
+For a person standing on Earth, $m_1$ is the Earth's mass, $m_2$ is the person's mass, and $r$ is the Earth's radius. The resulting $F_g$ is the person's **weight**.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -97,7 +97,7 @@ Differentiating:
 
 $$\frac{dF}{F} = \frac{dG}{G} + \frac{dm_1}{m_1} + \frac{dm_2}{m_2} - 2\frac{dr}{r}$$
 
-Much easier than applying the quotient rule to the original formula!
+This is considerably simpler than applying the quotient rule to the original formula.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -109,7 +109,7 @@ A **significant figure** (sig fig) is a digit in a number that carries real mean
 - $0.0052$ has 2 significant figures (leading zeros don't count)
 - $6400$ might have 2, 3, or 4 sig figs depending on context
 
-**Key rule**: your final answer can only be as precise as your *least* precise input. If one measurement has only 2 sig figs, your answer should have 2 sig figs --- the extra digits from more precise measurements are meaningless.
+**Key rule**: the final answer can only be as precise as the *least* precise input. If one measurement has only 2 significant figures, the answer should have 2 significant figures -- the extra digits from more precise measurements are meaningless.
 :::
 
 ## Gravitational Force: A Full Error Propagation Example
@@ -153,7 +153,7 @@ $$\frac{\delta F}{F} = \sqrt{\left(\frac{\delta G}{G}\right)^2 + \left(\frac{\de
 ::: {.callout-tip collapse="true"}
 ## Why the Pythagorean sum instead of plain addition?
 
-This is **not** a calculus law --- it is a principle from **statistics and data analysis**. The idea: each error is independent and can be positive or negative. Adding them directly would overestimate the total error because it is unlikely that *every* error pushes in the same direction at once.
+This is **not** a calculus result -- it is a principle from **statistics and data analysis**. The reasoning: each error is independent and can be positive or negative. Adding them directly would overestimate the total error because it is unlikely that *every* error acts in the same direction simultaneously.
 
 The Pythagorean sum treats each error like a component of a vector. Just as the length of a vector $(a, b, c)$ is $\sqrt{a^2 + b^2 + c^2}$, the combined effect of independent errors is the square root of the sum of their squares.
 :::
@@ -171,12 +171,12 @@ $$2 \cdot \frac{\delta r}{r} = 2 \cdot \frac{5 \times 10^{3}}{6.371 \times 10^{6
 ::: {.callout-tip collapse="true"}
 ## Can we drop the tiny terms?
 
-The first two terms ($\sim 0.075\%$ and $\sim 0.084\%$) are about ten times smaller than the largest term ($\sim 1.06\%$). When you *square* them and add, they become about a hundred times smaller than the dominant squared term. Since our final answer only needs about 2 significant figures, these tiny contributions are negligible.
+The first two terms ($\sim 0.075\%$ and $\sim 0.084\%$) are approximately ten times smaller than the largest term ($\sim 1.06\%$). Upon squaring and summing, they become about a hundred times smaller than the dominant squared term. Since the final answer requires only about 2 significant figures, these contributions are negligible.
 
-This is a good habit: identify which error dominates and focus your energy there.
+This illustrates a useful principle: identify which error dominates and focus attention there.
 :::
 
-**Explore how each term contributes to the total error:**
+**Interactive demonstration -- contribution of each term to the total error:**
 
 ::: {.desmos-container}
 ```{=html}
@@ -209,13 +209,13 @@ $$\frac{\delta F}{F} \approx \sqrt{0.0000006 + 0.0000007 + 0.0001124 + 0.0000025
 
 $$\frac{\delta F}{F} \approx \sqrt{0.0001161} \approx 0.0108 \approx 1.1\%$$
 
-But wait --- the factor of 2 in front of $\frac{\delta r}{r}$ matters more than it first appears. With the corrected values from class (using the actual measured data), the class computed:
+Note that the factor of 2 in front of $\frac{\delta r}{r}$ has a significant effect. With the corrected values from class (using the actual measured data), the computation yields:
 
 $$\frac{\delta F}{F} \approx 2.1\%$$
 
 ### Step 5: Convert to Absolute Error
 
-We still need the actual force $F$ to find $\delta F$. Plug the values into the original formula:
+We still need the actual force $F$ to find $\delta F$. Substituting the values into the original formula:
 
 $$F_g = \frac{(6.674 \times 10^{-11})(5.972 \times 10^{24})(47)}{(6.371 \times 10^{6})^2} \approx 461 \; \text{N}$$
 
@@ -266,10 +266,10 @@ This is a powerful result: **averaging $n$ measurements reduces the error by a f
 ::: {.callout-tip collapse="true"}
 ## Why must the measurements be independent?
 
-The derivation above uses the Pythagorean sum, which only works when the errors are **independent** of each other. This means each measurement must be a fresh, separate attempt --- you can't just read the same ruler position five times and call it five measurements. Each time, you must physically re-measure so that the random errors have a chance to cancel out.
+The derivation above uses the Pythagorean sum, which is valid only when the errors are **independent** of each other. This means each measurement must be a separate, independent trial -- one cannot read the same ruler position five times and treat these as five independent measurements. Each trial must involve a fresh measurement so that random errors have the opportunity to cancel.
 :::
 
-**Explore how error decreases as you take more measurements:**
+**Interactive demonstration -- error reduction as the number of measurements increases:**
 
 ::: {.desmos-container}
 ```{=html}

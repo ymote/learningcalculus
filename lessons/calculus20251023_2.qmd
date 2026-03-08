@@ -3,18 +3,18 @@ title: "Propagated Error and Logarithmic Differentiation for Percent Error Analy
 date: 2025-10-23
 ---
 
-Every measurement you make has a tiny bit of error baked in -- your ruler is only so precise, your scale rounds off, and so on. But what happens to that error when you plug your measurements into a formula? In this lesson, you will learn how errors "propagate" through calculations, how to use a clever logarithm trick to make the math easy, and why independent errors combine like the sides of a right triangle instead of just adding up. By the end, you will be able to figure out how trustworthy any calculated result really is.
+Every measurement carries inherent error -- a ruler has finite precision, a scale introduces rounding, and so forth. When these measurements are substituted into a formula, the errors propagate through the calculation. This lesson develops the theory of error propagation, introduces the logarithmic differentiation technique for simplifying the analysis, and explains why independent errors combine via a Pythagorean (root-sum-of-squares) rule rather than by direct addition. The result is a systematic method for assessing the reliability of any calculated quantity.
 
 ::: {.callout-tip collapse="true"}
-## Why Propagated Error Matters
+## Motivation
 
-Every measurement in the real world has some inaccuracy. When you plug those measurements into a formula, the errors "propagate" into your result. Understanding how is critical:
+Every measurement in practice carries some inaccuracy. When these measurements enter a formula, the errors propagate into the result. Understanding this process is essential:
 
-- **Space missions**: NASA calculates how small errors in rocket thrust, fuel mass, and timing compound into trajectory deviations -- getting it wrong means missing a planet by millions of miles
-- **Medicine**: a blood test result depends on instrument precision, sample volume, and chemical concentrations -- doctors need to know how reliable the final number is before making a diagnosis
-- **Construction**: if every beam length has a tiny measurement error, a skyscraper's total height uncertainty depends on how those errors stack up -- engineers must guarantee the building is safe
-- **Sports analytics**: when tracking a baseball's speed using radar, errors in distance and time measurements propagate into the velocity calculation -- scouts need to know if a pitcher really throws 95 mph or if it could be 93
-- **Cooking at scale**: a recipe scaled up for a restaurant means small errors in each ingredient measurement accumulate -- percent error tells you whether the dish will still taste right
+- **Aerospace engineering**: engineers calculate how small errors in thrust, fuel mass, and timing compound into trajectory deviations -- inaccurate estimates can cause a spacecraft to miss its target by a large margin
+- **Medical diagnostics**: a blood test result depends on instrument precision, sample volume, and chemical concentrations -- physicians must assess the reliability of the result before making a diagnosis
+- **Structural engineering**: if every beam length has a small measurement error, the total height uncertainty of a structure depends on how those errors combine -- engineers must ensure the building meets specifications
+- **Measurement systems**: when tracking an object's speed using radar, errors in distance and time measurements propagate into the velocity calculation -- one must determine whether the computed speed is reliable
+- **Industrial processes**: scaling up a process means small errors in each measured quantity accumulate -- percent error analysis determines whether the output remains within acceptable tolerances
 :::
 
 ## Topics Covered
@@ -46,12 +46,12 @@ Every measurement in the real world has some inaccuracy. When you plug those mea
 ```
 
 
-## What You Need to Know First
+## Prerequisites
 
 ::: {.callout-note collapse="true"}
 ## What is Newton's Law of Gravitation?
 
-Every object with mass attracts every other object with mass. The force between them is:
+Every object with mass attracts every other object with mass. The gravitational force between them is:
 
 $$F_G = \frac{G \cdot M \cdot m}{r^2}$$
 
@@ -61,7 +61,7 @@ where:
 - $M$ and $m$ are the masses of the two objects (e.g., the Earth and a person)
 - $r$ is the distance between their centers
 
-This formula tells you your **weight**: it is the gravitational force the Earth exerts on you.
+This formula gives the **weight** of an object: the gravitational force the Earth exerts on it.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -81,17 +81,17 @@ The number of significant figures in your **least precise** measurement limits t
 ::: {.callout-note collapse="true"}
 ## What is logarithmic differentiation?
 
-When a function is a product or quotient of many pieces, taking the natural log first converts everything into sums and differences, which are much easier to differentiate.
+When a function is a product or quotient of many factors, taking the natural log first converts the expression into sums and differences, which are much simpler to differentiate.
 
 For example, if $R(x) = \frac{(3x-4)^6 (1-7x)^3 (x+1)}{x^2 (2+x)^4}$, then:
 
 $$\ln R(x) = 6\ln(3x-4) + 3\ln(1-7x) + \ln(x+1) - 2\ln(x) - 4\ln(2+x)$$
 
-Now each term differentiates easily using the chain rule, and we get:
+Each term then differentiates readily using the chain rule, yielding:
 
 $$\frac{R'(x)}{R(x)} = \frac{18}{3x-4} - \frac{21}{1-7x} + \frac{1}{x+1} - \frac{2}{x} - \frac{4}{2+x}$$
 
-This avoids the nightmare of applying the quotient rule and product rule to the original expression.
+This avoids the complexity of applying the quotient rule and product rule to the original expression.
 :::
 
 ::: {.callout-note collapse="true"}
@@ -139,11 +139,11 @@ $$F_G = \frac{G \cdot M \cdot m}{r^2}$$
 
 **The problem**: find $\Delta F_G$, the propagated error in the calculated force.
 
-### Why Direct Differentiation is a Nightmare
+### Why Direct Differentiation is Impractical
 
-If you try to compute $\Delta F_G$ directly by differentiating $F_G$ with respect to each variable and applying the quotient rule, you face a massive calculation with four variables multiplied and divided together. The algebra is tedious and error-prone.
+Attempting to compute $\Delta F_G$ directly by differentiating $F_G$ with respect to each variable and applying the quotient rule leads to a cumbersome calculation involving four variables in products and quotients. The algebra is tedious and error-prone.
 
-**The trick**: use logarithmic differentiation to convert to percent errors.
+**The remedy**: use logarithmic differentiation to convert to percent errors.
 
 ### The Logarithmic Differentiation Shortcut
 
@@ -151,7 +151,7 @@ Take the natural log of both sides of the force equation:
 
 $$\ln F_G = \ln G + \ln M + \ln m - 2\ln r$$
 
-The product and quotient have become a simple sum! Now differentiate:
+The product and quotient have become a simple sum. Differentiating:
 
 ::: {.callout-important}
 ## Key Idea: Log Differentiation Turns Products into Sums
@@ -160,9 +160,9 @@ When a formula is built from quantities multiplied and divided together, taking 
 $$\frac{dF_G}{F_G} = \frac{dG}{G} + \frac{dM}{M} + \frac{dm}{m} - 2\,\frac{dr}{r}$$
 :::
 
-Each term on the right is a **percent error** -- the ratio of the uncertainty to the value itself. This is far more practical than computing absolute errors, because a tiny absolute error in $G$ (order $10^{-11}$) does not mean $G$ is highly accurate; you must compare it to $G$ itself.
+Each term on the right is a **percent error** -- the ratio of the uncertainty to the value itself. This is far more informative than computing absolute errors, because a small absolute error in $G$ (of order $10^{-11}$) does not indicate high accuracy; one must compare it to $G$ itself.
 
-**Explore -- see how percent error in radius affects force:**
+**Interactive demonstration -- percent error in radius and its effect on force:**
 
 ```{=html}
 <div id="calc1" class="desmos-container"></div>
@@ -194,7 +194,7 @@ $$\frac{\Delta m}{m} = \frac{0.5}{47} \approx 0.0106 \approx 1.06\%$$
 
 $$2 \cdot \frac{\Delta r}{r} = 2 \cdot \frac{0.05}{6.4} \approx 0.0156 \approx 1.56\%$$
 
-Notice the first two terms (around $0.1\%$) are tiny compared to the last two (around $1\%$). In fact, dropping the first two would barely change the final answer -- **always let the least precise measurement drive your analysis**.
+Observe that the first two terms (around $0.1\%$) are small compared to the last two (around $1\%$). Dropping the first two would barely change the final answer -- **the least precise measurement dominates the analysis**.
 
 ### The Pythagorean Sum: Why We Don't Just Add
 
@@ -209,7 +209,7 @@ Because independent measurement errors are unlikely to all push in the same dire
 $$\frac{\Delta F_G}{F_G} = \sqrt{\left(\frac{\Delta G}{G}\right)^2 + \left(\frac{\Delta M}{M}\right)^2 + \left(\frac{\Delta m}{m}\right)^2 + \left(2\frac{\Delta r}{r}\right)^2}$$
 :::
 
-**Explore -- Pythagorean sum vs. simple sum of two errors:**
+**Interactive demonstration -- Pythagorean sum versus simple sum of two errors:**
 
 ```{=html}
 <div id="calc2" class="desmos-container"></div>
@@ -245,7 +245,7 @@ Notice that the first two terms contribute almost nothing under the square root 
 
 ### From Percent Error Back to Absolute Error
 
-The percent error $\frac{\Delta F_G}{F_G}$ is not the final answer! We still need to find $\Delta F_G$ itself. First, compute $F_G$ from the original formula:
+The percent error $\frac{\Delta F_G}{F_G}$ is not the final answer. We still need to find $\Delta F_G$ itself. First, compute $F_G$ from the original formula:
 
 $$F_G = \frac{(6.67 \times 10^{-11})(5.97 \times 10^{24})(47)}{(6.4 \times 10^{6})^2} \approx 459 \;\text{N}$$
 
@@ -255,7 +255,7 @@ Then the absolute error is:
 
 $$\Delta F_G = F_G \times \frac{\Delta F_G}{F_G} \approx 459 \times 0.021 \approx 10 \;\text{N}$$
 
-That is roughly 2 pounds of uncertainty in the calculated weight -- very reasonable!
+That is roughly 2 pounds of uncertainty in the calculated weight -- a reasonable result.
 
 ### Comparing Measurement Strategies
 
