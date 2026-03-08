@@ -1,0 +1,326 @@
+---
+title: "相关变化率：用导数连接变化的量"
+date: 2025-10-13
+---
+
+你有没有想过，即使两辆车都没有直接朝对方开去，它们之间的距离变化有多快？在这节课中，你将学习一种叫做"相关变化率"的强大方法，它能让你通过导数把不同的变化量联系在一起。这就像解一个拼图：知道一个速度就能算出另一个——而这一切都来自你已经学过的勾股定理和链式法则！
+
+::: {.callout-tip collapse="true"}
+## 为什么相关变化率很重要
+
+当两个或多个量同时变化并且通过方程联系在一起时，相关变化率问题就会出现：
+
+- **交通安全**：工程师计算两辆车在十字路口靠近的速度，以设计更安全的交通灯
+- **医学**：当药物在体内扩散时，医生用相关变化率来预测血液中浓度变化的速度
+- **水池注水**：如果水以恒定速率流入，相关变化率可以告诉你水位上升的速度——尤其是当水池底部有坡度时
+- **影子**：当你远离路灯行走时，你的影子会变长——相关变化率可以精确预测变长的速度
+- **气象气球**：当气球升空时，雷达站跟踪仰角——相关变化率将气球的高度与仰角变化的速度联系起来
+
+这些都是知道一个变化率就能算出另一个变化率的情况。
+:::
+
+## 本课内容
+
+- 什么是**变化率**：一个量相对于另一个量的变化
+- 什么是**相关变化率**：多个变量同时变化，通过方程联系在一起
+- 利用**勾股定理**建立相关变化率问题：$C^2 = A^2 + B^2$
+- 应用**链式法则**对时间 $t$ 求导
+- 经典的**两车交叉路口问题**（3-4-5 直角三角形）
+- 在实际情境中解释 $\frac{dA}{dt}$、$\frac{dB}{dt}$ 和 $\frac{dC}{dt}$
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251013_1.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20251013_1_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251013_1_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251013_1_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251013_1_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是变化率？
+
+**变化率**告诉你一个量相对于另一个量变化的快慢。
+
+- 速度是一种变化率：距离除以时间，例如 $60 \text{ mph}$
+- 生长率：每年的身高增长
+- 用微积分符号表示，如果 $y$ 依赖于 $t$，变化率就是 $\frac{dy}{dt}$
+
+变化率总是"某个量除以某个量"。如果一辆车在 2 小时内行驶了 120 英里，它的速率就是 $\frac{120}{2} = 60$ 英里每小时。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是导数？
+
+函数的**导数**告诉你它的**瞬时变化率**——在某一时刻输出变化的速度。
+
+我们把它写成 $\frac{dy}{dx}$ 或 $f'(x)$。
+
+例如，如果 $y = x^2$，那么 $\frac{dy}{dx} = 2x$，这意味着在 $x = 3$ 时，函数以每单位 $x$ 变化 $6$ 单位 $y$ 的速率在变化。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是链式法则？
+
+**链式法则**让你对复合函数求导。如果 $y$ 依赖于 $u$，而 $u$ 依赖于 $x$，那么：
+
+$$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$
+
+在相关变化率中，所有量都随**时间** $t$ 变化。所以如果 $C^2 = A^2 + B^2$，而 $A$ 和 $B$ 都随时间变化，你就用链式法则对每一项关于 $t$ 求导。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是勾股定理？
+
+对于任何直角三角形，设两条直角边为 $a$ 和 $b$，斜边为 $c$：
+
+$$a^2 + b^2 = c^2$$
+
+你应该记住的特殊直角三角形：
+
+- **3-4-5**：$3^2 + 4^2 = 9 + 16 = 25 = 5^2$
+- **5-12-13**：$5^2 + 12^2 = 25 + 144 = 169 = 13^2$
+
+这些比例可以缩放：300-400-500 三角形就是 3-4-5 三角形乘以 100。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是隐函数求导？
+
+有时你无法将 $y$ 用 $x$ 的显式公式表达。**隐函数求导**让你可以直接对等式两边求导。
+
+例如，给定 $x^2 + y^2 = 25$，对两边关于 $x$ 求导：
+
+$$2x + 2y \frac{dy}{dx} = 0 \implies \frac{dy}{dx} = -\frac{x}{y}$$
+
+在相关变化率问题中，你做的是同样的事情，只不过是关于**时间** $t$ 求导。
+:::
+
+## 核心要点
+
+### 什么是变化率？
+
+**变化率**是一个量相对于另一个量变化的比率：
+
+$$\text{变化率} = \frac{\Delta(\text{输出})}{\Delta(\text{输入})}$$
+
+在微积分中，我们通过求导使其成为瞬时的。如果汽车的位置是 $s(t)$，它的速度是：
+
+$$v(t) = \frac{ds}{dt}$$
+
+### 什么是相关变化率？
+
+**相关变化率**问题涉及两个或更多满足以下条件的量：
+
+1. 每个量都随时间变化
+2. 它们通过一个已知方程联系在一起
+
+因为它们是关联的，知道一个量的变化率就能求出另一个量的变化率。
+
+一般策略是：
+
+1. **画图**并用变量标注所有变化的量
+2. **写出方程**将这些变量联系起来（勾股定理、面积公式、相似三角形等）
+3. **对两边关于时间 $t$ 求导**，使用链式法则
+4. **代入**所有已知值，求解未知变化率
+
+### 两车交叉路口问题
+
+这是课堂上的经典问题。两辆车驶向一个十字路口：
+
+- **车 A** 在交叉路口以东 $500$ 米处，向北行驶
+- **车 B** 在交叉路口以北 $375$ 米处
+- 车 A 的速度为 $60$ mph，朝交叉路口行驶
+
+它们的位置形成一个直角三角形，两车之间的距离是斜边。
+
+**探索两辆车的位置如何构成直角三角形：**
+
+::: {.desmos-container}
+```{=html}
+<div id="intersection-diagram" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt = document.getElementById('intersection-diagram');
+var calculator = Desmos.GraphingCalculator(elt, {
+  expressions: true,
+  settingsMenu: false
+});
+calculator.setExpression({id: 'slider', latex: 't=0', sliderBounds: {min: 0, max: 1, step: 0.01}});
+calculator.setExpression({id: 'a_val', latex: 'a = 500(1-t)'});
+calculator.setExpression({id: 'b_val', latex: 'b = 375(1-0.5t)'});
+calculator.setExpression({id: 'road_h', latex: 'y=0', color: '#888888', lineWidth: 2, domain: {min: -100, max: 600}});
+calculator.setExpression({id: 'road_v', latex: 'x=0', color: '#888888', lineWidth: 2, domain: {min: -100, max: 500}});
+calculator.setExpression({id: 'carA', latex: '(a, 0)', color: '#2d70b3', pointSize: 14, label: 'Car A', showLabel: true});
+calculator.setExpression({id: 'carB', latex: '(0, b)', color: '#c74440', pointSize: 14, label: 'Car B', showLabel: true});
+calculator.setExpression({id: 'hyp', latex: '(a(1-s), b \\cdot s)', color: '#6042a6', lineWidth: 2, parametricDomain: {min: 0, max: 1}});
+calculator.setExpression({id: 'leg_a', latex: '(a(1-s), 0)', color: '#2d70b3', lineStyle: 'DASHED', parametricDomain: {min: 0, max: 1}});
+calculator.setExpression({id: 'leg_b', latex: '(0, b \\cdot s)', color: '#c74440', lineStyle: 'DASHED', parametricDomain: {min: 0, max: 1}});
+calculator.setExpression({id: 'origin', latex: '(0,0)', color: '#000000', pointSize: 10, label: 'Intersection', showLabel: true});
+calculator.setMathBounds({left: -100, right: 600, bottom: -100, top: 500});
+</script>
+```
+:::
+
+### 建立方程
+
+设 $A(t)$ 为车 A 到交叉路口的水平距离，$B(t)$ 为车 B 的竖直距离。两车之间的距离 $C(t)$ 满足：
+
+$$C^2 = A^2 + B^2$$
+
+这就是**勾股定理**——将变量*关联*在一起的关键方程。
+
+### 对时间求导
+
+现在对两边同时应用 $\frac{d}{dt}$。每个变量都依赖于 $t$，所以我们使用**链式法则**：
+
+$$\frac{d}{dt}\left(C^2\right) = \frac{d}{dt}\left(A^2\right) + \frac{d}{dt}\left(B^2\right)$$
+
+$$2C \,\frac{dC}{dt} = 2A \,\frac{dA}{dt} + 2B \,\frac{dB}{dt}$$
+
+两边同除以 $2$：
+
+::: {.callout-important}
+## 核心要点：直角三角形的相关变化率方程
+当两个距离构成直角三角形的两条直角边，且所有量都随时间变化时，你可以通过对勾股定理求导将三个变化率联系在一起。这个方程是解决所有直角三角形相关变化率问题的基础。
+
+$$\boxed{C \,\frac{dC}{dt} = A \,\frac{dA}{dt} + B \,\frac{dB}{dt}}$$
+
+这就是**相关变化率方程**。它将三个变化率 $\frac{dA}{dt}$、$\frac{dB}{dt}$ 和 $\frac{dC}{dt}$ 联系在一起。
+:::
+
+### 求解未知变化率
+
+假设在所求的时刻：
+
+- $A = 500$ 米，$B = 375$ 米
+- 注意 $500 : 375 = 4 : 3$，所以这是一个按比例放大的 **3-4-5** 直角三角形
+- 因此 $C = \sqrt{500^2 + 375^2} = \sqrt{250000 + 140625} = \sqrt{390625} = 625$ 米（即 $5 \times 125$）
+- 车 A 以 $60$ mph 驶向交叉路口，所以 $\frac{dA}{dt} = -60$（负号是因为 $A$ 在*减小*）
+
+如果我们要求 $\frac{dC}{dt}$（两车之间距离变化的速度），代入：
+
+$$625 \cdot \frac{dC}{dt} = 500 \cdot (-60) + 375 \cdot \frac{dB}{dt}$$
+
+已知 $\frac{dB}{dt}$（车 B 的速度）后，就可以求解 $\frac{dC}{dt}$。
+
+::: {.callout-tip collapse="true"}
+## 为什么有负号？
+
+当一辆车**驶向**交叉路口时，它与交叉路口的距离在*减小*。减小的量具有**负的**导数。所以如果车 A 以 60 mph 靠近，我们写 $\frac{dA}{dt} = -60$。
+
+正确判断正负号是相关变化率中最棘手的部分之一。始终问自己："这个距离是在变大还是变小？"
+:::
+
+### 相关变化率的一般策略
+
+以下是你可以用于任何相关变化率问题的逐步方法：
+
+| 步骤 | 操作 |
+|------|-----------|
+| 1 | **画图**并用变量标注每个变化的量 |
+| 2 | **确定**你知道哪些变化率，需要求哪个变化率 |
+| 3 | **写出方程**将变量联系起来（几何、物理等） |
+| 4 | 用链式法则对两边关于 $t$ **求导** |
+| 5 | 在特定时刻**代入**所有已知值 |
+| 6 | **求解**未知变化率 |
+
+::: {.callout-tip collapse="true"}
+## 常见错误
+
+- **过早代入数值**：先求导，*再*代入数值。如果你在求 $\frac{d}{dt}$ 之前就代入 $A = 500$，你会完全失去 $\frac{dA}{dt}$ 这一项，因为常数的导数为零。
+- **忘记链式法则**：每个随时间变化的变量在求导时都需要一个 $\frac{d(\cdot)}{dt}$。
+- **符号错误**：减小的量具有负的变化率。始终检查每个距离或度量是在增大还是减小。
+:::
+
+### 可视化 $C$ 随时间的变化
+
+观察当车 A 以恒定速度驶向交叉路口时（车 B 静止），斜边 $C$ 如何变化：
+
+::: {.desmos-container}
+```{=html}
+<div id="distance-graph" style="width: 100%; height: 400px;"></div>
+<script>
+var elt2 = document.getElementById('distance-graph');
+var calc2 = Desmos.GraphingCalculator(elt2, {
+  expressions: true,
+  settingsMenu: false
+});
+calc2.setExpression({id: 'c_of_t', latex: 'y = \\sqrt{(500 - 60x)^2 + 375^2}', color: '#6042a6', lineWidth: 3});
+calc2.setExpression({id: 'a_of_t', latex: 'y = 500 - 60x', color: '#2d70b3', lineStyle: 'DASHED', lineWidth: 1.5});
+calc2.setExpression({id: 'b_const', latex: 'y = 375', color: '#c74440', lineStyle: 'DASHED', lineWidth: 1.5});
+calc2.setExpression({id: 'label_c', latex: '(2, \\sqrt{(500-120)^2+375^2})', color: '#6042a6', pointSize: 0, label: 'C(t) = distance between cars', showLabel: true});
+calc2.setExpression({id: 'label_a', latex: '(6, 500-360)', color: '#2d70b3', pointSize: 0, label: 'A(t) = Car A distance', showLabel: true});
+calc2.setExpression({id: 'label_b', latex: '(7, 375)', color: '#c74440', pointSize: 0, label: 'B = 375 (fixed)', showLabel: true});
+calc2.setMathBounds({left: -0.5, right: 10, bottom: 0, top: 700});
+</script>
+```
+:::
+
+注意 $C(t)$ **不是**直线，尽管 $A(t)$ 是线性递减的。这是因为 $C = \sqrt{A^2 + B^2}$ 是 $A$ 的非线性函数。变化率 $\frac{dC}{dt}$ 本身也在随时间变化——这就是为什么我们必须指定在哪个*时刻*来计算它。
+
+### 另一个经典示例：扩展的圆
+
+许多相关变化率问题涉及几何。假设一块石头落入池塘，产生一个圆形波纹，其半径 $r$ 以恒定速率增加：
+
+$$\frac{dr}{dt} = 2 \text{ m/s}$$
+
+当 $r = 10$ 米时，**面积**增加的速度是多少？
+
+**第一步** — 写出面积和半径的关系方程：
+
+$$A = \pi r^2$$
+
+**第二步** — 对两边关于 $t$ 求导：
+
+::: {.callout-important}
+## 核心要点：圆面积的变化率
+如果一个圆的半径在增长，它的面积增长得越来越快，因为面积公式是非线性的。对 $A = \pi r^2$ 求导，可以直接把半径的变化率和面积的变化率联系起来。
+
+$$\frac{dA}{dt} = 2\pi r \,\frac{dr}{dt}$$
+:::
+
+**第三步** — 代入 $r = 10$ 和 $\frac{dr}{dt} = 2$：
+
+$$\frac{dA}{dt} = 2\pi(10)(2) = 40\pi \approx 125.7 \text{ m}^2/\text{s}$$
+
+尽管半径以恒定速率增长，面积却增长得**越来越快**，因为 $\frac{dA}{dt}$ 取决于 $r$，而 $r$ 在增大。
+
+## 速查表
+
+::: {.key-formula}
+| 公式 | 使用场景 |
+|---------|------------|
+| $C^2 = A^2 + B^2$ | 直角三角形中的距离关系 |
+| $2C\frac{dC}{dt} = 2A\frac{dA}{dt} + 2B\frac{dB}{dt}$ | 勾股定理相关变化率 |
+| $A = \pi r^2 \implies \frac{dA}{dt} = 2\pi r\frac{dr}{dt}$ | 扩大/缩小的圆 |
+| $V = \frac{4}{3}\pi r^3 \implies \frac{dV}{dt} = 4\pi r^2 \frac{dr}{dt}$ | 扩大/缩小的球体 |
+| $V = \frac{1}{3}\pi r^2 h$ | 圆锥注水问题 |
+
+### 相关变化率策略
+
+1. 画图并用变量标注
+2. 写出一个联系变量的方程
+3. 对每一项关于 $t$ 求导（链式法则）
+4. 求导**之后**再代入已知值
+5. 求解未知变化率
+
+### 符号规则
+
+- 距离**减小** $\implies$ $\frac{d(\cdot)}{dt} < 0$
+- 距离**增大** $\implies$ $\frac{d(\cdot)}{dt} > 0$
+- 始终在图中定义正方向
+:::

@@ -1,0 +1,277 @@
+---
+title: "椭圆与三维曲面上的优化"
+date: 2025-09-05
+---
+
+你有没有想过，GPS是如何找到离你最近的道路的？或者电子游戏是如何判断激光束击中弯曲飞船的哪个位置的？在这节课中，你将学习如何找到曲线上离任意给定点最近的点。我们将从二维的椭圆开始，然后进阶到三维曲面——椭球体。秘密武器是什么？一个关于垂直线的简单几何规则，它能让即使是棘手的优化问题也变得完全可解。
+
+::: {.callout-tip collapse="true"}
+## 为什么曲线上的优化很重要
+
+寻找曲线上最近点的问题无处不在：
+
+- **GPS导航**：你的手机会找到道路上离你位置最近的点
+- **机器人技术**：机械臂计算到弯曲表面的最近距离
+- **计算机图形学**：光线追踪找到光线击中弯曲物体（如头盔和行星）的位置
+- **卫星轨道**：任务控制中心计算椭圆轨道到空间站的最近距离
+
+椭圆和椭球体是自然界中最常见的形状——行星、轨道，甚至鸡蛋都大致是椭球形的！
+:::
+
+## 本课内容
+
+- 椭圆复习：圆心、轴、标准形式
+- 优化：椭圆上离外部点最近的点
+- 使用微分方程求法向量
+- 几何直觉：法线必须指向外部点
+- 建立和求解方程组
+- 拓展到三维：椭球体和切平面
+- 三维优化：椭球体上的最近点
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250905.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250905_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250905_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250905_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250905_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是椭圆？
+
+**椭圆**是一个被拉伸的圆。你可以想象把一个圆压扁，使它在一个方向上比另一个方向更宽。
+
+以原点为中心的椭圆的**标准形式**为：
+
+$$\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$$
+
+- $a$ = 宽度的一半（当 $a > b$ 时为半长轴）
+- $b$ = 高度的一半（当 $a > b$ 时为半短轴）
+
+如果中心在 $(h, k)$ 而不是原点：
+
+$$\frac{(x - h)^2}{a^2} + \frac{(y - k)^2}{b^2} = 1$$
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是距离公式？
+
+两点 $(x_1, y_1)$ 和 $(x_2, y_2)$ 之间的**距离**为：
+
+$$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}$$
+
+这直接来自勾股定理。在三维空间中，两点 $(x_1, y_1, z_1)$ 和 $(x_2, y_2, z_2)$ 之间的距离为：
+
+$$d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2 + (z_2 - z_1)^2}$$
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是隐函数求导？
+
+当你有一个像 $x^2 + y^2 = 25$（一个圆）这样的方程时，$y$ 不是以"$y = \dots$"的形式写出来的——它和 $x$ 混在一起。要求 $\frac{dy}{dx}$，你需要对方程**两边**关于 $x$ 求导，将 $y$ 视为 $x$ 的函数：
+
+$$2x + 2y\frac{dy}{dx} = 0 \quad\Rightarrow\quad \frac{dy}{dx} = -\frac{x}{y}$$
+
+这给出了曲线上任意一点处切线的斜率。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是法向量？
+
+**切线**在某一点与曲线相切，沿曲线前进的方向延伸。**法向量**垂直于（成直角）切线。
+
+如果切线的斜率为 $m$，则法线的斜率为 $-\frac{1}{m}$（负倒数）。
+
+法向量告诉你哪个方向是从曲面"直接向外"的——就像一根从球上伸出的箭头。
+:::
+
+## 核心概念
+
+### 椭圆复习
+
+我们的椭圆以 $(5, -3)$ 为中心，半长轴 $a = 8$（水平方向），半短轴 $b = 6$（垂直方向）：
+
+$$\frac{(x - 5)^2}{64} + \frac{(y + 3)^2}{36} = 1$$
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'ellipse', latex: '\\frac{(x-5)^2}{64}+\\frac{(y+3)^2}{36}=1', color: '#2d70b3' });
+  calc1.setExpression({ id: 'center', latex: '(5, -3)', color: '#c74440', pointSize: 10, label: 'Center (5, -3)', showLabel: true });
+  calc1.setExpression({ id: 'extpt', latex: '(20, 0)', color: '#388c46', pointSize: 10, label: 'A = (20, 0)', showLabel: true });
+  calc1.setMathBounds({ left: -8, right: 28, bottom: -14, top: 10 });
+</script>
+```
+
+### 优化问题
+
+**目标：**找到椭圆上离外部点 $A = (20, 0)$ **最近**的点 $P = (x_0, y_0)$。
+
+我们要最小化距离：
+
+$$d = \sqrt{(x_0 - 20)^2 + (y_0 - 0)^2}$$
+
+约束条件是 $(x_0, y_0)$ 在椭圆上。
+
+### 通过微分求法向量
+
+对椭圆方程关于 $x$ 进行隐函数求导：
+
+$$\frac{2(x - 5)}{64} + \frac{2(y + 3)}{36}\cdot\frac{dy}{dx} = 0$$
+
+化简：
+
+$$\frac{x - 5}{32} + \frac{(y + 3)}{18}\cdot\frac{dy}{dx} = 0$$
+
+所以椭圆上点 $(x_0, y_0)$ 处的切线斜率为：
+
+$$\frac{dy}{dx} = -\frac{18(x_0 - 5)}{32(y_0 + 3)}$$
+
+$(x_0, y_0)$ 处的**切线方向**沿向量 $\left(1, \; -\frac{18(x_0 - 5)}{32(y_0 + 3)}\right)$，而在该点垂直于椭圆的**法向量**为：
+
+::: {.callout-important}
+## 核心要点：椭圆的法向量
+法向量在椭圆的任意一点处"直接向外"指出。你可以通过求椭圆方程的梯度来找到它。对于以 $(h, k)$ 为中心的椭圆，$(x_0, y_0)$ 处的法线正比于 $\left(\frac{x_0 - h}{a^2}, \frac{y_0 - k}{b^2}\right)$。
+
+$$\vec{n} = \left(\frac{x_0 - 5}{32}, \;\frac{y_0 + 3}{18}\right)$$
+:::
+
+### 几何直觉
+
+::: {.callout-important}
+## 核心要点：最近点条件
+在曲线上离外部点最近的点处，连接它们的线必须垂直于曲线。如果不垂直，你可以沿曲线滑动并找到更近的点。这意味着从最近点到目标点的方向必须与法向量完全一致。
+:::
+
+在椭圆上离 $A$ 最近的点 $P$处，从 $P$ 到 $A$ 的连线必须**垂直于椭圆**——也就是说，它必须沿着法线方向。如果不垂直，你可以沿椭圆滑动并找到更近的点。
+
+这意味着向量 $\overrightarrow{PA} = (20 - x_0, \; 0 - y_0)$ 必须**平行于**法向量 $\vec{n}$。
+
+两个向量平行，当且仅当它们的分量成比例：
+
+$$\frac{20 - x_0}{\frac{x_0 - 5}{32}} = \frac{-y_0}{\frac{y_0 + 3}{18}}$$
+
+化简为：
+
+$$\frac{32(20 - x_0)}{x_0 - 5} = \frac{-18\,y_0}{y_0 + 3}$$
+
+### 建立方程组
+
+我们现在有两个未知数（$x_0$ 和 $y_0$）的**两个方程**：
+
+**方程1**（点在椭圆上）：
+$$\frac{(x_0 - 5)^2}{64} + \frac{(y_0 + 3)^2}{36} = 1$$
+
+**方程2**（法线平行于 $\overrightarrow{PA}$）：
+$$\frac{32(20 - x_0)}{x_0 - 5} = \frac{-18\,y_0}{y_0 + 3}$$
+
+求解这个方程组（通过代入法或数值方法）即可得到最近点。
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'ellipse', latex: '\\frac{(x-5)^2}{64}+\\frac{(y+3)^2}{36}=1', color: '#2d70b3' });
+  calc2.setExpression({ id: 'extpt', latex: '(20, 0)', color: '#388c46', pointSize: 10, label: 'A = (20, 0)', showLabel: true });
+  calc2.setExpression({ id: 'slider_t', latex: 't=0.3', sliderBounds: {min: 0, max: 6.283, step: 0.01} });
+  calc2.setExpression({ id: 'px', latex: 'p_x = 5 + 8\\cos(t)' });
+  calc2.setExpression({ id: 'py', latex: 'p_y = -3 + 6\\sin(t)' });
+  calc2.setExpression({ id: 'movept', latex: '(p_x, p_y)', color: '#c74440', pointSize: 10, label: 'P (drag t!)', showLabel: true });
+  calc2.setExpression({ id: 'line', latex: '((1-s)\\cdot p_x + s\\cdot 20,\\; (1-s)\\cdot p_y + s\\cdot 0)', color: '#fa7e19', lineWidth: 1.5, parametricDomain: {min: 0, max: 1} });
+  calc2.setExpression({ id: 'dist', latex: 'd = \\sqrt{(p_x - 20)^2 + (p_y)^2}', color: '#000' });
+  calc2.setMathBounds({ left: -8, right: 28, bottom: -14, top: 10 });
+</script>
+```
+
+*拖动滑块 $t$ 让点 $P$ 沿椭圆移动，观察距离的变化！*
+
+### 拓展到三维：椭球体
+
+**椭球体**是椭圆的三维版本。我们考虑的椭球体为：
+
+$$\frac{x^2}{1} + \frac{y^2}{4} + \frac{z^2}{9} = 1$$
+
+这是一个拉伸的球体：沿 $x$ 轴半径为1，沿 $y$ 轴半径为2，沿 $z$ 轴半径为3。
+
+### 三维中的切平面和法向量
+
+对于由 $F(x, y, z) = 0$ 定义的曲面，**梯度** $\nabla F$ 给出法向量。
+
+令 $F(x, y, z) = x^2 + \frac{y^2}{4} + \frac{z^2}{9} - 1$，椭球体上点 $(x_0, y_0, z_0)$ 处的梯度为：
+
+$$\nabla F = \left(2x_0, \;\frac{y_0}{2}, \;\frac{2z_0}{9}\right)$$
+
+去掉公因子2，法线方向为：
+
+::: {.callout-important}
+## 核心要点：梯度在任何维度都给出法线
+对于由 $F(x,y,z) = 0$ 定义的任何曲面，梯度 $\nabla F$ 始终垂直于曲面。这是我们在二维中使用的法向量思想的三维版本，它在任何维度都适用。
+
+$$\vec{n} = \left(x_0, \;\frac{y_0}{4}, \;\frac{z_0}{9}\right)$$
+:::
+
+$(x_0, y_0, z_0)$ 处的**切平面**是在该点刚好与椭球体相切的平面，$\vec{n}$ 从切平面直接向外指出。
+
+### 三维优化：椭球体上的最近点
+
+**目标：**找到椭球体上离 $A = (5, 5, 5)$ 最近的点。
+
+与二维的思路相同——在最近点处，从 $P$ 到 $A$ 的向量必须平行于法线：
+
+$$\overrightarrow{PA} = (5 - x_0, \; 5 - y_0, \; 5 - z_0) \;\parallel\; \left(x_0, \;\frac{y_0}{4}, \;\frac{z_0}{9}\right)$$
+
+这给出比例条件：
+
+$$\frac{5 - x_0}{x_0} = \frac{5 - y_0}{\frac{y_0}{4}} = \frac{5 - z_0}{\frac{z_0}{9}}$$
+
+结合椭球体方程 $x_0^2 + \frac{y_0^2}{4} + \frac{z_0^2}{9} = 1$，这是一个可以求解的方程组。
+
+::: {.callout-tip collapse="true"}
+## 为什么同样的方法在三维也适用？
+
+几何推理是完全相同的：如果从曲面到外部点的连线**不**垂直于曲面，那么你可以沿曲面微调并找到更近的点。在真正的最近点处，没有"侧向"改进的可能——指向 $A$ 的方向完全沿法线方向。
+
+这个原理在**任何维度**都适用！
+:::
+
+## 速查表
+
+::: {.key-formula}
+| 你想要什么 | 怎么做 |
+|---|---|
+| 椭圆标准形式 | $\frac{(x-h)^2}{a^2} + \frac{(y-k)^2}{b^2} = 1$，中心 $(h,k)$ |
+| 椭圆在 $(x_0, y_0)$ 处的法线 | $\vec{n} = \left(\frac{x_0 - h}{a^2},\; \frac{y_0 - k}{b^2}\right)$ |
+| 最近点条件 | $\overrightarrow{PA} \parallel \vec{n}$（法线指向目标点） |
+| 椭球体标准形式 | $\frac{x^2}{a^2} + \frac{y^2}{b^2} + \frac{z^2}{c^2} = 1$ |
+| 椭球体在 $(x_0, y_0, z_0)$ 处的法线 | $\vec{n} = \left(\frac{x_0}{a^2},\; \frac{y_0}{b^2},\; \frac{z_0}{c^2}\right)$ |
+| $(x_0, y_0, z_0)$ 处的切平面 | $\frac{x_0\,(x - x_0)}{a^2} + \frac{y_0\,(y - y_0)}{b^2} + \frac{z_0\,(z - z_0)}{c^2} = 0$ |
+
+### 优化步骤
+
+1. 写出约束条件：点必须在曲线/曲面上
+2. 求导以找到法向量
+3. 建立等式：$\overrightarrow{PA} \parallel \vec{n}$（比例条件）
+4. 求解方程组
+:::

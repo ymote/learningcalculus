@@ -1,0 +1,355 @@
+---
+title: "tan 与 sec 的导数 —— 图形与代数方法"
+date: 2025-09-25
+---
+
+你是否想过，为什么有些函数比其他函数增长得快得多？今天我们将推导正切和正割的导数——这两个三角函数可以在一瞬间趋向无穷大。最酷的是什么？我们将用三种完全不同的方法证明同一个结论：代数方法、单位圆上的几何图形方法，以及复指数方法。学完之后，你会发现三条道路都通向同一个美丽的答案。
+
+::: {.callout-tip collapse="true"}
+## 为什么 tan 和 sec 的导数很重要
+
+正切和正割函数在涉及斜率和伸缩的场景中无处不在：
+
+- **导航**：GPS 系统使用正切函数在角度和地图距离之间进行转换——它们的导数帮助实时修正航向
+- **建筑**：屋顶的坡度是一个正切比——导数告诉你坡度对角度变化有多敏感
+- **光学**：透镜以正切描述的角度折射光线——理解角度变化的速度是设计相机和望远镜的关键
+- **过山车**：在陡峭段，轨道角度大且正切增长快——其导数（sec²）告诉工程师斜率增加的速度有多快
+
+一旦你知道了 sin 和 cos 的导数，tan 和 sec 的导数就水到渠成——今天我们将用三种不同的方法来证明它们！
+:::
+
+## 本课内容
+
+- 通过商法则求 $\tan\theta = \sec^2\theta$ 的导数
+- 在单位圆上对三角函数进行图形微分（小角度时弧 $\approx$ 弦）
+- 通过相似三角形求 $\sec\theta = \sec\theta\cdot\tan\theta$ 的导数
+- 复指数方法：用 $e^{i\theta}$ 表示 $\tan\theta$
+- 复指数表达式的长除法与化简
+- 微分的幂展开：代入 $\theta + d\theta$ 并保留一阶无穷小量
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250925.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250925_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250925_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250925_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250925_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是正切和正割？
+
+**正切**是正弦与余弦的比值：
+
+$$\tan\theta = \frac{\sin\theta}{\cos\theta}$$
+
+**正割**是余弦的倒数：
+
+$$\sec\theta = \frac{1}{\cos\theta}$$
+
+在单位圆上，$\tan\theta$ 是从 x 轴到半径线与 $(1, 0)$ 处的竖直切线交点之间的竖直线段长度。正割是从原点到该交点的距离。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是商法则？
+
+**商法则**告诉你如何对两个函数的商求导：
+
+$$\frac{d}{dx}\left(\frac{f(x)}{g(x)}\right) = \frac{f'(x)\,g(x) - f(x)\,g'(x)}{[g(x)]^2}$$
+
+便于记忆的口诀："下乘上导减上乘下导，除以下的平方。"
+
+我们已经知道 $\frac{d}{dx}(\sin x) = \cos x$ 和 $\frac{d}{dx}(\cos x) = -\sin x$，所以我们拥有了对 $\frac{\sin x}{\cos x}$ 求导所需的一切。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是复指数？
+
+利用欧拉公式 $e^{i\theta} = \cos\theta + i\sin\theta$，我们可以将正弦和余弦写成：
+
+$$\sin\theta = \frac{e^{i\theta} - e^{-i\theta}}{2i}, \qquad \cos\theta = \frac{e^{i\theta} + e^{-i\theta}}{2}$$
+
+这意味着我们也可以将正切写成指数的比值：
+
+$$\tan\theta = \frac{e^{i\theta} - e^{-i\theta}}{i(e^{i\theta} + e^{-i\theta})}$$
+
+复指数的强大之处在于 $e^{i\theta}$ 的导数就是 $ie^{i\theta}$——不需要记忆符号变换！
+:::
+
+::: {.callout-note collapse="true"}
+## "弧等于弦"对小角度意味着什么？
+
+当一个点沿单位圆移动一个微小角度 $d\theta$ 时，它描出一段长度为 $d\theta$ 的小**弧**。
+
+对于非常小的角度，这段弯曲的弧与连接两个端点的直线**弦**几乎无法区分。这就是关键的几何思想：
+
+$$\text{弧} \approx \text{弦} \quad \text{当 } d\theta \text{ 很小时}$$
+
+这个近似使得三角函数导数的几何证明成为可能。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是相似三角形？
+
+如果两个三角形具有相同的角度（形状相同，大小可能不同），则它们是**相似**的。当三角形相似时，对应边的比值相等：
+
+$$\frac{a_1}{a_2} = \frac{b_1}{b_2} = \frac{c_1}{c_2}$$
+
+在本课中，我们使用在单位圆上将角度微调 $d\theta$ 时出现的相似三角形。无穷小变化形成的小三角形与正割线和正切线构成的大三角形相似。
+:::
+
+## 核心要点
+
+### 通过商法则求 $\tan\theta$ 的导数
+
+因为 $\tan\theta = \frac{\sin\theta}{\cos\theta}$，我们令 $f(\theta) = \sin\theta$ 和 $g(\theta) = \cos\theta$ 应用商法则：
+
+$$\frac{d}{d\theta}(\tan\theta) = \frac{\cos\theta \cdot \cos\theta - \sin\theta \cdot (-\sin\theta)}{\cos^2\theta}$$
+
+$$= \frac{\cos^2\theta + \sin^2\theta}{\cos^2\theta} = \frac{1}{\cos^2\theta}$$
+
+::: {.callout-important}
+## 核心要点：正切的导数
+正切的导数是正割的平方。这由对 sin/cos 应用商法则得出，毕达哥拉斯恒等式承担了将分子化简为 1 的全部工作。
+
+$$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
+:::
+
+**探索——观察 $\tan\theta$ 及其导数 $\sec^2\theta$：**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'tan', latex: 'y=\\tan(x)', color: '#2d70b3', lineWidth: 3 });
+  calc1.setExpression({ id: 'sec2', latex: 'y=\\sec(x)^2', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+  calc1.setExpression({ id: 'a', latex: 'a=0.5', sliderBounds: {min: -1.5, max: 1.5, step: 0.01} });
+  calc1.setExpression({ id: 'pt_tan', latex: '(a, \\tan(a))', color: '#2d70b3', pointSize: 10, label: 'tan(a)', showLabel: true });
+  calc1.setExpression({ id: 'tangent_line', latex: 'y - \\tan(a) = \\sec(a)^2 (x - a)', color: '#388c46', lineWidth: 1.5, lineStyle: 'DASHED' });
+  calc1.setExpression({ id: 'pt_sec2', latex: '(a, \\sec(a)^2)', color: '#c74440', pointSize: 10, label: 'sec^2(a)', showLabel: true });
+  calc1.setMathBounds({ left: -5, right: 5, bottom: -8, top: 8 });
+</script>
+```
+
+*拖动滑块 $a$。绿色虚线是 $\tan x$（蓝色）的切线，其斜率始终等于 $\sec^2(a)$（红色虚线曲线）。注意斜率始终至少为 1——$\tan x$ 总是越来越陡！*
+
+### 单位圆上的图形推导
+
+除了代数方法，我们还可以用图形推导 $\frac{d}{d\theta}(\tan\theta) = \sec^2\theta$。
+
+在单位圆上，画出角度 $\theta$ 处的半径并延伸到 $x = 1$ 处的竖直切线。该切线上的竖直截距高度为 $\tan\theta$，从原点到截距点的距离为 $\sec\theta$。
+
+现在将 $\theta$ 微调一个微小量 $d\theta$：
+
+1. 半径旋转 $d\theta$，使截距点沿切线向上移动
+2. 在截距点处形成的小三角形与边长为 $1$、$\tan\theta$ 和 $\sec\theta$ 的大三角形**相似**
+3. 沿切线的微小位移为 $\sec^2\theta \cdot d\theta$
+4. 该位移等于 $d(\tan\theta)$
+
+因此 $\frac{d(\tan\theta)}{d\theta} = \sec^2\theta$——同样的答案，直接来自几何！
+
+**探索——观察 $\tan\theta$ 和 $\sec\theta$ 的单位圆构造：**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'circle', latex: 'x^2+y^2=1', color: '#aaaaaa' });
+  calc2.setExpression({ id: 'theta', latex: '\\theta=0.7', sliderBounds: {min: -1.4, max: 1.4, step: 0.01} });
+  calc2.setExpression({ id: 'tangent_line_vert', latex: 'x=1', color: '#aaaaaa', lineStyle: 'DASHED' });
+  calc2.setExpression({ id: 'radius', latex: 'y=x\\tan(\\theta) \\left\\{0 \\le x \\le \\frac{1}{\\cos(\\theta)}\\right\\}', color: '#2d70b3', lineWidth: 2 });
+  calc2.setExpression({ id: 'pt_circle', latex: '(\\cos\\theta, \\sin\\theta)', color: '#2d70b3', pointSize: 10, label: '(cos θ, sin θ)', showLabel: true });
+  calc2.setExpression({ id: 'pt_tan', latex: '(1, \\tan\\theta)', color: '#c74440', pointSize: 10, label: 'tan θ', showLabel: true });
+  calc2.setExpression({ id: 'tan_seg', latex: '(1, t)', color: '#c74440', lineWidth: 3, parametricDomain: {min: '0', max: '\\tan(\\theta)'} });
+  calc2.setExpression({ id: 'sec_label', latex: '(0.5/\\cos(\\theta), 0.5\\tan(\\theta))', color: '#6042a6', pointSize: 0, label: 'sec θ', showLabel: true });
+  calc2.setMathBounds({ left: -1.5, right: 2.5, bottom: -2, top: 2 });
+</script>
+```
+
+*拖动 $\theta$，观察正切高度（红色线段）和正割长度（紫色标签）的变化。注意当 $\theta$ 趋近 $\pm\frac{\pi}{2}$ 时，$\tan\theta$ 增长得有多快！*
+
+### 通过相似三角形求 $\sec\theta$ 的导数
+
+我们要求 $\frac{d}{d\theta}(\sec\theta)$。利用同一幅单位圆图：
+
+$\sec\theta$ 是从原点到竖直切线上的点 $(1, \tan\theta)$ 的距离。
+
+当 $\theta$ 增加 $d\theta$ 时，截距点沿切线移动。形成的小三角形与原来的直角三角形（两条直角边为 $1$ 和 $\tan\theta$，斜边为 $\sec\theta$）相似。
+
+由相似三角形，斜边的变化量（即 $d(\sec\theta)$）满足：
+
+$$\frac{d(\sec\theta)}{\sec\theta \cdot d\theta} = \frac{\sec\theta}{1} \cdot \frac{\tan\theta}{\sec\theta}$$
+
+整理得：
+
+$$d(\sec\theta) = \sec\theta \cdot \tan\theta \cdot d\theta$$
+
+::: {.callout-important}
+## 核心要点：正割的导数
+正割的导数是正割乘以正切。你可以用单位圆上的相似三角形进行几何证明，也可以用链式法则对 $(\cos\theta)^{-1}$ 进行代数证明。
+
+$$\boxed{\frac{d}{d\theta}(\sec\theta) = \sec\theta \cdot \tan\theta}$$
+:::
+
+::: {.callout-tip collapse="true"}
+## 快速代数验证
+
+我们可以用链式法则对 $\sec\theta = (\cos\theta)^{-1}$ 进行验证：
+
+$$\frac{d}{d\theta}(\cos\theta)^{-1} = -1 \cdot (\cos\theta)^{-2} \cdot (-\sin\theta) = \frac{\sin\theta}{\cos^2\theta} = \frac{1}{\cos\theta} \cdot \frac{\sin\theta}{\cos\theta} = \sec\theta \cdot \tan\theta \;\checkmark$$
+:::
+
+### 用复指数方法求 $\frac{d}{d\theta}(\tan\theta)$
+
+这里有一个巧妙的代数方法。用欧拉公式写出正切：
+
+$$\tan\theta = \frac{e^{i\theta} - e^{-i\theta}}{i(e^{i\theta} + e^{-i\theta})}$$
+
+为了求导，我们可以对这个表达式使用商法则。令 $u = e^{i\theta} - e^{-i\theta}$，$v = i(e^{i\theta} + e^{-i\theta})$。则：
+
+$$u' = ie^{i\theta} + ie^{-i\theta} = i(e^{i\theta} + e^{-i\theta})$$
+
+$$v' = i(ie^{i\theta} - ie^{-i\theta}) = i^2(e^{i\theta} - e^{-i\theta}) = -(e^{i\theta} - e^{-i\theta})$$
+
+由商法则：
+
+$$\frac{d}{d\theta}(\tan\theta) = \frac{u'v - uv'}{v^2}$$
+
+$$= \frac{i(e^{i\theta}+e^{-i\theta}) \cdot i(e^{i\theta}+e^{-i\theta}) - (e^{i\theta}-e^{-i\theta}) \cdot [-(e^{i\theta}-e^{-i\theta})]}{[i(e^{i\theta}+e^{-i\theta})]^2}$$
+
+分子变为：
+
+$$i^2(e^{i\theta}+e^{-i\theta})^2 + (e^{i\theta}-e^{-i\theta})^2$$
+
+$$= -(e^{i\theta}+e^{-i\theta})^2 + (e^{i\theta}-e^{-i\theta})^2$$
+
+展开两个平方：
+
+$$= -(e^{2i\theta} + 2 + e^{-2i\theta}) + (e^{2i\theta} - 2 + e^{-2i\theta}) = -4$$
+
+分母为：
+
+$$-\left(e^{i\theta}+e^{-i\theta}\right)^2 = -(2\cos\theta)^2 = -4\cos^2\theta$$
+
+因此：
+
+$$\frac{d}{d\theta}(\tan\theta) = \frac{-4}{-4\cos^2\theta} = \frac{1}{\cos^2\theta} = \sec^2\theta \;\checkmark$$
+
+三种完全不同的方法——商法则、几何方法和复指数——都给出 $\sec^2\theta$。
+
+### 复指数的长除法
+
+在处理像 $\frac{e^{i\theta} - e^{-i\theta}}{e^{i\theta} + e^{-i\theta}}$ 这样的表达式时，你可以通过将分子和分母同除以 $e^{-i\theta}$ 来化简：
+
+$$\frac{e^{i\theta} - e^{-i\theta}}{e^{i\theta} + e^{-i\theta}} = \frac{e^{2i\theta} - 1}{e^{2i\theta} + 1}$$
+
+你也可以令 $w = e^{i\theta}$，将所有内容转化为简洁的多项式形式的分数：
+
+$$\tan\theta = \frac{w^2 - 1}{i(w^2 + 1)} \quad \text{其中 } w = e^{i\theta}$$
+
+这种代换使商法则更加简洁，减少了出错的机会。关键技巧是**选择好的代换**来简化代数运算，然后再求导。
+
+### 微分的幂展开
+
+另一种方法是直接将 $\theta + d\theta$ 代入函数，只保留一阶项（舍去含 $(d\theta)^2$ 或更高次的项）：
+
+对于 $\tan(\theta + d\theta)$，回忆：
+
+$$e^{i(\theta+d\theta)} = e^{i\theta} \cdot e^{i\,d\theta} \approx e^{i\theta}(1 + i\,d\theta)$$
+
+因为当 $d\theta$ 为无穷小量时 $e^{i\,d\theta} \approx 1 + i\,d\theta$。代入正切公式：
+
+$$\tan(\theta + d\theta) \approx \frac{e^{i\theta}(1+i\,d\theta) - e^{-i\theta}(1-i\,d\theta)}{i\left[e^{i\theta}(1+i\,d\theta) + e^{-i\theta}(1-i\,d\theta)\right]}$$
+
+展开分子：
+
+$$(e^{i\theta} - e^{-i\theta}) + i\,d\theta\,(e^{i\theta} + e^{-i\theta})$$
+
+展开分母：
+
+$$i\left[(e^{i\theta} + e^{-i\theta}) + i\,d\theta\,(e^{i\theta} - e^{-i\theta})\right]$$
+
+经过仔细的代数运算（除法并舍去二阶项），结果为：
+
+$$\tan(\theta + d\theta) - \tan\theta = \sec^2\theta \cdot d\theta$$
+
+这种"无穷小代入"方法非常直观：你可以确切地看到导数的每一部分从何而来。
+
+::: {.callout-tip collapse="true"}
+## 为什么可以舍去 $(d\theta)^2$？
+
+无穷小量 $d\theta$ 被认为是"小到其平方本质上为零"。更准确地说，当我们在 $\frac{\Delta f}{d\theta}$ 中取 $d\theta \to 0$ 的极限时，分子中含 $(d\theta)^2$ 的任何项在除以 $d\theta$ 后贡献为 $0$。因此我们只需追踪一阶项——其他所有项都消失了。
+:::
+
+**探索——比较 $\tan(x)$ 与其在某点的线性近似：**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'tan', latex: 'y=\\tan(x)', color: '#2d70b3', lineWidth: 3 });
+  calc3.setExpression({ id: 'a', latex: 'a=0', sliderBounds: {min: -1.4, max: 1.4, step: 0.01} });
+  calc3.setExpression({ id: 'approx', latex: 'y=\\tan(a)+\\sec(a)^2(x-a)', color: '#fa7e19', lineWidth: 2 });
+  calc3.setExpression({ id: 'pt', latex: '(a, \\tan(a))', color: '#2d70b3', pointSize: 10, label: 'Point of tangency', showLabel: true });
+  calc3.setExpression({ id: 'sec', latex: 'y=\\sec(x)', color: '#388c46', lineWidth: 2, lineStyle: 'DASHED' });
+  calc3.setExpression({ id: 'sec_neg', latex: 'y=-\\sec(x)', color: '#388c46', lineWidth: 2, lineStyle: 'DASHED' });
+  calc3.setMathBounds({ left: -5, right: 5, bottom: -8, top: 8 });
+</script>
+```
+
+*拖动 $a$，观察橙色切线（斜率 $= \sec^2 a$）如何在该点附近紧贴蓝色曲线。绿色虚线曲线是 $\pm\sec x$——它们构成了 $\tan x$ 在其间振荡的"包络线"。*
+
+## 速查表
+
+::: {.key-formula}
+| 公式 | 记忆方法 |
+|---|---|
+| $\dfrac{d}{d\theta}(\tan\theta) = \sec^2\theta$ | 对 $\frac{\sin}{\cos}$ 用商法则，然后用毕达哥拉斯恒等式 |
+| $\dfrac{d}{d\theta}(\sec\theta) = \sec\theta\cdot\tan\theta$ | 对 $(\cos\theta)^{-1}$ 用链式法则，或用相似三角形 |
+| $\tan\theta = \dfrac{\sin\theta}{\cos\theta}$ | SOH/CAH：对边比邻边 |
+| $\sec\theta = \dfrac{1}{\cos\theta}$ | "正割" = 余弦的倒数 |
+| $\sin^2\theta + \cos^2\theta = 1$ | 毕达哥拉斯恒等式——$\sec^2\theta$ 背后的引擎 |
+| $1 + \tan^2\theta = \sec^2\theta$ | 将毕达哥拉斯恒等式两边除以 $\cos^2\theta$ |
+
+### 复指数形式
+
+$$\tan\theta = \frac{e^{i\theta} - e^{-i\theta}}{i(e^{i\theta} + e^{-i\theta})}$$
+
+### 六个三角函数的导数（目前为止）
+
+$$\frac{d}{d\theta}(\sin\theta) = \cos\theta \qquad \frac{d}{d\theta}(\cos\theta) = -\sin\theta$$
+
+$$\frac{d}{d\theta}(\tan\theta) = \sec^2\theta \qquad \frac{d}{d\theta}(\sec\theta) = \sec\theta\tan\theta$$
+
+### 无穷小技巧
+
+求 $f(\theta)$ 的导数：
+
+1. 用 $e^{i\,d\theta} \approx 1 + i\,d\theta$ 计算 $f(\theta + d\theta)$
+2. 减去 $f(\theta)$
+3. 只保留含一个 $d\theta$ 因子的项
+4. 除以 $d\theta$——这就是你的导数！
+:::

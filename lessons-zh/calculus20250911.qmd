@@ -1,0 +1,266 @@
+---
+title: "自然常数 e 与二项式展开"
+date: 2025-09-11
+---
+
+如果银行不断地对你的利息再计利息，一次又一次，越来越快，会发生什么？你可能以为你的钱会无限增长，但它实际上会稳定在一个特殊的神奇数字：$e \approx 2.71828$。在这节课中，你将发现 $e$ 的来源，学习解锁它的二项式展开技巧，并了解为什么 $e$ 是所有数学中最重要的数字之一。
+
+::: {.callout-tip collapse="true"}
+## 现实应用：自然常数 e 从何而来？
+
+想象你在银行账户里存了1美元，年利率为100%。如果银行每年计息一次，你会得到2美元。但如果他们每月计息呢？每天呢？每秒呢？当你的计息频率越来越高时，你最终得到的金额会越来越接近一个神秘的数字：$e \approx 2.71828...$。这个数字无处不在——在人口增长、放射性衰变，甚至社交媒体帖子传播中都能看到它。今天我们将看看它到底从哪里来，以及它为什么如此特殊。
+:::
+
+## 本课内容
+
+- 通过复利引出自然常数 $e$
+- 极限 $\left(1 + \frac{r}{k}\right)^k \to e^r$（当 $k \to \infty$）
+- 为什么 $e^x$ 的导数是 $e^x$ 本身——这是它的定义性质
+- 二项式展开：$(a+b)^n = \sum_{i=0}^{n} \binom{n}{i} \cdot a^{n-i} \cdot b^{i}$
+- 组合数学复习：$\binom{n}{k} = \frac{n!}{k!(n-k)!}$
+- 互补性：$\binom{n}{k} = \binom{n}{n-k}$
+- 二项式系数中的规律如何引出 $e$ 的极限定义
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250911.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250911_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250911_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250911_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250911_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+::: {.callout-note collapse="true"}
+## 预备知识：指数运算法则
+
+你应该熟悉基本的指数运算法则：
+
+- $a^m \cdot a^n = a^{m+n}$
+- $(a^m)^n = a^{mn}$
+- $a^0 = 1$（对任意 $a \neq 0$）
+
+这些法则对于理解 $(1 + r/k)^k$ 在 $k$ 变化时的行为至关重要。
+:::
+
+::: {.callout-note collapse="true"}
+## 预备知识：阶乘
+
+**阶乘**写作 $n!$，表示从1到 $n$ 的所有正整数的乘积：
+
+$$n! = n \times (n-1) \times (n-2) \times \cdots \times 2 \times 1$$
+
+例如：$5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$。
+
+按照约定，$0! = 1$。阶乘增长极快——$10! = 3{,}628{,}800$ 已经超过三百万了。
+:::
+
+## 自然常数 $e$ 的起源：复利
+
+假设你以100%年利率（$r = 1$）投资1美元。如果银行每年计息 $k$ 次，每次计息的利率为 $\frac{1}{k}$，一年后你有：
+
+$$A = \left(1 + \frac{1}{k}\right)^k$$
+
+让我们看看当 $k$ 增大时会发生什么：
+
+| 计息次数（$k$） | 表达式 | 值 |
+|---|---|---|
+| 1（每年） | $(1 + 1)^1$ | $2.000$ |
+| 2（每半年） | $(1 + 0.5)^2$ | $2.250$ |
+| 12（每月） | $(1 + 1/12)^{12}$ | $2.613...$ |
+| 365（每天） | $(1 + 1/365)^{365}$ | $2.7146...$ |
+| 10,000 | $(1 + 1/10000)^{10000}$ | $2.71815...$ |
+| $\infty$ | $\lim_{k \to \infty} (1 + 1/k)^k$ | $e \approx 2.71828...$ |
+
+这个数不会趋向无穷大——它会稳定在特殊常数 $e$。
+
+**探索这个极限——使用滑块增大 $k$，观察值如何趋近 $e$：**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'k', latex: 'k=10', sliderBounds: {min: 1, max: 500, step: 1} });
+  calc1.setExpression({ id: 'func', latex: 'y=\\left(1+\\frac{1}{x}\\right)^{x}', color: '#2d70b3', lineWidth: 2.5 });
+  calc1.setExpression({ id: 'eline', latex: 'y=e', color: '#388c46', lineWidth: 2, lineStyle: 'DASHED' });
+  calc1.setExpression({ id: 'pt', latex: '\\left(k,\\left(1+\\frac{1}{k}\\right)^{k}\\right)', color: '#c74440', pointSize: 10, label: '(k, (1+1/k)^k)', showLabel: true });
+  calc1.setExpression({ id: 'elabel', latex: '(450, 2.718)', color: '#388c46', label: 'y = e', showLabel: true, pointSize: 0 });
+  calc1.setMathBounds({ left: -10, right: 520, bottom: 1.5, top: 3.5 });
+</script>
+```
+
+::: {.callout-tip collapse="true"}
+## 试试这个滑块
+
+从 $k = 1$ 开始慢慢增大。注意值多快就接近了 $e$——到 $k = 100$ 时已经在几百分之一的范围内了。但它永远不会完全达到 $e$；它只是越来越接近。这就是**极限**的含义。
+:::
+
+## 推广：利率 $r$
+
+如果利率不是100%，而是某个一般利率 $r$ 呢？那么 $k$ 次计息后一年的金额为：
+
+$$A = \left(1 + \frac{r}{k}\right)^k$$
+
+当 $k \to \infty$ 时，这趋近于 $e^r$：
+
+$$\lim_{k \to \infty} \left(1 + \frac{r}{k}\right)^k = e^r$$
+
+这是微积分中最重要的极限之一。但要**证明**它，我们需要一个强大的代数工具：二项式展开。
+
+## 组合数学复习：$n$ 选 $k$
+
+在展开 $(a + b)^n$ 之前，我们需要**二项式系数**，读作"$n$ 选 $k$"：
+
+$$\binom{n}{k} = \frac{n!}{k!(n-k)!}$$
+
+这计算的是从 $n$ 个物品中选取 $k$ 个的方法数，其中顺序无关紧要。
+
+### 示例：从5个学生中选3个有多少种方法？
+
+$$\binom{5}{3} = \frac{5!}{3! \cdot 2!} = \frac{120}{6 \cdot 2} = 10$$
+
+### 互补性：$\binom{n}{k} = \binom{n}{n-k}$
+
+这是一个优美的事实：**选择哪些物品拿走，等同于选择哪些物品留下**。
+
+$$\binom{100}{96} = \binom{100}{4}$$
+
+想想看：从100人中选96人组成一个队伍，等同于选4个人*不*加入队伍。不用列出96个名字，你只需要列出4个不参加的人。方法数相同，但写起来简单多了！
+
+这就是 $\binom{n}{k} = \binom{n}{n-k}$ 的原因——公式是对称的。
+
+::: {.callout-tip collapse="true"}
+## 为什么公式能证实这一点？
+
+$$\binom{n}{n-k} = \frac{n!}{(n-k)!\left(n-(n-k)\right)!} = \frac{n!}{(n-k)! \cdot k!}$$
+
+这与 $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ 完全相同，只是分母中的两个因子交换了位置。乘法满足交换律，所以它们相等。
+:::
+
+## 二项式展开
+
+现在介绍主要工具。**二项式定理**告诉我们：
+
+::: {.callout-important}
+## 核心要点：二项式定理
+二项式定理让你将任何和的幂 $(a+b)^n$ 展开为各个项。它是驱动我们证明复利极限的代数引擎。
+
+$$(a + b)^n = \sum_{i=0}^{n} \binom{n}{i} \cdot a^{n-i} \cdot b^{i}$$
+:::
+
+这意味着我们通过对所有选取若干个 $b$ 和其余选 $a$ 的方式求和来展开 $(a+b)^n$。
+
+### 示例：展开 $(a + b)^3$
+
+$$(a+b)^3 = \binom{3}{0}a^3 + \binom{3}{1}a^2 b + \binom{3}{2}a b^2 + \binom{3}{3}b^3$$
+
+$$= a^3 + 3a^2b + 3ab^2 + b^3$$
+
+### 示例：展开 $(x + 1)^4$
+
+$$(x+1)^4 = \binom{4}{0}x^4 + \binom{4}{1}x^3 + \binom{4}{2}x^2 + \binom{4}{3}x + \binom{4}{4}$$
+
+$$= x^4 + 4x^3 + 6x^2 + 4x + 1$$
+
+注意系数 $1, 4, 6, 4, 1$——这是**帕斯卡三角形**的第4行。
+
+## 二项式系数中的规律
+
+当我们写出一般 $n$ 的 $\binom{n}{k}$ 时，会发现一些有用的东西。让我们写出前几个系数，分子有 $k$ 个因子，分母为 $k!$：
+
+$$\binom{n}{0} = 1, \qquad \binom{n}{1} = \frac{n}{1}, \qquad \binom{n}{2} = \frac{n(n-1)}{2!}, \qquad \binom{n}{3} = \frac{n(n-1)(n-2)}{3!}$$
+
+规律：$\binom{n}{k}$ 的分子恰好有 $k$ 个因子（从 $n$ 开始递减），分母为 $k!$。当我们代入 $n = k$ 并令 $k \to \infty$ 时，这种形式将至关重要。
+
+## 构建极限：将二项式展开应用于 $(1 + r/k)^k$
+
+现在我们把所有知识联系起来。在二项式定理中令 $a = 1$，$b = r/k$，指数为 $k$：
+
+$$\left(1 + \frac{r}{k}\right)^k = \sum_{i=0}^{k} \binom{k}{i} \cdot 1^{k-i} \cdot \left(\frac{r}{k}\right)^i = \sum_{i=0}^{k} \binom{k}{i} \cdot \frac{r^i}{k^i}$$
+
+用我们的规律写出前几项：
+
+$$= 1 + \frac{k}{1} \cdot \frac{r}{k} + \frac{k(k-1)}{2!} \cdot \frac{r^2}{k^2} + \frac{k(k-1)(k-2)}{3!} \cdot \frac{r^3}{k^3} + \cdots$$
+
+$$= 1 + r + \frac{k(k-1)}{k^2} \cdot \frac{r^2}{2!} + \frac{k(k-1)(k-2)}{k^3} \cdot \frac{r^3}{3!} + \cdots$$
+
+现在看每个分式，如 $\frac{k(k-1)}{k^2}$。当 $k \to \infty$ 时：
+
+$$\frac{k(k-1)}{k^2} = \frac{k}{k} \cdot \frac{k-1}{k} = 1 \cdot \left(1 - \frac{1}{k}\right) \to 1$$
+
+所以在极限中，每个这样的分式都变为1，我们得到：
+
+::: {.callout-important}
+## 核心要点：复利极限
+当你进行无限频繁的复利计算时，结果是指数函数 $e^r$。这将一个简单的银行概念与数学中最重要的数字之一联系起来。
+
+$$\lim_{k \to \infty}\left(1 + \frac{r}{k}\right)^k = 1 + r + \frac{r^2}{2!} + \frac{r^3}{3!} + \cdots = \sum_{i=0}^{\infty} \frac{r^i}{i!} = e^r$$
+:::
+
+那个无穷级数就是 **$e^r$ 的泰勒级数**——这就是复利如何引出自然常数 $e$ 的。
+
+## 为什么 $e^x$ 的导数是 $e^x$ 本身
+
+这是使 $e$ 真正特殊的性质。在所有可能的指数函数（$2^x$、$3^x$、$10^x$……）中，只有 $e^x$ 的导数是它自身：
+
+::: {.callout-important}
+## 核心要点：$e^x$ 是自身的导数
+函数 $e^x$ 是唯一一个在每一点处变化率都等于其函数值的指数函数。正是这个性质使得 $e$ 成为微积分的"自然"底数。
+
+$$\frac{d}{dx}(e^x) = e^x$$
+:::
+
+没有其他函数的增长率恰好等于其当前值。如果你有100个细菌，种群用 $e^x$ 建模，那么此刻的增长率也是100。它越大，增长越快——增长率始终与大小完美匹配。
+
+**比较 $e^x$ 与它的导数——它们是同一条曲线：**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'ex', latex: 'y=e^x', color: '#2d70b3', lineWidth: 3 });
+  calc2.setExpression({ id: 'label_ex', latex: '(2, 7.4)', color: '#2d70b3', label: 'f(x) = e^x (also its own derivative!)', showLabel: true, pointSize: 0 });
+  calc2.setExpression({ id: 'bx', latex: 'y=b^x', color: '#c74440', lineWidth: 2 });
+  calc2.setExpression({ id: 'bxderiv', latex: 'y=\\ln(b)\\cdot b^x', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+  calc2.setExpression({ id: 'b', latex: 'b=2', sliderBounds: {min: 1.1, max: 5, step: 0.01} });
+  calc2.setExpression({ id: 'label_bx', latex: '(-1, 0.5)', color: '#c74440', label: 'b^x (solid) vs its derivative (dashed)', showLabel: true, pointSize: 0 });
+  calc2.setMathBounds({ left: -4, right: 4, bottom: -1, top: 15 });
+</script>
+```
+
+::: {.callout-tip collapse="true"}
+## 试试这个滑块
+
+调整 $b$ 并注意，对于大多数底数，导数（虚线）与函数（实线）是不同的曲线。但将 $b$ 设为 $2.72$（接近 $e$），它们几乎重合。只有在 $b = e$ 时它们才完全一致。
+:::
+
+## 速查表
+
+::: {.key-formula}
+| 概念 | 关键公式 |
+|---|---|
+| $e$ 的定义 | $e = \lim_{k \to \infty}\left(1 + \frac{1}{k}\right)^k \approx 2.71828$ |
+| 一般复利极限 | $\lim_{k \to \infty}\left(1 + \frac{r}{k}\right)^k = e^r$ |
+| $e^x$ 的导数 | $\dfrac{d}{dx}(e^x) = e^x$ |
+| 二项式定理 | $(a+b)^n = \displaystyle\sum_{i=0}^{n}\binom{n}{i}\,a^{n-i}\,b^{i}$ |
+| 二项式系数 | $\binom{n}{k} = \dfrac{n!}{k!(n-k)!}$ |
+| 互补性 | $\binom{n}{k} = \binom{n}{n-k}$ |
+| $e^r$ 的泰勒级数 | $e^r = \displaystyle\sum_{i=0}^{\infty}\dfrac{r^i}{i!} = 1 + r + \dfrac{r^2}{2!} + \dfrac{r^3}{3!} + \cdots$ |
+:::

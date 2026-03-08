@@ -1,0 +1,329 @@
+---
+title: "半圆的反导数：几何与微积分的邂逅"
+date: 2025-11-06
+---
+
+如果你不用死记公式，而是通过画图就能求出曲线下方的面积呢？在本课中，你将发现半圆下方的面积可以分解为一个扇形和一个直角三角形——这两个图形的面积你已经知道了。这个几何技巧让你无需复杂的代数就能得到 $\sqrt{r^2 - x^2}$ 的反导数，然后你将通过乘法法则和链式法则求导来验证它的正确性。
+
+::: {.callout-tip collapse="true"}
+## 为什么求半圆的反导数很重要
+
+积分 $\int \sqrt{r^2 - x^2}\,dx$ 看起来很吓人，但它连接了两个美丽的思想：几何与微积分。以下是它为什么重要：
+
+- **GPS 与导航**：计算沿地球曲面的弧线距离使用的积分涉及 $\sqrt{r^2 - x^2}$
+- **工程**：设计拱门、隧道和穹顶需要计算圆形截面的面积
+- **医学**：MRI 和 CT 扫描仪正是使用这些积分来重建你身体的圆形切片
+- **天文学**：轨道力学涉及对含 $\sqrt{r^2 - x^2}$ 的表达式积分来求扫过的面积（开普勒第二定律！）
+- **计算机图形学**：在屏幕上渲染平滑的曲线和圆需要将圆形区域分解为微小的三角形和扇形——正是我们今天学习的分解方法
+
+今天我们发现，通过几何思维——将半圆下方的区域分成扇形和三角形——我们可以直接写出反导数，无需任何代数技巧，然后使用乘法法则和链式法则来验证。
+:::
+
+## 本课内容
+
+- 反导数 $\int \sqrt{r^2 - x^2}\,dx$ 即上半圆下方的面积
+- 将面积分解为**圆扇形**加**直角三角形**
+- 用 $\arccos(x/r)$ 表示扇形面积
+- 将三角形面积写为 $\frac{1}{2}x\sqrt{r^2 - x^2}$
+- 关系式 $\arcsin(x/r) + \arccos(x/r) = \frac{\pi}{2}$
+- 使用**乘法法则**和**链式法则**通过求导验证反导数
+- 边界条件：$A(-r) = 0$ 确定积分常数
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251106.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20251106_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251106_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251106_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251106_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是反导数？
+
+函数 $f(x)$ 的**反导数**是导数等于 $f(x)$ 的函数 $F(x)$：
+
+$$F'(x) = f(x)$$
+
+我们用积分符号表示：
+
+$$\int f(x)\,dx = F(x) + C$$
+
+$C$ 是**积分常数**——因为任何常数的导数都是零，所以有无穷多个相差一个常数的反导数。我们可以通过使用**边界条件**（代入一个已知值）来确定 $C$。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是半圆的方程？
+
+以原点为圆心、半径为 $r$ 的整圆满足：
+
+$$x^2 + y^2 = r^2$$
+
+解出 $y$ 得到两个解。**上半圆**为：
+
+$$y = \sqrt{r^2 - x^2}$$
+
+这条曲线只在 $-r \le x \le r$ 范围内存在，因为我们需要 $r^2 - x^2 \ge 0$。从 $-r$ 到 $r$ 这条曲线下方的面积恰好是 $\frac{1}{2}\pi r^2$（圆面积的一半）。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是反正弦和反余弦？
+
+**反正弦**函数 $\arcsin(u)$ 回答："哪个角的正弦等于 $u$？"类似地，**反余弦** $\arccos(u)$ 回答："哪个角的余弦等于 $u$？"
+
+关键性质：
+
+- $\arcsin(u)$ 返回 $\left[-\frac{\pi}{2}, \frac{\pi}{2}\right]$ 范围内的角
+- $\arccos(u)$ 返回 $[0, \pi]$ 范围内的角
+- 它们互补：对所有 $|u| \le 1$，$\arcsin(u) + \arccos(u) = \frac{\pi}{2}$
+- $\frac{d}{dx}\arcsin(u) = \frac{1}{\sqrt{1 - u^2}}$，$\frac{d}{dx}\arccos(u) = \frac{-1}{\sqrt{1 - u^2}}$
+
+这些导数正是反正弦和反余弦在对含 $\sqrt{r^2 - x^2}$ 的表达式积分时自然出现的原因。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是乘法法则和链式法则？
+
+**乘法法则**说乘积 $f(x) \cdot g(x)$ 的导数为：
+
+$$\frac{d}{dx}[f(x)\cdot g(x)] = f'(x)\cdot g(x) + f(x)\cdot g'(x)$$
+
+你依次对每个因子求导，同时保持另一个不变，然后将结果相加。它**不是** $f'(x) \cdot g'(x)$！
+
+**链式法则**说复合函数 $h(g(x))$ 的导数为：
+
+$$\frac{d}{dx}[h(g(x))] = h'(g(x)) \cdot g'(x)$$
+
+你对**外层函数**求导（在内层函数处求值），然后乘以**内层函数**的导数。例如：
+
+$$\frac{d}{dx}\sqrt{r^2 - x^2} = \frac{1}{2}(r^2 - x^2)^{-1/2} \cdot (-2x) = \frac{-x}{\sqrt{r^2 - x^2}}$$
+
+$(-2x)$ 来自链式法则——它是内层函数 $r^2 - x^2$ 的导数。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是圆扇形的面积？
+
+**圆扇形**是圆的一个"饼形"切片。如果圆的半径为 $r$，扇形对应的圆心角为 $\phi$（弧度），则面积为：
+
+$$A_{\text{扇形}} = \frac{1}{2}r^2 \phi$$
+
+这个公式成立是因为扇形是整圆的 $\frac{\phi}{2\pi}$ 部分，而整圆面积为 $\pi r^2$：
+
+$$A_{\text{扇形}} = \frac{\phi}{2\pi} \cdot \pi r^2 = \frac{1}{2}r^2 \phi$$
+:::
+
+## 核心概念
+
+### 问题：半圆的反导数
+
+我们要求反导数：
+
+$$\int \sqrt{r^2 - x^2}\,dx$$
+
+函数 $y = \sqrt{r^2 - x^2}$ 是半径为 $r$ 的上半圆。从几何上看，反导数 $A(x)$ 代表从 $x = -r$ 到移动边界 $x$ 处**曲线下方扫过的面积**。
+
+**探索——可调半径的上半圆 $y = \sqrt{r^2 - x^2}$：**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'r', latex: 'r=3', sliderBounds: {min: 1, max: 5, step: 0.1} });
+  calc1.setExpression({ id: 'semi', latex: 'y=\\sqrt{r^2 - x^2} \\left\\{-r \\le x \\le r\\right\\}', color: '#2d70b3', lineWidth: 3 });
+  calc1.setExpression({ id: 'a', latex: 'a=1', sliderBounds: {min: '-r', max: 'r', step: 0.01} });
+  calc1.setExpression({ id: 'shade', latex: '0 \\le y \\le \\sqrt{r^2 - x^2} \\left\\{-r \\le x \\le a\\right\\}', color: '#2d70b3' });
+  calc1.setExpression({ id: 'pt', latex: '(a, \\sqrt{r^2 - a^2})', color: '#c74440', pointSize: 10, label: '(a, sqrt(r^2-a^2))', showLabel: true });
+  calc1.setMathBounds({ left: -6, right: 6, bottom: -1, top: 5 });
+</script>
+```
+
+*拖动滑块 $a$ 将阴影面积 $A(a)$ 从 $-r$ 扫到 $a$。这个扫过的面积正是我们正在计算的反导数！*
+
+### 将面积与反导数联系起来
+
+当 $x$ 前进一个微小量 $dx$ 时，面积增长一条宽 $dx$、高 $y$ 的薄竖直条带：
+
+$$dA = y\,dx = \sqrt{r^2 - x^2}\,dx$$
+
+这告诉我们扫过面积的变化率：
+
+$$\frac{dA}{dx} = y = \sqrt{r^2 - x^2}$$
+
+所以 $A(x)$ 确实是 $\sqrt{r^2 - x^2}$ 的反导数。我们还有**边界条件** $A(-r) = 0$，因为在起点处尚未扫过任何面积。
+
+### 关键洞察：面积 = 扇形 + 三角形
+
+我们不使用代数换元技巧，而是从几何上分解阴影区域。从 $-r$ 到 $x$ 半圆下方的面积可以分成两部分：
+
+1. 一个**圆扇形**（从负 $x$ 轴到连接该点的半径之间的"饼形"切片）
+2. 一个**直角三角形**（半径和 $x$ 处竖直线之间的剩余部分）
+
+**探索——观察扇形和三角形的分解：**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'r2', latex: 'r=3', sliderBounds: {min: 1, max: 5, step: 0.1} });
+  calc2.setExpression({ id: 'semi2', latex: 'y=\\sqrt{r^2 - x^2} \\left\\{-r \\le x \\le r\\right\\}', color: '#2d70b3', lineWidth: 3 });
+  calc2.setExpression({ id: 'a2', latex: 'a=1', sliderBounds: {min: '-r', max: 'r', step: 0.01} });
+  calc2.setExpression({ id: 'pt2', latex: '(a, \\sqrt{r^2 - a^2})', color: '#c74440', pointSize: 10 });
+  calc2.setExpression({ id: 'radius', latex: '(ta, t\\sqrt{r^2 - a^2})', color: '#c74440', lineWidth: 2, parametricDomain: {min: 0, max: 1} });
+  calc2.setExpression({ id: 'vert', latex: 'x=a \\left\\{0 \\le y \\le \\sqrt{r^2 - a^2}\\right\\}', color: '#388c46', lineWidth: 2 });
+  calc2.setExpression({ id: 'base', latex: 'y=0 \\left\\{0 \\le x \\le a\\right\\}', color: '#388c46', lineWidth: 2, lineStyle: 'DASHED' });
+  calc2.setMathBounds({ left: -6, right: 6, bottom: -1, top: 5 });
+</script>
+```
+
+*红色线是连接到点 $(a, \sqrt{r^2 - a^2})$ 的半径。绿色线标出了直角三角形。扇形是负 $x$ 轴和半径之间的饼形区域。*
+
+### 写出扇形面积
+
+扇形由从负 $x$ 轴到半径所夹的角 $\phi$ 界定。我们引入从正 $x$ 轴度量的角 $\theta$：
+
+$$\cos\theta = \frac{x}{r} \implies \theta = \arccos\!\left(\frac{x}{r}\right)$$
+
+那么扇形的角为：
+
+$$\phi = \pi - \theta = \pi - \arccos\!\left(\frac{x}{r}\right)$$
+
+所以扇形面积为：
+
+$$A_{\text{扇形}} = \frac{1}{2}r^2\phi = \frac{1}{2}r^2\left[\pi - \arccos\!\left(\frac{x}{r}\right)\right]$$
+
+### 写出三角形面积
+
+直角三角形有：
+
+- **底边** = $x$（从原点出发的水平距离）
+- **高** = $y = \sqrt{r^2 - x^2}$（半圆上的纵坐标）
+
+所以三角形面积为：
+
+$$A_{\text{三角形}} = \frac{1}{2} \cdot x \cdot \sqrt{r^2 - x^2}$$
+
+### 完整的反导数
+
+将两部分相加：
+
+::: {.callout-important}
+## 核心要点：面积 = 扇形 + 三角形
+从 $-r$ 到 $x$ 半圆下方的面积可以整齐地分成一个圆扇形（饼形切片）和一个直角三角形。每部分都有简单的公式，将它们相加就得到完整的反导数——无需代数技巧。
+
+$$\boxed{A(x) = \frac{1}{2}r^2\!\left[\pi - \arccos\!\left(\frac{x}{r}\right)\right] + \frac{1}{2}\,x\sqrt{r^2 - x^2}}$$
+:::
+
+**边界条件验证**：在 $x = -r$ 处，扫过的面积应为零。
+
+- $\arccos(-r/r) = \arccos(-1) = \pi$，所以扇形项给出 $\frac{1}{2}r^2[\pi - \pi] = 0$。
+- $\sqrt{r^2 - r^2} = 0$，所以三角形项给出 $0$。
+
+确实 $A(-r) = 0$。我们的公式验证通过！
+
+### 与反正弦的联系
+
+早先的工作表明反导数的一部分涉及 $\arcsin(x/r)$。这有矛盾吗？没有！恒等式
+
+::: {.callout-important}
+## 核心要点：反正弦和反余弦互补
+同一个值的反正弦和反余弦总是加起来等于 $\frac{\pi}{2}$（一个直角）。这个恒等式让你可以自由地在反导数的两种形式之间切换——它们只相差一个常数。
+
+$$\arcsin\!\left(\frac{x}{r}\right) + \arccos\!\left(\frac{x}{r}\right) = \frac{\pi}{2}$$
+:::
+
+这意味着 $\arccos(x/r) = \frac{\pi}{2} - \arcsin(x/r)$。代入：
+
+$$\pi - \arccos\!\left(\frac{x}{r}\right) = \pi - \frac{\pi}{2} + \arcsin\!\left(\frac{x}{r}\right) = \frac{\pi}{2} + \arcsin\!\left(\frac{x}{r}\right)$$
+
+所以我们可以等价地将反导数改写为：
+
+$$A(x) = \frac{1}{2}r^2\!\left[\frac{\pi}{2} + \arcsin\!\left(\frac{x}{r}\right)\right] + \frac{1}{2}\,x\sqrt{r^2 - x^2}$$
+
+常数 $\frac{1}{2}r^2 \cdot \frac{\pi}{2} = \frac{\pi r^2}{4}$ 只是一个积分常数——求导时它会消失。所以两种形式同样有效！
+
+### 通过求导验证
+
+为了确认我们的几何结果，我们对 $A(x)$ 求导并检查是否恢复出 $\sqrt{r^2 - x^2}$。
+
+我们需要：
+
+$$\frac{d}{dx}\!\left[\frac{1}{2}r^2\!\left(\pi - \arccos\!\frac{x}{r}\right) + \frac{1}{2}\,x\sqrt{r^2 - x^2}\right]$$
+
+**第 1 项——扇形部分**：
+
+$$\frac{d}{dx}\!\left[\frac{1}{2}r^2\!\left(\pi - \arccos\!\frac{x}{r}\right)\right] = \frac{1}{2}r^2 \cdot \frac{1}{\sqrt{1 - x^2/r^2}} \cdot \frac{1}{r}$$
+
+因为 $\frac{d}{dx}\arccos(u) = \frac{-1}{\sqrt{1-u^2}}$，负号相消：
+
+$$= \frac{r}{2} \cdot \frac{r}{\sqrt{r^2 - x^2}} = \frac{r^2}{2\sqrt{r^2 - x^2}}$$
+
+**第 2 项——三角形部分**，对 $\frac{1}{2}x \cdot \sqrt{r^2 - x^2}$ 使用**乘法法则**：
+
+$$\frac{d}{dx}\!\left[\frac{1}{2}\,x\sqrt{r^2 - x^2}\right] = \frac{1}{2}\!\left[\underbrace{1 \cdot \sqrt{r^2 - x^2}}_{\text{对 } x \text{ 求导，保留 } g} + \underbrace{x \cdot \frac{-2x}{2\sqrt{r^2 - x^2}}}_{\text{保留 } x\text{，对 } g \text{ 用链式法则}}\right]$$
+
+链式法则给出 $r^2 - x^2$ 的内层导数 $(-2x)$：
+
+$$= \frac{1}{2}\!\left[\sqrt{r^2 - x^2} - \frac{x^2}{\sqrt{r^2 - x^2}}\right]$$
+
+通分 $\sqrt{r^2 - x^2}$：
+
+$$= \frac{1}{2}\cdot\frac{(r^2 - x^2) - x^2}{\sqrt{r^2 - x^2}} = \frac{r^2 - 2x^2}{2\sqrt{r^2 - x^2}}$$
+
+**两项相加**：
+
+$$A'(x) = \frac{r^2}{2\sqrt{r^2 - x^2}} + \frac{r^2 - 2x^2}{2\sqrt{r^2 - x^2}} = \frac{2r^2 - 2x^2}{2\sqrt{r^2 - x^2}}$$
+
+$$= \frac{2(r^2 - x^2)}{2\sqrt{r^2 - x^2}} = \frac{r^2 - x^2}{\sqrt{r^2 - x^2}} = \sqrt{r^2 - x^2}$$
+
+::: {.callout-important}
+## 核心要点：几何与微积分殊途同归
+当你对几何公式（扇形 + 三角形）使用乘法法则和链式法则求导时，你得到的正是半圆 $\sqrt{r^2 - x^2}$。这确认了几何分解是一个有效的反导数——两种完全不同的方法给出了相同的答案。
+:::
+
+成功了！我们从几何推导的 $A(x)$ 的导数确实是 $\sqrt{r^2 - x^2}$。几何与微积分完美吻合。
+
+### 为什么常数不重要
+
+同一函数的任何两个反导数只相差一个常数。由于 $\frac{d}{dx}(\text{常数}) = 0$，常数在求导时消失。这就是为什么反正弦版本和反余弦版本同样有效——它们只相差常数 $\frac{\pi r^2}{4}$。
+
+## 速查表
+
+::: {.key-formula}
+| 你想要的 | 公式 |
+|---|---|
+| 上半圆方程 | $y = \sqrt{r^2 - x^2}$，在 $-r \le x \le r$ 范围内有效 |
+| 反导数（反余弦形式） | $\displaystyle\int\!\sqrt{r^2 - x^2}\,dx = \frac{r^2}{2}\!\left[\pi - \arccos\!\frac{x}{r}\right] + \frac{x}{2}\sqrt{r^2 - x^2} + C$ |
+| 反导数（反正弦形式） | $\displaystyle\int\!\sqrt{r^2 - x^2}\,dx = \frac{r^2}{2}\arcsin\!\frac{x}{r} + \frac{x}{2}\sqrt{r^2 - x^2} + C$ |
+| 扇形面积 | $A_{\text{扇形}} = \frac{1}{2}r^2\phi$，其中 $\phi$ 是弧度制的角 |
+| 三角形面积 | $A_{\text{三角形}} = \frac{1}{2} \cdot \text{底} \cdot \text{高}$ |
+| 反正弦-反余弦恒等式 | $\arcsin(u) + \arccos(u) = \frac{\pi}{2}$ |
+| $\arcsin(u)$ 的导数 | $\frac{1}{\sqrt{1-u^2}}$ |
+| $\arccos(u)$ 的导数 | $\frac{-1}{\sqrt{1-u^2}}$ |
+| 乘法法则 | $(fg)' = f'g + fg'$ |
+| 链式法则 | $\frac{d}{dx}[h(g(x))] = h'(g(x))\cdot g'(x)$ |
+
+### 核心思想
+
+$$\underbrace{\int \sqrt{r^2 - x^2}\,dx}_{\text{微积分问题}} = \underbrace{A_{\text{扇形}}}_{\frac{1}{2}r^2(\pi - \arccos\frac{x}{r})} + \underbrace{A_{\text{三角形}}}_{\frac{1}{2}x\sqrt{r^2 - x^2}} \quad \longleftrightarrow \quad \text{几何解决微积分！}$$
+:::

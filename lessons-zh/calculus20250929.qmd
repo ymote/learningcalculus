@@ -1,0 +1,362 @@
+---
+title: "欧拉公式与函数方程"
+date: 2025-09-29
+---
+
+今天的课揭示了全部数学中最美丽的方程之一——欧拉公式。它将三个看似无关的概念（指数、三角函数和虚数）统一在一个优雅的公式中。我们将通过提出一个出乎意料的简单问题来达到这个目标："什么样的函数能把加法变成乘法？"答案直接引导我们得到 $e^{i\theta} = \cos\theta + i\sin\theta$，在这个过程中你将看到为什么对数是连接两个世界的秘密桥梁。
+
+::: {.callout-tip collapse="true"}
+## 为什么欧拉公式和函数方程很重要
+
+欧拉公式将指数函数、三角函数和复数统一在一个优雅的方程中——而函数方程让我们仅从函数的行为就能反推出它必须是什么：
+
+- **电气工程**：交流电路使用 $e^{i\omega t}$ 来表示振荡的电压和电流——欧拉公式是工程师能将正弦波作为指数处理的原因
+- **信号处理**：MP3 压缩和降噪耳机依赖于傅里叶变换，而傅里叶变换直接建立在 $e^{i\theta}$ 之上
+- **密码学**：现代加密算法使用数域上指数函数和对数函数的性质——同样的函数方程思想在起作用
+- **物理学**：量子力学用复指数描述每个粒子的状态；欧拉公式是波动与代数之间的桥梁
+- **金融**：连续复利由 $e^{rt}$ 建模，对数让你可以求解资金增长到目标所需的时间
+:::
+
+## 本课内容
+
+- 函数方程：什么样的函数满足 $L(\theta + \phi) = L(\theta) + L(\phi)$？
+- 证明连续的加法函数必须是 $L(\theta) = k\theta$
+- 乘法函数：$Z(\theta)\cdot Z(\phi) = Z(\theta + \phi)$
+- 通过对数连接乘法函数和加法函数
+- 证明 $e^{i\theta} = \cos\theta + i\sin\theta$（欧拉公式）
+- 对数恒等式：$\ln(ab) = \ln a + \ln b$
+- 无穷小幂展开与确定常数 $k = i$
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250929.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250929_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250929_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250929_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250929_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是函数方程？
+
+**函数方程**是一种未知量是函数而非数字的方程。它不是问"找出 $x$ 使得 $2x + 3 = 7$"，而是问"找出函数 $f$ 使得对所有 $a$ 和 $b$，$f(a + b) = f(a) + f(b)$"。
+
+通常的策略是：
+
+1. 代入巧妙的特殊值（如 $0$，或 $a = b$）
+2. 从整数推广到有理数，再到全体实数
+3. 使用附加条件（如连续性）来唯一确定答案
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是连续性？
+
+如果一个函数 $f(x)$ 的输入的微小变化只引起输出的微小变化——没有跳跃、没有空洞、没有瞬移——那么它就是**连续的**。
+
+形式化地说，$f$ 在 $x_0$ 处连续，如果：
+
+$$f(x_0) = \lim_{h \to 0} f(x_0 + h)$$
+
+这意味着：对于输出中任何期望的接近度 $\delta$，你都能找到 $x_0$ 周围一个足够小的窗口 $\epsilon$，使得该窗口内的所有输入给出的输出都在 $f(x_0)$ 的 $\delta$ 范围内。
+
+从图形上看，你可以不抬笔就画出这个函数。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是对数？
+
+如果 $b^x = a$，那么 $x = \log_b(a)$。对数回答的是这样一个问题："我要在 $b$ 上放什么指数才能得到 $a$？"
+
+**自然对数** $\ln$ 使用底数 $e \approx 2.718$：
+
+$$\ln(a) = x \quad \Longleftrightarrow \quad e^x = a$$
+
+关键性质：对数将乘法变为加法：
+
+$$\ln(ab) = \ln a + \ln b$$
+
+这正是对数成为乘法函数和加法函数之间桥梁的原因。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是单位圆上的复数？
+
+复数 $z = x + iy$ 可以表示为平面上的点 $(x, y)$。如果 $|z| = 1$，它就在**单位圆**上，我们可以写成：
+
+$$z = \cos\theta + i\sin\theta$$
+
+其中 $\theta$ 是从正 $x$ 轴开始的角度。两个单位复数相乘**等于角度相加**：
+
+$$(\cos\alpha + i\sin\alpha)(\cos\beta + i\sin\beta) = \cos(\alpha + \beta) + i\sin(\alpha + \beta)$$
+
+这种乘法转化为加法的联系是今天证明的出发点。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是 $e^x$ 的幂级数？
+
+从连续复利和二项展开的研究中，我们证明了：
+
+$$e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$$
+
+当 $x$ 很小（无穷小量）时，只有前几项起作用：
+
+$$e^x \approx 1 + x \quad \text{（当 } x\text{ 很小时）}$$
+
+这个近似是在证明末尾找到常数 $k$ 的关键。
+:::
+
+## 核心要点
+
+### 角度加法公式作为函数方程
+
+在单位圆上，定义 $Z(\theta) = \cos\theta + i\sin\theta$ 为角度 $\theta$ 处的单位复数。根据余弦和正弦加法公式（通过在单位圆上作高来几何证明）：
+
+$$\cos(\theta + \phi) = \cos\theta\cos\phi - \sin\theta\sin\phi$$
+$$\sin(\theta + \phi) = \cos\theta\sin\phi + \sin\theta\cos\phi$$
+
+我们可以验证两个单位复数相乘得到：
+
+$$Z(\theta) \cdot Z(\phi) = (\cos\theta + i\sin\theta)(\cos\phi + i\sin\phi) = \cos(\theta+\phi) + i\sin(\theta+\phi) = Z(\theta + \phi)$$
+
+因此 $Z$ 满足**乘法函数方程**：
+
+::: {.callout-important}
+## 核心要点：乘法函数方程
+当你将两个单位复数相乘时，它们的角度相加。这意味着函数 $Z(\theta) = \cos\theta + i\sin\theta$ 将角度的加法变为数的乘法——这一性质将迫使 $Z$ 成为指数函数。
+
+$$\boxed{Z(\theta) \cdot Z(\phi) = Z(\theta + \phi)}$$
+:::
+
+这就是我们将用来证明 $Z(\theta) = e^{i\theta}$ 的性质。
+
+### 第一步：加法函数——$L(a + b) = L(a) + L(b)$
+
+在处理乘法方程之前，我们先证明一个基础结论：如果一个连续函数 $L$ 满足
+
+$$L(\theta + \phi) = L(\theta) + L(\phi) \quad \text{对所有 } \theta, \phi \in \mathbb{R}$$
+
+则 $L(\theta) = k\theta$，其中 $k$ 为某个常数。
+
+**求 $L(0)$：** 令 $\theta = \phi = 0$：
+
+$$L(0) + L(0) = L(0) \implies 2L(0) = L(0) \implies L(0) = 0$$
+
+**推广到整数：** 令 $\phi = \theta$：
+
+$$L(\theta) + L(\theta) = L(2\theta) \implies L(2\theta) = 2L(\theta)$$
+
+重复此过程，$L(3\theta) = L(2\theta) + L(\theta) = 3L(\theta)$，由数学归纳法：
+
+$$L(n\theta) = nL(\theta) \quad \text{对所有正整数 } n$$
+
+**奇函数：** 令 $\phi = -\theta$：
+
+$$L(\theta) + L(-\theta) = L(0) = 0 \implies L(-\theta) = -L(\theta)$$
+
+因此 $L(n\theta) = nL(\theta)$ 对所有整数 $n$（正整数、负整数和零）都成立。
+
+**探索——观察连续加法函数是过原点的直线：**
+
+::: {.desmos-container}
+```{=html}
+<div id="calc-additive" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calcAdd = Desmos.GraphingCalculator(document.getElementById('calc-additive'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calcAdd.setExpression({ id: 'k', latex: 'k=2', sliderBounds: {min: -5, max: 5, step: 0.1} });
+  calcAdd.setExpression({ id: 'line', latex: 'y=kx', color: '#2d70b3', lineWidth: 3 });
+  calcAdd.setExpression({ id: 'pt1', latex: '(1, k)', color: '#c74440', pointSize: 10, label: 'L(1) = k', showLabel: true });
+  calcAdd.setExpression({ id: 'pt2', latex: '(2, 2k)', color: '#c74440', pointSize: 10, label: 'L(2) = 2k', showLabel: true });
+  calcAdd.setExpression({ id: 'pt3', latex: '(3, 3k)', color: '#c74440', pointSize: 10, label: 'L(3) = 3k', showLabel: true });
+  calcAdd.setMathBounds({ left: -6, right: 6, bottom: -12, top: 12 });
+</script>
+```
+:::
+
+*拖动滑块 $k$ 来改变斜率。每个连续加法函数都是过原点的直线——唯一的自由度是斜率 $k = L(1)$。*
+
+### 第二步：推广到有理数
+
+我们已证明对整数 $n$ 有 $L(n\theta) = nL(\theta)$。现在代入 $\theta^* = n\theta$，则 $\theta = \theta^*/n$：
+
+$$L(\theta^*) = nL\!\left(\frac{\theta^*}{n}\right) \implies L\!\left(\frac{\theta}{n}\right) = \frac{L(\theta)}{n}$$
+
+结合两个结果，对任意整数 $n$ 和 $m$（$m \neq 0$）：
+
+$$L\!\left(\frac{n}{m}\,\theta\right) = \frac{n}{m}\,L(\theta)$$
+
+令 $\theta = 1$，写 $q = n/m$：
+
+$$L(q) = qL(1) = kq \quad \text{对每个有理数 } q$$
+
+### 第三步：利用连续性推广到全体实数
+
+有理数在实数轴上是**稠密的**：对于任何实数 $x$，都存在一个有理数序列 $q_1, q_2, q_3, \ldots$ 趋近于 $x$。例如，截断的小数展开 $3, 3.1, 3.14, 3.141, \ldots$ 趋近于 $\pi$。
+
+由于 $L$ 是连续的，且对每个有理近似值有 $L(q_n) = kq_n$：
+
+$$L(x) = \lim_{n\to\infty} L(q_n) = \lim_{n\to\infty} kq_n = k \cdot \lim_{n\to\infty} q_n = kx$$
+
+$$\boxed{L(\theta) = k\theta \quad \text{对所有实数 } \theta}$$
+
+这就是连续性的威力：一旦你知道了函数在有理数上的值，且它没有跳跃，你就知道了它在所有地方的值。
+
+### 第四步：通过对数从乘法转化为加法
+
+现在回到满足 $Z(\theta)\cdot Z(\phi) = Z(\theta + \phi)$ 的单位复数 $Z(\theta)$。
+
+定义新函数 $f(\theta) = \ln Z(\theta)$。利用对数恒等式 $\ln(ab) = \ln a + \ln b$：
+
+$$f(\theta) + f(\phi) = \ln Z(\theta) + \ln Z(\phi) = \ln\!\big(Z(\theta) \cdot Z(\phi)\big) = \ln Z(\theta + \phi) = f(\theta + \phi)$$
+
+对数将**乘法**方程转化为了**加法**方程！由于 $Z$ 是连续的（它在单位圆上描出一条光滑曲线），而 $\ln$ 是连续的，所以 $f$ 也是连续的。根据第一步到第三步的定理：
+
+$$f(\theta) = k\theta \implies \ln Z(\theta) = k\theta$$
+
+两边取指数：
+
+$$\boxed{Z(\theta) = e^{k\theta}}$$
+
+**探索——观察不同 $k$ 值下的 $e^{k\theta}$：**
+
+::: {.desmos-container}
+```{=html}
+<div id="calc-exp" style="width: 100%; height: 400px;"></div>
+<script>
+  var calcExp = Desmos.GraphingCalculator(document.getElementById('calc-exp'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calcExp.setExpression({ id: 'k', latex: 'k=1', sliderBounds: {min: 0.1, max: 5, step: 0.1} });
+  calcExp.setExpression({ id: 'exp', latex: 'y=e^{kx}', color: '#2d70b3', lineWidth: 3 });
+  calcExp.setExpression({ id: 'pt0', latex: '(0, 1)', color: '#c74440', pointSize: 10, label: 'Z(0) = 1', showLabel: true });
+  calcExp.setExpression({ id: 'pt1', latex: '(1, e^{k})', color: '#388c46', pointSize: 10, label: 'Z(1) = e^k', showLabel: true });
+  calcExp.setMathBounds({ left: -3, right: 3, bottom: -1, top: 10 });
+</script>
+```
+:::
+
+*拖动滑块 $k$，观察指数函数如何拉伸或压缩。函数始终经过 $(0, 1)$，因为 $Z(0) = e^0 = 1$。*
+
+::: {.callout-tip collapse="true"}
+## 为什么 $\ln(ab) = \ln a + \ln b$？
+
+令 $\ln a = x$，$\ln b = y$。则 $a = e^x$，$b = e^y$，因此：
+
+$$ab = e^x \cdot e^y = e^{x+y}$$
+
+取对数：$\ln(ab) = x + y = \ln a + \ln b$。关键步骤在于指数函数将加法变为乘法——对数则将其逆转。
+:::
+
+### 第五步：求出 $k = i$
+
+我们已证明 $Z(\theta) = e^{k\theta}$，但仍需确定 $k$。利用无穷小角度 $d\theta$ 的幂级数展开：
+
+$$Z(d\theta) = e^{k\,d\theta} = 1 + k\,d\theta + \frac{(k\,d\theta)^2}{2!} + \cdots \approx 1 + k\,d\theta$$
+
+在单位圆上，$Z(d\theta)$ 是距 $(1, 0)$ 一个微小角度 $d\theta$ 处的点。从几何上：
+
+- 实部为 $\cos(d\theta) \approx 1$（点几乎不做水平移动）
+- 虚部为 $\sin(d\theta) \approx d\theta$（弧长等于弧度制下的角度）
+
+因此 $Z(d\theta) \approx 1 + i\,d\theta$。与 $1 + k\,d\theta$ 比较：
+
+$$k\,d\theta = i\,d\theta \implies k = i$$
+
+所以：
+
+::: {.callout-important}
+## 核心要点：欧拉公式
+这是大结局——指数函数、三角函数和虚数全部统一在一个方程中。它说 $e^{i\theta}$ 描绘单位圆，余弦是实部，正弦是虚部。
+
+$$\boxed{e^{i\theta} = \cos\theta + i\sin\theta}$$
+:::
+
+这就是**欧拉公式**。
+
+**探索——观察 $e^{i\theta}$ 描绘单位圆：**
+
+::: {.desmos-container}
+```{=html}
+<div id="calc-euler" style="width: 100%; height: 400px;"></div>
+<script>
+  var calcEuler = Desmos.GraphingCalculator(document.getElementById('calc-euler'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calcEuler.setExpression({ id: 'circle', latex: 'x^2+y^2=1', color: '#aaaaaa', lineWidth: 1 });
+  calcEuler.setExpression({ id: 'theta', latex: '\\theta_1=1.0', sliderBounds: {min: -6.28, max: 6.28, step: 0.01} });
+  calcEuler.setExpression({ id: 'pt', latex: '(\\cos(\\theta_1), \\sin(\\theta_1))', color: '#2d70b3', pointSize: 12, label: 'e^{i theta}', showLabel: true });
+  calcEuler.setExpression({ id: 'radius', latex: 't(\\cos(\\theta_1), \\sin(\\theta_1))', color: '#2d70b3', lineWidth: 2, parametricDomain: {min: '0', max: '1'} });
+  calcEuler.setExpression({ id: 'cos_seg', latex: '(t, 0)', color: '#388c46', lineWidth: 2, parametricDomain: {min: '0', max: '\\cos(\\theta_1)'} });
+  calcEuler.setExpression({ id: 'sin_seg', latex: '(\\cos(\\theta_1), t)', color: '#c74440', lineWidth: 2, parametricDomain: {min: '0', max: '\\sin(\\theta_1)'} });
+  calcEuler.setExpression({ id: 'cos_label', latex: '(\\cos(\\theta_1)/2, -0.15)', color: '#388c46', pointSize: 0, label: 'cos theta', showLabel: true });
+  calcEuler.setExpression({ id: 'sin_label', latex: '(\\cos(\\theta_1)+0.15, \\sin(\\theta_1)/2)', color: '#c74440', pointSize: 0, label: 'sin theta', showLabel: true });
+  calcEuler.setMathBounds({ left: -2, right: 2, bottom: -1.5, top: 1.5 });
+</script>
+```
+:::
+
+*拖动 $\theta_1$，观察 $e^{i\theta}$ 在单位圆上移动。绿色线段是 $\cos\theta$（实部），红色线段是 $\sin\theta$（虚部）。*
+
+### 美丽的推论：$e^{i\pi} + 1 = 0$
+
+在欧拉公式中令 $\theta = \pi$：
+
+$$e^{i\pi} = \cos\pi + i\sin\pi = -1 + 0 = -1$$
+
+::: {.callout-important}
+## 核心要点：欧拉恒等式
+在欧拉公式中代入 $\theta = \pi$，你就得到了数学中最著名的方程——它用三种基本运算将五个基本常数联系在一起。
+
+$$\boxed{e^{i\pi} + 1 = 0}$$
+:::
+
+这个方程将五个基本常数——$e$、$i$、$\pi$、$1$ 和 $0$——用三种基本运算（加法、乘法、乘幂）联系在一起。它常被称为数学中最美丽的方程。
+
+## 速查表
+
+::: {.key-formula}
+| 结论 | 表述 |
+|---|---|
+| 加法函数方程 | $L(\theta + \phi) = L(\theta) + L(\phi)$，连续 $\implies L(\theta) = k\theta$ |
+| 乘法函数方程 | $Z(\theta)\cdot Z(\phi) = Z(\theta+\phi)$，连续 $\implies Z(\theta) = e^{k\theta}$ |
+| 欧拉公式 | $e^{i\theta} = \cos\theta + i\sin\theta$ |
+| 欧拉恒等式 | $e^{i\pi} + 1 = 0$ |
+| 对数将乘法转化为加法 | $\ln(ab) = \ln a + \ln b$ |
+| 角度加法（余弦） | $\cos(\theta+\phi) = \cos\theta\cos\phi - \sin\theta\sin\phi$ |
+| 角度加法（正弦） | $\sin(\theta+\phi) = \cos\theta\sin\phi + \sin\theta\cos\phi$ |
+
+### 证明策略总结
+
+1. 从 $Z(\theta)\cdot Z(\phi) = Z(\theta+\phi)$ 出发（来自三角加法公式）
+2. 两边取 $\ln$ 得到加法方程：$f(\theta) + f(\phi) = f(\theta+\phi)$
+3. 证明加法 + 连续 $\implies f(\theta) = k\theta$
+4. 取指数：$Z(\theta) = e^{k\theta}$
+5. 利用无穷小几何求出 $k = i$
+
+### 无穷小论证
+
+$$Z(d\theta) \approx 1 + i\,d\theta \quad \text{（来自单位圆几何）}$$
+
+$$e^{k\,d\theta} \approx 1 + k\,d\theta \quad \text{（来自幂级数）}$$
+
+$$\implies k = i$$
+:::

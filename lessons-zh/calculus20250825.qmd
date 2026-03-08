@@ -1,0 +1,311 @@
+---
+title: "乘法法则、链式法则与反函数"
+date: 2025-08-25
+---
+
+当函数相乘、嵌套或反向运行时会发生什么？在这节课中，你将解锁三个强大的法则——乘法法则、链式法则和反函数导数——它们让你能够处理所有这些情况。一旦你掌握了这些工具，几乎没有你不能求导的函数！
+
+::: {.callout-tip collapse="true"}
+## 现实应用：为什么这些法则很重要
+
+每当工程师设计东西时，他们都会组合更简单的部件：
+
+- **乘法法则**：一家工厂的收入是（单价）$\times$（销量）。两者都随时间变化——收入变化多快？你需要乘法法则！
+- **链式法则**：你手机的 GPS 将卫星信号转换为位置，再转换为速度。每一步都输入到下一步，就像复合函数一样。
+- **反函数**：温度计将温度转换为水银柱高度。但你*读取*它时是反过来的：水银柱高度转换为温度。这就是反函数！
+:::
+
+## 本课内容
+
+- 商法则回顾：$d\!\left(\frac{f}{g}\right) = \frac{g\,df - f\,dg}{g^2}$
+- 无穷小量的阶：哪些微小项保留，哪些舍弃
+- 通过扩展商法则对 $\frac{f}{g^2}$ 求导
+- 乘法法则：$d(fg) = g\,df + f\,dg$ 及其几何解释
+- 多因子的广义乘法法则（例如 $f^2 \cdot g^3 \cdot h^{-4}$）
+- 复合函数与链式法则
+- 反函数的导数：$\frac{dx}{dy} = \frac{1}{dy/dx}$
+- 通过判别式判断单调性和可逆性
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250825.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250825_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250825_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250825_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250825_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+::: {.callout-note collapse="true"}
+## 预备知识：无穷小量
+
+**无穷小量** $dx$ 是一个小到本质上为零的量——但又不是*完全*为零。我们用它来衡量当输入微微变化时函数改变了多少。
+
+关键思想：如果 $dx$ 是无穷小的，那么 $dx^2$（即 $dx \times dx$）就*压倒性地*更小。这样想：如果 $dx = 0.001$，那么 $dx^2 = 0.000001$——小了一千倍！所以我们可以安全地**舍弃**含 $dx^2$ 或更高次幂的项。
+:::
+
+::: {.callout-note collapse="true"}
+## 预备知识：商法则
+
+我们在前一课中已经推导了商法则。结果如下：
+
+$$d\!\left(\frac{f}{g}\right) = \frac{g\,df - f\,dg}{g^2}$$
+
+读作："下乘上的变化量，减去上乘下的变化量，除以下的平方。"
+:::
+
+## 商法则回顾与无穷小量的阶
+
+当我们推导商法则时，我们展开所有项，然后**舍弃了高阶项**——像 $df \cdot dg$ 这样的乘积，它们与单独的 $df$ 或 $dg$ 相比无穷小。
+
+**经验法则**：总是保留**最低阶**的无穷小项，舍弃任何更小的项。
+
+| 项 | 阶 | 保留还是舍弃？ |
+|---|---|---|
+| $df$ | 一阶 | 保留 |
+| $dg$ | 一阶 | 保留 |
+| $df \cdot dg$ | 二阶 | 舍弃 |
+| $df^2$ | 二阶 | 舍弃 |
+
+> 如果你有一个和式 $3\,df + 5\,dg + 2\,df\,dg$，答案就是 $3\,df + 5\,dg$。
+
+## 扩展商法则：对 $\frac{f}{g^2}$ 求导
+
+如果分母是 $g^2$ 而不是 $g$ 怎么办？我们可以将 $g^2$ 视为一个整体函数，然后应用商法则：
+
+$$d\!\left(\frac{f}{g^2}\right) = \frac{g^2\,df - f\,d(g^2)}{g^4}$$
+
+我们需要 $d(g^2)$。展开 $(g + dg)^2 - g^2 = 2g\,dg + (dg)^2$，舍弃 $(dg)^2$ 项：
+
+$$d(g^2) = 2g\,dg$$
+
+代回并化简：
+
+$$d\!\left(\frac{f}{g^2}\right) = \frac{g^2\,df - f \cdot 2g\,dg}{g^4} = \frac{g\,df - 2f\,dg}{g^3}$$
+
+**探索商法则——比较 $f/g$ 和 $f/g^2$：**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'f', latex: 'f(x) = x^2 + 1', color: '#2d70b3' });
+  calc1.setExpression({ id: 'g', latex: 'g(x) = x + 2', color: '#388c46' });
+  calc1.setExpression({ id: 'q1', latex: 'y = \\frac{f(x)}{g(x)}', color: '#fa7e19', lineWidth: 2.5 });
+  calc1.setExpression({ id: 'q2', latex: 'y = \\frac{f(x)}{g(x)^2}', color: '#c74440', lineWidth: 2.5 });
+  calc1.setMathBounds({ left: -8, right: 8, bottom: -5, top: 10 });
+</script>
+```
+
+## 乘法法则
+
+要对乘积 $y = f \cdot g$ 求导，考虑当 $f$ 和 $g$ 都变化微小量 $df$ 和 $dg$ 时会发生什么：
+
+$$(f + df)(g + dg) = fg + g\,df + f\,dg + df\,dg$$
+
+减去原来的 $fg$ 并舍弃微小的 $df\,dg$ 项：
+
+::: {.callout-important}
+## 核心要点：乘法法则
+当两个函数相乘时，它们乘积的变化量等于第一个函数乘以第二个函数的变化量，加上第二个函数乘以第一个函数的变化量。
+
+$$\boxed{d(fg) = g\,df + f\,dg}$$
+:::
+
+### 几何解释
+
+将 $f \cdot g$ 想象成一个边长为 $f$ 和 $g$ 的**矩形的面积**。
+
+当你把两条边都稍微拉长时，新的面积增加了：
+
+- 一个**薄的水平条**：高 $f$，宽 $dg$ → 面积 $f\,dg$
+- 一个**薄的垂直条**：宽 $g$，高 $df$ → 面积 $g\,df$
+- 一个**微小的角落方块**：$df \times dg$ → 可忽略不计！
+
+所以面积的总变化为 $g\,df + f\,dg$。
+
+**探索矩形解释——拖动滑块改变"微小变化量"：**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: false,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'fval', latex: 'f = 3' });
+  calc2.setExpression({ id: 'gval', latex: 'g = 4' });
+  calc2.setExpression({ id: 'eps', latex: '\\epsilon = 0.5', sliderBounds: {min: 0, max: 1.5, step: 0.05} });
+  calc2.setExpression({ id: 'rect', latex: '0 \\le x \\le g \\left\\{0 \\le y \\le f\\right\\}', color: '#2d70b3', fillOpacity: 0.3 });
+  calc2.setExpression({ id: 'strip_right', latex: 'g \\le x \\le g+\\epsilon \\left\\{0 \\le y \\le f\\right\\}', color: '#388c46', fillOpacity: 0.5 });
+  calc2.setExpression({ id: 'strip_top', latex: '0 \\le x \\le g \\left\\{f \\le y \\le f+\\epsilon\\right\\}', color: '#fa7e19', fillOpacity: 0.5 });
+  calc2.setExpression({ id: 'corner', latex: 'g \\le x \\le g+\\epsilon \\left\\{f \\le y \\le f+\\epsilon\\right\\}', color: '#c74440', fillOpacity: 0.7 });
+  calc2.setMathBounds({ left: -0.5, right: 7, bottom: -0.5, top: 6 });
+</script>
+```
+
+## 广义乘法法则
+
+如果你有**很多**因子相乘怎么办？规律自然地扩展。求导时，逐个遍历每个因子：**对那个因子求导，保持其余不变**，然后把所有部分加起来。
+
+### 示例：$y = f^2 \cdot g^3 \cdot h^{-4}$
+
+$$dy = \underbrace{2f\,df \cdot g^3 \cdot h^{-4}}_{\text{对 } f^2 \text{ 求导}} + \underbrace{f^2 \cdot 3g^2\,dg \cdot h^{-4}}_{\text{对 } g^3 \text{ 求导}} + \underbrace{f^2 \cdot g^3 \cdot (-4)h^{-5}\,dh}_{\text{对 } h^{-4} \text{ 求导}}$$
+
+::: {.callout-tip collapse="true"}
+## 技巧：对数快捷法
+
+两边同除以 $y = f^2 g^3 h^{-4}$：
+
+$$\frac{dy}{y} = \frac{2\,df}{f} + \frac{3\,dg}{g} - \frac{4\,dh}{h}$$
+
+每一项就是**指数**乘以该因子的**相对变化量**。这叫做**对数微分法**，可以让复杂的乘积变得简单得多！
+:::
+
+## 复合函数与链式法则
+
+**复合函数**是嵌套在另一个函数里面的函数。例如：
+
+$$y = (3x^2 + 1)^5$$
+
+这里"内层"函数是 $u = 3x^2 + 1$，"外层"函数是 $y = u^5$。
+
+### 链式法则
+
+要求 $dy$，从外向内计算：
+
+$$dy = 5u^4 \cdot du = 5(3x^2 + 1)^4 \cdot 6x\,dx$$
+
+用分数形式表示：
+
+::: {.callout-important}
+## 核心要点：链式法则
+要对嵌套函数求导，将外层函数的导数（在内层函数处求值）乘以内层函数的导数。这就像一连串齿轮——每个速率都乘以下一个。
+
+$$\boxed{\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}}$$
+:::
+
+把它想象成一连串齿轮：$x$ 的微小转动引起 $u$ 的转动，$u$ 的转动又引起 $y$ 的转动。总效果是相乘的。
+
+**探索链式法则——看内层函数如何影响导数：**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'n', latex: 'n = 2', sliderBounds: {min: 1, max: 5, step: 1} });
+  calc3.setExpression({ id: 'func', latex: 'y = (x^2 + 1)^n', color: '#2d70b3', lineWidth: 2.5 });
+  calc3.setExpression({ id: 'deriv', latex: 'y = n(x^2+1)^{(n-1)} \\cdot 2x', color: '#c74440', lineStyle: 'DASHED', lineWidth: 2 });
+  calc3.setExpression({ id: 'inner', latex: 'y = x^2 + 1', color: '#388c46', lineStyle: 'DOTTED', lineWidth: 1.5 });
+  calc3.setMathBounds({ left: -4, right: 4, bottom: -5, top: 30 });
+</script>
+```
+
+## 反函数的导数
+
+如果 $y = f(x)$，反函数给出 $x = f^{-1}(y)$——它"撤销"$f$。
+
+反函数导数有一个优美简洁的公式：
+
+::: {.callout-important}
+## 核心要点：反函数导数
+反函数的斜率就是原函数斜率的倒数。如果原函数上升得很陡，反函数就上升得很缓，反之亦然。
+
+$$\boxed{\frac{dx}{dy} = \frac{1}{\dfrac{dy}{dx}}}$$
+:::
+
+这在几何上很有道理：如果 $y$ 的变化速度是 $x$ 的 3 倍，那么 $x$ 的变化速度就是 $y$ 的 $\frac{1}{3}$ 倍。
+
+### 示例
+
+如果 $y = x^3$，则 $\frac{dy}{dx} = 3x^2$，所以：
+
+$$\frac{dx}{dy} = \frac{1}{3x^2}$$
+
+由于 $x = y^{1/3}$，我们可以写 $x^2 = y^{2/3}$，得到 $\frac{dx}{dy} = \frac{1}{3y^{2/3}}$。
+
+这与我们直接对 $x = y^{1/3}$ 求导得到的结果一致！
+
+## 单调性与可逆性
+
+一个函数只有当它是**单调的**时才**可逆**——也就是说它始终递增或始终递减。如果它掉头了（有局部最大值或最小值），那么两个不同的 $x$ 值会给出相同的 $y$，你就无法唯一地反转这个过程。
+
+### 如何判断：判别式检验
+
+对于像 $y = ax^3 + bx^2 + cx + d$ 这样的多项式，导数是：
+
+$$\frac{dy}{dx} = 3ax^2 + 2bx + c$$
+
+这是一个二次函数。当这个二次函数**永远不变号**时，原函数是单调的，这发生在判别式为负时：
+
+$$(2b)^2 - 4(3a)(c) < 0 \quad \Longrightarrow \quad 4b^2 - 12ac < 0$$
+
+没有实数根意味着导数永远不穿过零，所以函数永远不会掉头！
+
+**探索——一个系数可调的三次函数。什么时候它是可逆的？**
+
+```{=html}
+<div id="calc4" class="desmos-container"></div>
+<script>
+  var calc4 = Desmos.GraphingCalculator(document.getElementById('calc4'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc4.setExpression({ id: 'a', latex: 'a = 1', sliderBounds: {min: -3, max: 3, step: 0.1} });
+  calc4.setExpression({ id: 'b', latex: 'b = 0', sliderBounds: {min: -5, max: 5, step: 0.1} });
+  calc4.setExpression({ id: 'c', latex: 'c = 1', sliderBounds: {min: -5, max: 5, step: 0.1} });
+  calc4.setExpression({ id: 'cubic', latex: 'y = a x^3 + b x^2 + c x', color: '#2d70b3', lineWidth: 2.5 });
+  calc4.setExpression({ id: 'deriv', latex: 'y = 3a x^2 + 2b x + c', color: '#c74440', lineStyle: 'DASHED', lineWidth: 2 });
+  calc4.setExpression({ id: 'zero_line', latex: 'y = 0', color: '#000000', lineStyle: 'DOTTED', lineWidth: 1 });
+  calc4.setMathBounds({ left: -5, right: 5, bottom: -10, top: 10 });
+</script>
+```
+
+::: {.callout-tip collapse="true"}
+## 试试：让三次函数不可逆
+
+在上面的图中，试着设 $a = 1$，$b = 3$，$c = 1$。你应该看到导数（红色虚线曲线）降到零以下——这意味着三次函数有局部最大值和最小值，**不**可逆！
+
+现在试试 $a = 1$，$b = 0$，$c = 1$。导数在所有地方都保持正值——三次函数严格递增，**是**可逆的。
+:::
+
+## 速查表
+
+::: {.key-formula}
+| 法则 | 公式 |
+|---|---|
+| 乘法法则 | $d(fg) = g\,df + f\,dg$ |
+| 商法则 | $d\!\left(\frac{f}{g}\right) = \frac{g\,df - f\,dg}{g^2}$ |
+| 扩展商法则 | $d\!\left(\frac{f}{g^2}\right) = \frac{g\,df - 2f\,dg}{g^3}$ |
+| 链式法则 | $\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$ |
+| 反函数 | $\frac{dx}{dy} = \frac{1}{dy/dx}$ |
+
+### 广义乘法法则
+
+要对 $f_1^{n_1} \cdot f_2^{n_2} \cdots f_k^{n_k}$ 求导：对每个因子，对它求导（提出指数），保持其余不变，然后把所有部分加起来。
+
+### 可逆性判断
+
+当函数是**单调的**（始终递增或始终递减）时，它才是可逆的。对于三次函数 $ax^3 + bx^2 + cx + d$，检查导数 $3ax^2 + 2bx + c$ 的**判别式为负**：$4b^2 - 12ac < 0$。
+
+### 无穷小量的阶
+
+总是保留**最低阶**的项。舍弃任何两个或多个无穷小量的乘积（$df \cdot dg$，$dx^2$，等等）。
+:::

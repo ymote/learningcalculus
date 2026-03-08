@@ -1,0 +1,267 @@
+---
+title: "多项式图形、临界点与商法则"
+date: 2025-08-19
+---
+
+你有没有想过，过山车设计师是怎么精确知道最高点和最惊险的位置在哪里的？在这节课中，你将学会像专业人士一样绘制多项式图形，利用导数找出任何曲线的波峰和波谷，还将掌握一个用于函数除法的强大公式——商法则。这些工具在工程学、经济学等各个领域都有广泛应用——而一切都从这里开始。
+
+::: {.callout-tip collapse="true"}
+## 现实应用：为什么导数对图形分析如此重要
+
+导数不仅仅是抽象的数学——它们每天都在帮助人们解决实际问题：
+
+- **过山车设计**：工程师利用临界点来确定轨道上最高的爬升和最快的下降位置，确保乘坐既刺激又安全。
+- **GPS 导航**：你的手机通过计算位置关于时间的导数来确定你的速度和方向，然后实时更新你的路线。
+- **股票市场分析**：交易员通过观察股价上涨或下跌的速度（这就是导数！）来决定何时买入或卖出。
+- **桥梁和建筑设计**：结构工程师通过找到梁和缆索中的最大应力点——这些就是应力函数的临界点。
+- **医学和生物学**：研究人员通过追踪血液中药物浓度的增加或减少速度，来确定正确的剂量和给药时间。
+:::
+
+## 本课内容
+
+- 使用"蛇形法"通过 x 截距绘制多项式图形
+- 根的重数：偶数重数反弹，奇数重数穿越
+- 通过导数求临界点：求解 $f'(x) = 0$
+- 通过读取导数图形判断函数的递增/递减行为
+- 局部最大值、局部最小值和驻点
+- 商法则：$\frac{d}{dx}\left(\frac{P}{Q}\right) = \frac{Q \cdot P' - P \cdot Q'}{Q^2}$
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250819.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250819_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250819_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250819_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250819_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+::: {.callout-note collapse="true"}
+## 预备知识：多项式因式分解
+
+要绘制多项式图形，你需要通过因式分解找到它的**根**（x 截距）。例如：
+
+$$f(x) = x^3 - 4x = x(x-2)(x+2)$$
+
+根为 $x = 0, 2, -2$。如果你对因式分解还不熟练，请先复习——它是本课所有内容的基础。
+:::
+
+::: {.callout-note collapse="true"}
+## 预备知识：基本导数
+
+你应该已经知道如何使用幂法则对多项式求导：
+
+$$\frac{d}{dx}(x^n) = n \cdot x^{n-1}$$
+
+例如，如果 $f(x) = 3x^4 - 2x^2 + x$，则 $f'(x) = 12x^3 - 4x + 1$。
+:::
+
+## 多项式图形的蛇形法
+
+核心思想是：一旦你知道了**根**和**首项**，你就可以通过在 x 截距之间"蛇形穿行"来绘制图形。
+
+**步骤：**
+
+1. **因式分解**——将多项式完全分解以找到根。
+2. **检查首项**——确定端部行为（图形在左端是从上方还是下方开始？）。
+3. **蛇形穿过根**——在每个根处，根据重数判断图形是**穿越**还是**反弹**。
+
+### 根的重数与符号变化
+
+| 重数 | 在根处的行为 | 是否变号？ |
+|---|---|---|
+| 奇数（1, 3, 5, ...） | 图形**穿越** x 轴 | 是 |
+| 偶数（2, 4, 6, ...） | 图形从 x 轴**反弹** | 否 |
+
+::: {.callout-tip collapse="true"}
+## 为什么这个方法有效？
+
+想想 $(x - r)^2$。平方总是非负的，所以这个因子永远不会变号——图形触碰坐标轴后反弹回来。但 $(x - r)^1$ 在 $x$ 穿过 $r$ 时从负变正，所以图形必须穿过。这和乘以负数的道理一样：奇数个负号翻转符号，偶数个负号保持不变。
+:::
+
+**探索蛇形法——拖动滑块移动根并改变重数：**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'single', latex: 'y=(x+3)(x-1)^2(x-4)', color: '#2d70b3', lineWidth: 2.5 });
+  calc1.setExpression({ id: 'p1', latex: '(-3, 0)', color: '#388c46', pointSize: 10, label: 'crosses (single)', showLabel: true });
+  calc1.setExpression({ id: 'p2', latex: '(1, 0)', color: '#c74440', pointSize: 10, label: 'bounces (double)', showLabel: true });
+  calc1.setExpression({ id: 'p3', latex: '(4, 0)', color: '#388c46', pointSize: 10, label: 'crosses (single)', showLabel: true });
+  calc1.setMathBounds({ left: -6, right: 7, bottom: -40, top: 40 });
+</script>
+```
+
+## 通过导数求临界点
+
+**临界点**是使 $f'(x) = 0$ 的 $x$ 值。在这些点处，图形具有水平切线——它暂时是平的。
+
+求临界点的步骤：
+
+1. 计算 $f'(x)$
+2. 令 $f'(x) = 0$ 并求解 $x$
+3. 将每个 $x$ 代回 $f(x)$ 得到 $(x, y)$ 坐标
+
+### 示例：求 $f(x) = x^3 - 3x$ 的临界点
+
+$$f'(x) = 3x^2 - 3 = 3(x^2 - 1) = 3(x-1)(x+1)$$
+
+令 $f'(x) = 0$：$x = 1$ 或 $x = -1$
+
+- $f(1) = 1 - 3 = -2$ → 临界点在 $(1, -2)$
+- $f(-1) = -1 + 3 = 2$ → 临界点在 $(-1, 2)$
+
+**同时查看函数及其导数：**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'func', latex: 'y=x^3-3x', color: '#2d70b3', lineWidth: 2.5 });
+  calc2.setExpression({ id: 'deriv', latex: 'y=3x^2-3', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+  calc2.setExpression({ id: 'cp1', latex: '(-1, 2)', color: '#388c46', pointSize: 10, label: 'local max (-1, 2)', showLabel: true });
+  calc2.setExpression({ id: 'cp2', latex: '(1, -2)', color: '#388c46', pointSize: 10, label: 'local min (1, -2)', showLabel: true });
+  calc2.setExpression({ id: 'label_f', latex: '(2.2, 2.3)', color: '#2d70b3', label: 'f(x)', showLabel: true, pointSize: 0 });
+  calc2.setExpression({ id: 'label_fp', latex: '(2.2, 8.5)', color: '#c74440', label: "f'(x)", showLabel: true, pointSize: 0 });
+  calc2.setMathBounds({ left: -4, right: 4, bottom: -8, top: 8 });
+</script>
+```
+
+## 读取导数图形
+
+$f'(x)$ 的图形告诉你关于 $f(x)$ 形状的一切信息：
+
+| $f'(x)$ | $f(x)$ 的行为 |
+|---|---|
+| 正值（$f'(x) > 0$） | **递增**（上坡） |
+| 负值（$f'(x) < 0$） | **递减**（下坡） |
+| 零（$f'(x) = 0$） | **水平**（水平切线） |
+
+::: {.callout-note collapse="true"}
+## 预备知识：正区间与负区间
+
+当我们说 $f'(x) > 0$ 时，意味着导数图形在 x 轴**上方**。当 $f'(x) < 0$ 时，导数图形在 x 轴**下方**。观察导数在哪里穿过零——那些就是原函数的临界点。
+:::
+
+## 局部最大值、局部最小值和驻点
+
+当导数等于零时，可能出现三种情况：
+
+::: {.callout-important}
+## 核心要点：通过符号变化分类临界点
+临界点两侧导数的符号告诉你它是什么类型的点。注意观察导数是从正变负、从负变正，还是保持不变。
+
+| $f'(x)$ 的变化 | 临界点类型 |
+|---|---|
+| 从正到负（$+ \to -$） | **局部最大值**（山顶） |
+| 从负到正（$- \to +$） | **局部最小值**（谷底） |
+| 符号不变（$+ \to +$ 或 $- \to -$） | **驻点**（暂时水平但继续前进） |
+:::
+
+没有符号变化的驻点就像一条暂时变平但继续同方向行驶的道路——想想 $f(x) = x^3$ 在原点处的情况。
+
+**探索——调整 $a$ 观察临界点如何变化：**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'a', latex: 'a=3', sliderBounds: {min: -5, max: 5, step: 0.1} });
+  calc3.setExpression({ id: 'func', latex: 'y=x^3-a\\cdot x', color: '#2d70b3', lineWidth: 2.5 });
+  calc3.setExpression({ id: 'deriv', latex: 'y=3x^2-a', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+  calc3.setExpression({ id: 'note_f', latex: '(2.5, 2.5)', color: '#2d70b3', label: 'f(x)', showLabel: true, pointSize: 0 });
+  calc3.setExpression({ id: 'note_fp', latex: '(2.5, 9)', color: '#c74440', label: "f'(x)", showLabel: true, pointSize: 0 });
+  calc3.setMathBounds({ left: -5, right: 5, bottom: -10, top: 10 });
+</script>
+```
+
+::: {.callout-tip collapse="true"}
+## 试试滑块
+
+设 $a = 0$。注意 $f(x) = x^3$ 在 $x = 0$ 处有一个临界点，但它是一个**驻点**——导数触碰零但不变号。现在增大 $a$，观察局部最大值和局部最小值的出现。
+:::
+
+## 商法则
+
+当你需要对分数 $\frac{P(x)}{Q(x)}$ 求导时，使用商法则：
+
+::: {.callout-important}
+## 核心要点：商法则
+每当你需要求一个函数除以另一个函数的导数时，使用这个公式。可以记为"下乘上导减上乘下导，除以下的平方"。
+
+$$\frac{d}{dx}\left(\frac{P}{Q}\right) = \frac{Q \cdot P' - P \cdot Q'}{Q^2}$$
+:::
+
+::: {.callout-note collapse="true"}
+## 预备知识：乘法法则
+
+商法则是由乘法法则推导而来的。回顾：
+
+$$\frac{d}{dx}(P \cdot Q) = P' \cdot Q + P \cdot Q'$$
+
+我们可以将 $\frac{P}{Q} = P \cdot Q^{-1}$，然后结合乘法法则和链式法则来推导商法则。
+:::
+
+### 商法则的推导
+
+从 $\frac{P}{Q}$ 开始，对 $P \cdot Q^{-1}$ 使用乘法法则：
+
+$$\frac{d}{dx}\left(P \cdot Q^{-1}\right) = P' \cdot Q^{-1} + P \cdot (-1) \cdot Q^{-2} \cdot Q'$$
+
+$$= \frac{P'}{Q} - \frac{P \cdot Q'}{Q^2} = \frac{P' \cdot Q - P \cdot Q'}{Q^2}$$
+
+::: {.callout-tip collapse="true"}
+## 记忆口诀："下乘上导减上乘下导，除以下的平方"
+
+- **下** = 分母 $Q$
+- **上** = 分子 $P$
+- **导** = 的导数
+
+所以：$\frac{Q \cdot P' - P \cdot Q'}{Q^2}$ = "下乘上导减上乘下导，除以下的平方"
+:::
+
+### 示例：对 $f(x) = \frac{x^2 + 1}{x - 3}$ 求导
+
+令 $P = x^2 + 1$，$Q = x - 3$，则 $P' = 2x$，$Q' = 1$。
+
+$$f'(x) = \frac{(x-3)(2x) - (x^2+1)(1)}{(x-3)^2}$$
+
+$$= \frac{2x^2 - 6x - x^2 - 1}{(x-3)^2} = \frac{x^2 - 6x - 1}{(x-3)^2}$$
+
+## 速查表
+
+::: {.key-formula}
+| 概念 | 关键要点 |
+|---|---|
+| 蛇形法 | 因式分解，检查端部行为，蛇形穿过根 |
+| 奇数重数根 | 图形**穿越** x 轴（变号） |
+| 偶数重数根 | 图形从 x 轴**反弹**（不变号） |
+| 临界点 | 求解 $f'(x) = 0$ |
+| $f'(x) > 0$ | $f(x)$ 递增 |
+| $f'(x) < 0$ | $f(x)$ 递减 |
+| $f'$：在临界点处 $+ \to -$ | 局部最大值 |
+| $f'$：在临界点处 $- \to +$ | 局部最小值 |
+| $f'$：符号不变 | 驻点 |
+| 商法则 | $\dfrac{d}{dx}\!\left(\dfrac{P}{Q}\right) = \dfrac{Q \cdot P' - P \cdot Q'}{Q^2}$ |
+:::

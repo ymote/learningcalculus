@@ -1,0 +1,353 @@
+---
+title: "相关变化率——球体、圆锥与误差传播"
+date: 2025-10-20
+---
+
+如果你只知道一个气球的表面积增加有多快，怎么算出它的体积增长速度？圆锥形漏斗中的水位上升有多快？当你用角度测量建筑物的高度时，角度上的一点小误差会使你的答案偏差多少？这节课用同一个三步法来解决所有这些问题：关联变量、求导、求解。你会惊叹于这一种方法能处理如此多不同的现实问题！
+
+::: {.callout-tip collapse="true"}
+## 为什么相关变化率很重要
+
+相关变化率让你在知道一个相关联的量变化多快的情况下，算出另一个量变化的速度：
+
+- **医学**：当球形肿瘤增大时，医生需要根据影像扫描的表面积测量来了解体积增加的速度
+- **建筑**：向圆锥形储罐中填充砂石或水——工程师需要预测液面上升的速度以防溢出
+- **建筑设计**：在保持总框架材料不变的情况下重新设计窗户时，相关变化率告诉你改变一个尺寸如何迫使另一个尺寸调整
+- **测量**：用角度从地面测量高楼或旗杆的高度——角度上的小测量误差会"传播"到计算出的高度中
+这些问题都遵循同一个三步模式：关联变量、对时间求导、求解！
+:::
+
+## 本课内容
+
+- 球体的相关变化率：通过中间变量 $r$ 连接 $\frac{dA}{dt}$ 和 $\frac{dV}{dt}$
+- 多变量相关变化率：法式窗户（矩形 + 半圆）在总周长恒定约束下的问题
+- 圆锥/截锥注水问题，利用相似三角形消去变量
+- 误差传播：在间接测量中将 $d\theta$ 与 $dh$ 联系起来
+- 三步法：(1) 写出所有变量关系，(2) 对所有方程求导，(3) 代入求解
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251020.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20251020_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251020_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251020_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251020_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是对时间的隐函数求导？
+
+当两个变量通过方程如 $A = 4\pi r^2$ 关联，且 $A$ 和 $r$ 都随时间变化时，你可以对两边关于 $t$ 求导：
+
+$$\frac{dA}{dt} = 8\pi r \,\frac{dr}{dt}$$
+
+每个依赖于时间的变量通过链式法则都会带一个 $\frac{d(\cdot)}{dt}$ 因子。常量保持不变。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是乘积法则？
+
+当两个函数相乘时，导数为：
+
+$$\frac{d}{dt}[f(t) \cdot g(t)] = f'(t)\,g(t) + f(t)\,g'(t)$$
+
+这在相关变化率中经常出现。例如，对面积 $A = 2rh$（$r$ 和 $h$ 都随时间变化）求导得：
+
+$$\frac{dA}{dt} = 2\frac{dr}{dt}\,h + 2r\,\frac{dh}{dt}$$
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是相似三角形？
+
+两个三角形如果角度相同，则它们是**相似的**。这意味着对应边的比值相等：
+
+$$\frac{a_1}{b_1} = \frac{a_2}{b_2}$$
+
+在圆锥问题中，截面总是形成一个三角形，而任意高度处的水面形成一个与整个圆锥相似的较小三角形。这给出了水的半径和高度之间的固定比值。
+:::
+
+::: {.callout-note collapse="true"}
+## 球体和圆锥的体积与表面积公式是什么？
+
+半径为 $r$ 的**球体**：
+
+$$A = 4\pi r^2 \qquad V = \frac{4}{3}\pi r^3$$
+
+底面半径为 $r$、高为 $h$ 的**圆锥**：
+
+$$V = \frac{1}{3}\pi r^2 h$$
+
+你现在不需要记住这些——它们将在课程后面用积分来证明。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是微分？
+
+**微分**如 $dh$ 表示 $h$ 的无穷小变化。当我们写：
+
+$$dh = f'(\theta)\,d\theta$$
+
+意思是输入的微小变化 $d\theta$ 会产生输出的微小变化 $dh$，按导数缩放。微分是相关变化率的基础——"变化率"就是微分除以 $dt$。
+:::
+
+## 核心要点
+
+### 相关变化率的三步法
+
+每个相关变化率问题都遵循相同的模式：
+
+1. **关联**所有变量的方程（几何、定义、约束）
+2. **求导**每个方程关于时间 $t$
+3. **代入**已知值并求解未知变化率
+
+关键规则：**在求导之后才代入数值。** 如果一个变量在变化，过早代入当前值会杀死导数。
+
+### 类型 1：球体——表面积与体积
+
+**问题。** 一个球的表面积以 $\frac{dA}{dt} = 7 \text{ m}^2/\text{min}$ 的速率增加。求体积增加的速率。
+
+**第一步——关联变量。** $A$ 和 $V$ 都通过半径 $r$ 自然联系：
+
+$$A = 4\pi r^2 \qquad V = \frac{4}{3}\pi r^3$$
+
+**第二步——对两个方程求导：**
+
+$$dA = 8\pi r\,dr \qquad dV = 4\pi r^2\,dr$$
+
+除以 $dt$：
+
+$$\frac{dA}{dt} = 8\pi r\,\frac{dr}{dt} \qquad \frac{dV}{dt} = 4\pi r^2\,\frac{dr}{dt}$$
+
+**第三步——消去未知量 $\frac{dr}{dt}$。** 由第一个方程：
+
+$$\frac{dr}{dt} = \frac{7}{8\pi r}$$
+
+代入第二个方程：
+
+$$\frac{dV}{dt} = 4\pi r^2 \cdot \frac{7}{8\pi r} = \frac{7r}{2}$$
+
+::: {.callout-important}
+## 核心要点：连接表面积和体积的变化率
+当球体增长时，其体积和表面积都依赖于半径。通过对每个公式求导并消去未知的 $\frac{dr}{dt}$，你可以直接将体积变化率与表面积变化率联系起来。
+
+$$\boxed{\frac{dV}{dt} = \frac{7r}{2}}$$
+:::
+
+答案取决于当前的半径 $r$。这在物理上是合理的：体积的单位是 $\text{m}^3$，表面积的单位是 $\text{m}^2$，所以体积的变化率必须多一个长度因子。
+
+**探索——当 $\frac{dA}{dt} = 7$ 时，$\frac{dV}{dt}$ 如何依赖于半径：**
+
+::: {.desmos-container}
+```{=html}
+<div id="sphere-rate" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt1 = document.getElementById('sphere-rate');
+var calc1 = Desmos.GraphingCalculator(elt1);
+calc1.setExpression({id: 'dvdt', latex: 'y=\\frac{7x}{2}', color: '#2d70b3', lineWidth: 3});
+calc1.setExpression({id: 'r_slider', latex: 'r=2', sliderBounds: {min: 0.5, max: 10, step: 0.1}});
+calc1.setExpression({id: 'pt', latex: '(r, \\frac{7r}{2})', color: '#c74440', pointSize: 10, label: 'dV/dt at current r', showLabel: true});
+calc1.setMathBounds({left: -1, right: 12, bottom: -5, top: 40});
+</script>
+```
+:::
+
+*蓝线表示 $\frac{dV}{dt} = \frac{7r}{2}$。拖动 $r$ 的滑块，可以看到体积增长率与当前半径成正比。*
+
+### 类型 2：总周长恒定的法式窗户
+
+**问题。** 一扇法式窗户由一个矩形加上顶部半圆组成。半圆半径为 $r$（窗户宽度为 $2r$），矩形部分高度为 $h$。此时，$r = 5$，$h = 8$。高度以 $\frac{dh}{dt} = -0.5$ 的速率减小。总框架（周长）保持不变。求 $\frac{dA}{dt}$。
+
+**第一步——写出所有方程。**
+
+窗户面积：
+
+$$A = 2rh + \frac{1}{2}\pi r^2$$
+
+总周长（框架材料）：
+
+$$C = 2h + (2 + \pi)r$$
+
+**第二步——对两个方程求导。**
+
+面积（对 $2rh$ 使用乘积法则）：
+
+$$\frac{dA}{dt} = 2r\frac{dh}{dt} + 2h\frac{dr}{dt} + \pi r\frac{dr}{dt} = 2r\frac{dh}{dt} + (2h + \pi r)\frac{dr}{dt}$$
+
+周长（恒定，所以 $\frac{dC}{dt} = 0$）：
+
+$$0 = 2\frac{dh}{dt} + (2 + \pi)\frac{dr}{dt}$$
+
+**第三步——求解。** 由周长方程解出 $\frac{dr}{dt}$：
+
+$$\frac{dr}{dt} = \frac{-2\frac{dh}{dt}}{2 + \pi} = \frac{-2(-0.5)}{2 + \pi} = \frac{1}{2 + \pi}$$
+
+现在将所有值代入面积方程：
+
+$$\frac{dA}{dt} = 2(5)(-0.5) + \bigl(2(8) + 5\pi\bigr) \cdot \frac{1}{2 + \pi}$$
+
+$$= -5 + \frac{16 + 5\pi}{2 + \pi}$$
+
+关键教训：当一个约束使某个量保持恒定时，对它求导得到 $\frac{dC}{dt} = 0$，这提供了你需要的额外方程。
+
+### 类型 3：圆锥形容器注水
+
+**问题。** 一个圆锥底面半径 $R = 4$ 厘米，高 $H = 6$ 厘米，顶点在下，开口朝上。水以 $\frac{dV_{\text{水}}}{dt} = 2 \text{ cm}^3/\text{s}$ 的速率注入。当水面高度达到 $h = 3$ 厘米时，求 $\frac{dh}{dt}$。
+
+**巧妙的技巧。** 不计算截锥体积，而是关注**顶部的空圆锥**。设 $y$ 为空圆锥的高度，$r$ 为其底面半径：
+
+$$V_{\text{上}} = \frac{1}{3}\pi r^2 y$$
+
+由于水在注入，空的体积在减小：
+
+$$\frac{dV_{\text{上}}}{dt} = -2 \text{ cm}^3/\text{s}$$
+
+**利用相似三角形。** 整个圆锥和上部空圆锥是相似的，所以 $\frac{y}{r} = \frac{H}{R} = \frac{3}{2}$，得到 $r = \frac{2}{3}y$，$\frac{dr}{dt} = \frac{2}{3}\frac{dy}{dt}$。
+
+**代入化为单变量。** 将 $r$ 替换为 $\frac{2}{3}y$：
+
+$$V_{\text{上}} = \frac{1}{3}\pi\left(\frac{2}{3}y\right)^2 y = \frac{4\pi}{27}y^3$$
+
+求导：
+
+$$\frac{dV_{\text{上}}}{dt} = \frac{4\pi}{9}y^2\frac{dy}{dt}$$
+
+当 $h = 3$ 时，空的部分高度为 $y = H - h = 3$ 厘米：
+
+$$-2 = \frac{4\pi}{9}(3)^2\frac{dy}{dt} = 4\pi\frac{dy}{dt}$$
+
+$$\frac{dy}{dt} = \frac{-2}{4\pi} = \frac{-1}{2\pi}$$
+
+由于 $h = H - y$，所以 $\frac{dh}{dt} = -\frac{dy}{dt}$：
+
+::: {.callout-important}
+## 核心要点：用相似三角形消去圆锥问题中的变量
+圆锥的截面形成相似三角形，将半径和高度锁定在固定比例中。这让你可以将体积公式改写为只含一个变量，从而使求导更加简单。
+
+$$\boxed{\frac{dh}{dt} = \frac{1}{2\pi} \approx 0.159 \text{ cm/s}}$$
+:::
+
+**探索——水注入时圆锥容器的截面：**
+
+::: {.desmos-container}
+```{=html}
+<div id="cone-fill" style="width: 100%; height: 400px;"></div>
+<script>
+var elt2 = document.getElementById('cone-fill');
+var calc2 = Desmos.GraphingCalculator(elt2);
+calc2.setExpression({id: 'cone_left', latex: 'y = \\frac{6}{4}x \\left\\{0 \\le x \\le 4\\right\\}', color: '#aaaaaa', lineWidth: 2});
+calc2.setExpression({id: 'cone_right', latex: 'y = -\\frac{6}{4}x \\left\\{-4 \\le x \\le 0\\right\\}', color: '#aaaaaa', lineWidth: 2});
+calc2.setExpression({id: 'cone_top', latex: 'y = 6 \\left\\{-4 \\le x \\le 4\\right\\}', color: '#aaaaaa', lineWidth: 2});
+calc2.setExpression({id: 'h_slider', latex: 'h_0 = 3', sliderBounds: {min: 0.1, max: 5.9, step: 0.1}});
+calc2.setExpression({id: 'water_level', latex: 'y = h_0 \\left\\{-\\frac{2h_0}{3} \\le x \\le \\frac{2h_0}{3}\\right\\}', color: '#2d70b3', lineWidth: 3});
+calc2.setExpression({id: 'water_left', latex: 'y = \\frac{6}{4}x \\left\\{0 \\le x \\le \\frac{2h_0}{3}\\right\\}', color: '#2d70b3', lineWidth: 3});
+calc2.setExpression({id: 'water_right', latex: 'y = -\\frac{6}{4}x \\left\\{-\\frac{2h_0}{3} \\le x \\le 0\\right\\}', color: '#2d70b3', lineWidth: 3});
+calc2.setExpression({id: 'rate_label', latex: '(5, h_0)', color: '#c74440', pointSize: 0, label: 'Water level h', showLabel: true});
+calc2.setMathBounds({left: -6, right: 8, bottom: -1, top: 8});
+</script>
+```
+:::
+
+*拖动 $h_0$ 来改变水位。圆锥底部较窄，所以相同的流量在较低水位时使水面上升更快，在接近宽顶部时更慢。*
+
+### 类型 4：误差传播
+
+**问题。** 你在距旗杆 50 米处通过读取 $\theta = 45°$ 来测量旗杆的高度。你的仪器精度为 $\pm 0.1°$。这会在高度中引入多大的误差？
+
+**关联变量。** 由三角函数：
+
+$$\tan\theta = \frac{h}{50} \quad \Longrightarrow \quad h = 50\tan\theta$$
+
+**求导**（这里没有时间变量——只用微分）：
+
+$$dh = 50\sec^2\theta\,d\theta$$
+
+**代入已知值。** 在 $\theta = 45°$ 时：
+
+$$\cos 45° = \frac{1}{\sqrt{2}} \quad \Longrightarrow \quad \sec^2 45° = 2$$
+
+而 $d\theta = \pm 0.1°$。转换为弧度：
+
+$$d\theta = \pm 0.1 \times \frac{\pi}{180} \approx \pm 0.001745 \text{ rad}$$
+
+因此：
+
+$$dh = 50 \times 2 \times (\pm 0.001745) \approx \pm 0.175 \text{ m}$$
+
+所以 $0.1°$ 的角度误差导致高度约 $\pm 0.175$ 米的误差。由于 $h = 50$ 米，相对误差约为 $0.35\%$。
+
+::: {.callout-tip collapse="true"}
+## 误差传播与相关变化率的关系
+
+误差传播就是没有时间变量的相关变化率。不是用 $\frac{dh}{dt}$ 和 $\frac{d\theta}{dt}$，而是直接用微分 $dh$ 和 $d\theta$。关键思想：**不要**直接计算 $h(45.1°) - h(45°)$。相反，将小偏差视为微分——这更快，而且给出适用于任何角度的公式。
+:::
+
+**探索——高度误差 $dh$ 如何依赖于测量角度 $\theta$：**
+
+::: {.desmos-container}
+```{=html}
+<div id="prop-error" style="width: 100%; height: 400px;"></div>
+<script>
+var elt3 = document.getElementById('prop-error');
+var calc3 = Desmos.GraphingCalculator(elt3);
+calc3.setExpression({id: 'dh_curve', latex: 'y = 50 \\cdot \\sec(x)^2 \\cdot 0.1 \\cdot \\frac{\\pi}{180}', color: '#2d70b3', lineWidth: 3});
+calc3.setExpression({id: 'theta_slider', latex: 'a = \\frac{\\pi}{4}', sliderBounds: {min: 0.1, max: 1.4, step: 0.01}});
+calc3.setExpression({id: 'pt', latex: '(a, 50 \\cdot \\sec(a)^2 \\cdot 0.1 \\cdot \\frac{\\pi}{180})', color: '#c74440', pointSize: 10, label: 'dh at this angle', showLabel: true});
+calc3.setExpression({id: 'fourtyfive', latex: 'x = \\frac{\\pi}{4}', color: '#aaaaaa', lineStyle: 'DASHED', lineWidth: 1});
+calc3.setMathBounds({left: -0.2, right: 1.6, bottom: -0.5, top: 5});
+</script>
+```
+:::
+
+*曲线显示在固定 $d\theta = 0.1°$ 下，随角度 $\theta$ 变化的高度误差 $dh$（单位：米）。在更陡的角度下，$\sec^2\theta$ 迅速增长，这意味着同样的角度误差导致更大的高度误差。虚线标记的是 $\theta = 45°$。*
+
+## 速查表
+
+::: {.key-formula}
+
+### 相关变化率三步法
+
+1. **关联**所有变量的方程（几何、定义、约束）
+2. **求导**每个方程关于 $t$（或取微分）
+3. **代入**已知值求解——**只在求导之后**才代入数值
+
+### 用到的关键公式
+
+| 量 | 公式 |
+|---|---|
+| 球的表面积 | $A = 4\pi r^2$ |
+| 球的体积 | $V = \frac{4}{3}\pi r^3$ |
+| 圆锥的体积 | $V = \frac{1}{3}\pi r^2 h$ |
+| 正切关系 | $\tan\theta = \frac{\text{对边}}{\text{邻边}}$ |
+| $\tan\theta$ 的导数 | $\frac{d}{d\theta}(\tan\theta) = \sec^2\theta$ |
+
+### 常见陷阱
+
+| 错误 | 修正 |
+|---|---|
+| 在求导前代入数值 | 保持变量为变量直到最后一步 |
+| 两个变量相乘时忘记乘积法则 | 如果 $A = 2rh$ 且两者都变化，使用 $\dot{A} = 2\dot{r}h + 2r\dot{h}$ |
+| 忽略约束 | 常量的导数为零——这给你额外的方程 |
+| 未知数太多 | 寻找几何关系（相似三角形、固定比值）来消去变量 |
+
+### 误差传播公式
+
+如果 $y = f(x)$，那么 $x$ 的误差 $dx$ 导致 $y$ 的误差为：
+
+$$dy = f'(x)\,dx$$
+
+**相对误差**为 $\displaystyle\frac{dy}{y} = \frac{f'(x)}{f(x)}\,dx$。
+:::

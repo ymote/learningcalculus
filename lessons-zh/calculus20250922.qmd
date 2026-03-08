@@ -1,0 +1,305 @@
+---
+title: "三角函数的导数与 sin(x)/x 极限"
+date: 2025-09-22
+---
+
+正弦和余弦无处不在：声波、过山车、海洋潮汐，甚至为你手机供电的电流中都有它们的身影。在这节课中，你将用三种完全不同的方法发现为什么 $\sin x$ 的导数是 $\cos x$，探索使这一切成立的一个巧妙极限，并了解为什么弧度是唯一能与微积分完美配合的角度度量方式。一旦你理解了这些概念，你就拥有了分析任何周期运动的工具。
+
+::: {.callout-tip collapse="true"}
+## 为什么三角函数的导数很重要
+
+三角函数描述任何周期性重复的事物：
+
+- **音乐**：声波是正弦和余弦曲线——它们的导数告诉你气压变化的速率
+- **过山车**：轨道在任一点的坡度就是三角函数的导数
+- **潮汐**：海平面遵循类似正弦的规律——导数告诉你潮水何时上涨最快
+- **电力**：家用交流电是正弦波——工程师需要它的导数来设计电路
+
+知道 $\sin x$ 的导数是 $\cos x$，是所有科学和工程中最常用的事实之一。
+:::
+
+## 本课内容
+
+- 利用单位圆几何推导 $\frac{d}{dx}(\sin x) = \cos x$
+- 几何推导 $\frac{d}{dx}(\cos x) = -\sin x$
+- 三角函数导数的三种方法：复指数、几何法和麦克劳林级数
+- 基本极限：$\lim_{x \to 0} \frac{\sin x}{x} = 1$
+- 为什么弧度很重要（以及用角度制时会出什么问题）
+- 有效数字与数值估计
+- $\sin x$ 和 $\cos x$ 的麦克劳林展开
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250922.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250922_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250922_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250922_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250922_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是单位圆？
+
+**单位圆**是以原点为圆心、半径为1的圆。
+
+单位圆上的任何一点都可以写成 $(\cos\theta, \sin\theta)$，其中 $\theta$ 是从正 $x$ 轴逆时针测量的角度。
+
+- $\cos\theta$ 是**水平**（x）坐标
+- $\sin\theta$ 是**垂直**（y）坐标
+
+这是角度和坐标之间的桥梁，也是本课所有内容的基础。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是弧度？
+
+**弧度**是一种用圆的半径来度量角度的方式。
+
+如果你把圆的半径沿圆弧铺开，你扫过的角度就是**1弧度**。
+
+- 整圆 = $2\pi$ 弧度（约6.28弧度）
+- $\pi$ 弧度 = $180°$
+- 换算方法：角度乘以 $\frac{\pi}{180}$
+
+**为什么弧度对微积分很重要：**优美的公式 $\frac{d}{dx}(\sin x) = \cos x$ 只有当 $x$ 用弧度表示时才成立！
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是导数？
+
+函数的**导数**告诉你它的**变化率**——当输入变化时，输出变化的快慢。
+
+从几何上看，某一点处的导数就是该点处**切线的斜率**。
+
+我们将其写作 $\frac{d}{dx} f(x)$ 或 $f'(x)$。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是阶乘？
+
+**阶乘**写作 $n!$，表示"从1到 $n$ 的所有整数的乘积"。
+
+- $3! = 3 \times 2 \times 1 = 6$
+- $5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$
+- $0! = 1$（按定义）
+
+阶乘增长极快，在级数展开中经常出现。
+:::
+
+## 核心概念
+
+::: {.callout-important}
+## 核心要点：正弦的导数
+$\sin x$ 的导数是 $\cos x$。从几何上可以这样理解：当单位圆上的角度增加微小量时，纵坐标（正弦）的变化率等于横坐标（余弦）。
+
+$$\frac{d}{dx}(\sin x) = \cos x$$
+:::
+
+### 几何推导：$\frac{d}{dx}(\sin x) = \cos x$
+
+想象一个点在单位圆上移动。当角度 $\theta$ 增加微小量 $\Delta\theta$ 时：
+
+1. 该点沿一段微小的**弧**移动，弧长为 $\Delta\theta$（因为半径 = 1，弧长 = 弧度角）
+2. 对于非常小的角度，弧实际上就是一条直线段——**弧 $\approx$ 弦**
+3. 这个微小位移沿圆的切线方向，垂直于半径
+4. 这个位移的**垂直分量**（$\sin\theta$ 的变化量）为 $\Delta\theta \cdot \cos\theta$
+
+所以：
+
+$$\frac{\Delta(\sin\theta)}{\Delta\theta} \approx \cos\theta$$
+
+在极限下：$\frac{d}{d\theta}(\sin\theta) = \cos\theta$
+
+**探索单位圆——观察 $\sin\theta$ 如何随 $\theta$ 变化：**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'circle', latex: 'x^2+y^2=1', color: '#aaaaaa' });
+  calc1.setExpression({ id: 'theta', latex: '\\theta=1', sliderBounds: {min: 0, max: 6.28, step: 0.01} });
+  calc1.setExpression({ id: 'point', latex: '(\\cos\\theta, \\sin\\theta)', color: '#2d70b3', pointSize: 12, label: '(cos θ, sin θ)', showLabel: true });
+  calc1.setExpression({ id: 'sinline', latex: 'x=\\cos\\theta', color: '#c74440', lineStyle: 'DASHED', domain: {min: '\\min(0,\\sin\\theta)', max: '\\max(0,\\sin\\theta)'} });
+  calc1.setExpression({ id: 'cosline', latex: 'y=0', color: '#388c46', lineStyle: 'DASHED', domain: {min: '\\min(0,\\cos\\theta)', max: '\\max(0,\\cos\\theta)'} });
+  calc1.setExpression({ id: 'sinlabel', latex: '(\\cos\\theta, \\sin\\theta/2)', color: '#c74440', pointSize: 0, label: 'sin θ', showLabel: true });
+  calc1.setExpression({ id: 'coslabel', latex: '(\\cos\\theta/2, 0)', color: '#388c46', pointSize: 0, label: 'cos θ', showLabel: true });
+  calc1.setMathBounds({ left: -1.5, right: 1.5, bottom: -1.5, top: 1.5 });
+</script>
+```
+
+::: {.callout-important}
+## 核心要点：余弦的导数
+$\cos x$ 的导数是 $-\sin x$。负号是合理的：当 $\sin x$ 为正（点在 x 轴上方）时，横坐标（余弦）在递减，所以其变化率为负。
+
+$$\frac{d}{dx}(\cos x) = -\sin x$$
+:::
+
+### 几何推导：$\frac{d}{dx}(\cos x) = -\sin x$
+
+同样的推理，但现在我们看**水平分量**：
+
+1. 当 $\theta$ 增加 $\Delta\theta$ 时，微小位移沿圆的切线方向
+2. 这个位移的**水平分量**为 $-\Delta\theta \cdot \sin\theta$（负号是因为在上半部分，$\theta$ 增大时点向左移动）
+
+$$\frac{d}{d\theta}(\cos\theta) = -\sin\theta$$
+
+::: {.callout-tip collapse="true"}
+## 为什么有负号？
+
+想想看：当 $\theta$ 在 $0$ 和 $\pi/2$ 之间时，点在**向上且向左**移动。所以 $\sin\theta$ 在增加（正导数），而 $\cos\theta$ 在减少（负导数）。$-\sin\theta$ 恰好捕捉了这一点：在正弦为正的地方，余弦在递减。
+:::
+
+::: {.callout-important}
+## 核心要点：sin(x)/x 极限
+对于小角度（弧度制），$\sin x$ 几乎完全等于 $x$ 本身。这个事实是使正弦的导数等于余弦的隐藏引擎，而且它只在 $x$ 用弧度度量时才成立。
+
+$$\lim_{x \to 0} \frac{\sin x}{x} = 1$$
+:::
+
+### 基本极限：$\lim_{x \to 0} \frac{\sin x}{x} = 1$
+
+这个极限是 $\frac{d}{dx}(\sin x) = \cos x$ 背后的隐藏引擎。
+
+**为什么它是对的？** 利用麦克劳林级数：
+
+$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$$
+
+两边除以 $x$：
+
+$$\frac{\sin x}{x} = 1 - \frac{x^2}{3!} + \frac{x^4}{5!} - \cdots$$
+
+当 $x \to 0$ 时，除第一项外所有项都趋于零，所以 $\frac{\sin x}{x} \to 1$。
+
+**自己看看——在 $x = 0$ 附近放大：**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'sinc', latex: 'y=\\frac{\\sin(x)}{x}', color: '#2d70b3' });
+  calc2.setExpression({ id: 'limit', latex: '(0, 1)', color: '#c74440', pointSize: 10, pointStyle: 'OPEN', label: 'Limit = 1', showLabel: true });
+  calc2.setExpression({ id: 'one', latex: 'y=1', color: '#aaaaaa', lineStyle: 'DASHED' });
+  calc2.setMathBounds({ left: -15, right: 15, bottom: -0.5, top: 1.5 });
+</script>
+```
+
+### 弧度 vs. 角度制：为什么弧度胜出
+
+极限 $\frac{\sin x}{x} \to 1$ **只有当 $x$ 用弧度表示时才成立**。
+
+如果 $x$ 用角度表示：
+
+$$\lim_{x \to 0} \frac{\sin_{\text{deg}}(x)}{x} = \frac{\pi}{180} \approx 0.01745$$
+
+::: {.callout-tip collapse="true"}
+## 数值示例：$\frac{\sin(0.0047°)}{0.0047}$
+
+别被骗了！如果角度用度表示，你必须转换：
+
+$$0.0047° = 0.0047 \times \frac{\pi}{180} \approx 8.203 \times 10^{-5} \text{ 弧度}$$
+
+由于小弧度角时 $\sin(\theta) \approx \theta$：
+
+$$\sin(0.0047°) \approx 8.203 \times 10^{-5}$$
+
+所以 $\frac{\sin(0.0047°)}{0.0047} \approx \frac{8.203 \times 10^{-5}}{0.0047} \approx 0.01745 = \frac{\pi}{180}$
+
+答案不是1——而是 $\frac{\pi}{180}$，因为我们除以的是角度值，而不是弧度值。
+:::
+
+### 殊途同归
+
+有三种完全不同的方法可以证明 $\frac{d}{dx}(\sin x) = \cos x$：
+
+| 方法 | 核心思想 |
+|---|---|
+| **复指数法** | 将 $\sin x = \frac{e^{ix} - e^{-ix}}{2i}$，利用 $\frac{d}{dx}e^{ix} = ie^{ix}$ 求导 |
+| **几何法（单位圆）** | 小角度时弧 $\approx$ 弦，投影到纵轴 |
+| **麦克劳林级数法** | 逐项对 $x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$ 求导 |
+
+三种方法给出相同结果——这是它必定正确的有力证据！
+
+### 正弦和余弦的麦克劳林级数
+
+这些无穷级数让你仅用加法和乘法就能计算三角函数：
+
+$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots = \sum_{n=0}^{\infty} \frac{(-1)^n \, x^{2n+1}}{(2n+1)!}$$
+
+$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \frac{x^6}{6!} + \cdots = \sum_{n=0}^{\infty} \frac{(-1)^n \, x^{2n}}{(2n)!}$$
+
+::: {.callout-tip collapse="true"}
+## 注意这些规律！
+
+- $\sin x$ 只有**奇数**次幂：$x^1, x^3, x^5, \ldots$
+- $\cos x$ 只有**偶数**次幂：$x^0, x^2, x^4, \ldots$
+- 符号交替出现：$+, -, +, -, \ldots$
+- 如果你对 $\sin x$ 的级数逐项求导，你恰好得到 $\cos x$ 的级数！
+:::
+
+**看看添加更多项如何越来越接近真实曲线：**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'sin', latex: 'y=\\sin(x)', color: '#2d70b3', lineWidth: 3 });
+  calc3.setExpression({ id: 't1', latex: 'y=x', color: '#c74440', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setExpression({ id: 't3', latex: 'y=x-\\frac{x^3}{6}', color: '#388c46', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setExpression({ id: 't5', latex: 'y=x-\\frac{x^3}{6}+\\frac{x^5}{120}', color: '#6042a6', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setExpression({ id: 't7', latex: 'y=x-\\frac{x^3}{6}+\\frac{x^5}{120}-\\frac{x^7}{5040}', color: '#fa7e19', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc3.setMathBounds({ left: -8, right: 8, bottom: -3, top: 3 });
+</script>
+```
+
+### 有效数字与数值估计
+
+处理非常小的角度时：
+
+- 当 $x$（弧度制）很小时，$\sin x \approx x$——$x$ 越小，近似越好
+- 你能信任的**有效数字**数量取决于 $x$ 有多小
+- 计算前一定要检查：你的角度是用**弧度**还是**角度**？
+
+## 速查表
+
+::: {.key-formula}
+| 公式 | 备注 |
+|---|---|
+| $\frac{d}{dx}(\sin x) = \cos x$ | $x$ 必须用弧度 |
+| $\frac{d}{dx}(\cos x) = -\sin x$ | 别忘了负号！ |
+| $\lim_{x \to 0} \frac{\sin x}{x} = 1$ | 仅限弧度制 |
+| $\lim_{x \to 0} \frac{\sin_{\text{deg}} x}{x} = \frac{\pi}{180}$ | 角度制下 |
+| $\sin x \approx x$（$x$ 较小时） | 一阶近似 |
+
+### 麦克劳林级数
+
+$$\sin x = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$$
+
+$$\cos x = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots$$
+
+### 角度制转弧度
+
+$$\theta_{\text{rad}} = \theta_{\text{deg}} \times \frac{\pi}{180}$$
+:::

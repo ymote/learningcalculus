@@ -1,0 +1,35 @@
+---
+title: "微积分学习"
+---
+
+交互式微积分课程笔记，包含视频和 Desmos 图表。
+
+## 课程列表
+
+| 日期 | 主题 |
+|------|------|
+| 8月19日 | [多项式图形、临界点与商法则](lessons-zh/calculus20250819.qmd) |
+| 8月21日 | [导数分析与商法则](lessons-zh/calculus20250821.qmd) |
+| 8月25日 | [乘法法则、链式法则与反函数](lessons-zh/calculus20250825.qmd) |
+| 8月28日 | [反函数与链式法则](lessons-zh/calculus20250828.qmd) |
+| 9月1日 | [优化问题与点到曲线的距离](lessons-zh/calculus20250901.qmd) |
+| 9月5日 | [椭圆与三维曲面上的优化](lessons-zh/calculus20250905.qmd) |
+| 9月11日 | [自然常数 e 与二项式展开](lessons-zh/calculus20250911.qmd) |
+| 9月15日 | [指数函数、对数及其导数](lessons-zh/calculus20250915.qmd) |
+| 9月18日 | [泰勒/麦克劳林级数与 ln(1+x) 的幂级数](lessons-zh/calculus20250918.qmd) |
+| 9月22日 | [三角函数的导数与 sin(x)/x 的极限](lessons-zh/calculus20250922.qmd) |
+| 9月25日 | [tan 与 sec 的导数——图形与代数方法](lessons-zh/calculus20250925.qmd) |
+| 9月29日 | [欧拉公式与函数方程](lessons-zh/calculus20250929.qmd) |
+| 10月2日 | [导数技巧复习：链式法则、对数微分与反函数导数](lessons-zh/calculus20251002.qmd) |
+| 10月6日 | [涉及 e 定义的极限、幂展开与反函数的高阶导数](lessons-zh/calculus20251006.qmd) |
+| 10月9日 | [已知展开式的幂级数、几何级数与部分分式](lessons-zh/calculus20251009.qmd) |
+| 10月13日 | [相关变化率：用导数连接变化的量](lessons-zh/calculus20251013_1.qmd) |
+| 10月13日 | [相关变化率：距离、影子与速度分解](lessons-zh/calculus20251013_2.qmd) |
+| 10月16日 | [用物理方法（向量投影）求解相关变化率](lessons-zh/calculus20251016.qmd) |
+| 10月20日 | [相关变化率——球体、圆锥与传播误差](lessons-zh/calculus20251020.qmd) |
+| 10月23日 | [传播误差与组合测量](lessons-zh/calculus20251023.qmd) |
+| 10月23日 | [传播误差与对数微分求百分比误差](lessons-zh/calculus20251023_2.qmd) |
+| 10月27日 | [二维运动：速度、速率、轨迹与加速度](lessons-zh/calculus20251027.qmd) |
+| 10月30日 | [参数运动、速率与速度的区别及圆周长的证明](lessons-zh/calculus20251030.qmd) |
+| 11月3日 | [从轨迹到积分——反导数与圆的面积](lessons-zh/calculus20251103.qmd) |
+| 11月6日 | [半圆的反导数：几何与微积分的交汇](lessons-zh/calculus20251106.qmd) |

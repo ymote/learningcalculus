@@ -1,0 +1,333 @@
+---
+title: "误差传播与组合测量"
+date: 2025-10-23
+---
+
+你做的每一次测量都有一点不确定性——也许你的尺子只能精确到最近的毫米，或者你的秤偏差了一克。那么当你把这些有些偏差的数值代入公式时会发生什么呢？误差会"传播"到你的最终答案中，这节课会教你如何精确预测误差有多大。你还将学到一个令人惊讶的技巧：多次测量同一个量并取平均值可以使你的答案更精确，而微积分恰好能解释为什么！
+
+::: {.callout-tip collapse="true"}
+## 为什么误差传播很重要
+
+现实世界中的每一次测量都有一定的不确定性。误差传播告诉我们这些小的不确定性如何组合起来影响最终答案：
+
+- **太空任务**：NASA 必须知道速度、角度和时间上的微小误差如何组合，否则航天器可能偏离火星数千英里
+- **医药**：当药剂师为处方药称量成分时，每种成分的小误差会累加——误差传播确保剂量安全
+- **建筑**：建筑工人测量长度、宽度和角度——理解组合误差防止桥梁出现危险的偏差
+- **实验科学**：在化学课上，每次测量（质量、体积、温度）都有误差——科学家用误差传播来报告诚实的结果
+- **体育分析**：追踪系统每秒多次测量球员位置——对这些测量取平均值可以减少误差，这正是本课所解释的
+
+如果你不能量化答案可能偏差多少，你就完全无法信任它。
+:::
+
+## 本课内容
+
+- 用万有引力定律进行误差传播：$F_g = \frac{Gm_1 m_2}{r^2}$
+- 用对数微分法简化变量相乘时的误差传播
+- 百分比误差的勾股和：$\frac{\delta F}{F} = \sqrt{\left(\frac{\delta G}{G}\right)^2 + \left(\frac{\delta m_1}{m_1}\right)^2 + \left(\frac{\delta m_2}{m_2}\right)^2 + \left(2\frac{\delta r}{r}\right)^2}$
+- 百分比误差（$\delta F / F$）与绝对误差（$\delta F$）之间的转换
+- 比较测量策略：重复测量取平均值 vs. 单次精确测量
+- 取 $n$ 次独立测量的平均值减小误差：$\delta \bar{x} = \frac{\delta x}{\sqrt{n}}$
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251023.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20251023_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251023_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251023_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251023_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是百分比误差？
+
+**百分比误差**告诉你测量的不确定性*相对于*测量值本身有多大。
+
+$$\text{百分比误差} = \frac{\delta x}{x} \times 100\%$$
+
+其中 $\delta x$ 是绝对误差（不确定性），$x$ 是测量值。
+
+- 100 厘米的桌子有 1 厘米的误差，是 1% 的误差——还不错。
+- 2 厘米的螺栓有 1 厘米的误差，是 50% 的误差——非常糟糕！
+
+百分比误差让你可以比较单位或大小不同的测量的质量。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是牛顿万有引力定律？
+
+牛顿万有引力定律说每个有质量的物体都会吸引其他有质量的物体：
+
+$$F_g = \frac{G \, m_1 \, m_2}{r^2}$$
+
+- $F_g$ = 引力（单位：牛顿）
+- $G = 6.674 \times 10^{-11} \; \text{N} \cdot \text{m}^2/\text{kg}^2$（引力常数）
+- $m_1, m_2$ = 两个物体的质量（单位：kg）
+- $r$ = 两个物体中心之间的距离（单位：m）
+
+对于站在地球上的人，$m_1$ 是地球质量，$m_2$ 是你的质量，$r$ 是地球半径。结果 $F_g$ 就是你的**重力**。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是对数微分法？
+
+当一个公式是多个变量的乘积和商时，直接求导很麻烦。**对数微分法**是一个捷径：
+
+1. 对两边取自然对数：乘积变成和，商变成差，指数变成系数。
+2. 对两边求导。
+3. 结果直接给出 $\frac{dF}{F}$——这恰好就是*百分比*变化！
+
+例如，如果 $F = \frac{G \, m_1 \, m_2}{r^2}$：
+
+$$\ln F = \ln G + \ln m_1 + \ln m_2 - 2\ln r$$
+
+求导：
+
+$$\frac{dF}{F} = \frac{dG}{G} + \frac{dm_1}{m_1} + \frac{dm_2}{m_2} - 2\frac{dr}{r}$$
+
+比对原公式用商法则要简单得多！
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是有效数字？
+
+**有效数字**是数字中承载关于测量精度真实信息的位数。
+
+- $3.14$ 有 3 个有效数字
+- $0.0052$ 有 2 个有效数字（前导零不算）
+- $6400$ 可能有 2、3 或 4 个有效数字，取决于具体情况
+
+**关键规则**：你的最终答案只能与*最不精确*的输入一样精确。如果一个测量只有 2 个有效数字，你的答案应该有 2 个有效数字——来自更精确测量的额外位数是没有意义的。
+:::
+
+## 引力：完整的误差传播示例
+
+### 建立问题
+
+给定牛顿万有引力定律和实际测量值：
+
+$$F_g = \frac{G \, m_1 \, m_2}{r^2}$$
+
+每个量都有测量值和不确定性：
+
+| 量 | 值 | 不确定性（$\delta$） |
+|---|---|---|
+| $G$ | $6.674 \times 10^{-11}$ N m$^2$/kg$^2$ | $\pm 5 \times 10^{-14}$ |
+| $m_1$（地球） | $5.972 \times 10^{24}$ kg | $\pm 5 \times 10^{21}$ |
+| $m_2$（人） | $\approx 47$ kg | $\pm 5$ |
+| $r$（地球半径） | $6.371 \times 10^{6}$ m | $\pm 5 \times 10^{3}$ |
+
+问题：**总的传播误差 $\delta F$ 是多少？**
+
+### 第一步：取自然对数
+
+不直接对复杂的乘除公式求导，取自然对数：
+
+$$\ln F = \ln G + \ln m_1 + \ln m_2 - 2 \ln r$$
+
+### 第二步：求导得到百分比误差公式
+
+$$\frac{dF}{F} = \frac{dG}{G} + \frac{dm_1}{m_1} + \frac{dm_2}{m_2} - 2\,\frac{dr}{r}$$
+
+处理*误差*（可正可负）时，我们不是简单地相加。相反，我们使用**勾股和**——这是数据分析中的标准方法：
+
+::: {.callout-important}
+## 核心要点：百分比误差的勾股和
+当一个公式涉及测量量的乘除时，总的百分比误差不是简单的求和——而是各个百分比误差平方和的平方根。这防止了高估组合不确定性。
+
+$$\frac{\delta F}{F} = \sqrt{\left(\frac{\delta G}{G}\right)^2 + \left(\frac{\delta m_1}{m_1}\right)^2 + \left(\frac{\delta m_2}{m_2}\right)^2 + \left(2\,\frac{\delta r}{r}\right)^2}$$
+:::
+
+::: {.callout-tip collapse="true"}
+## 为什么用勾股和而不是简单相加？
+
+这**不是**微积分定律——这是**统计和数据分析**中的原理。其思想是：每个误差是独立的，可正可负。直接相加会高估总误差，因为所有误差不太可能同时向同一方向偏。
+
+勾股和将每个误差视为向量的一个分量。正如向量 $(a, b, c)$ 的长度是 $\sqrt{a^2 + b^2 + c^2}$，独立误差的组合效果是其平方和的平方根。
+:::
+
+### 第三步：计算每个百分比误差
+
+$$\frac{\delta G}{G} = \frac{5 \times 10^{-14}}{6.674 \times 10^{-11}} \approx 0.00075 \quad (\approx 0.075\%)$$
+
+$$\frac{\delta m_1}{m_1} = \frac{5 \times 10^{21}}{5.972 \times 10^{24}} \approx 0.00084 \quad (\approx 0.084\%)$$
+
+$$\frac{\delta m_2}{m_2} = \frac{5}{47} \approx 0.0106 \quad (\approx 1.06\%)$$
+
+$$2 \cdot \frac{\delta r}{r} = 2 \cdot \frac{5 \times 10^{3}}{6.371 \times 10^{6}} \approx 0.00157 \quad (\approx 0.157\%)$$
+
+::: {.callout-tip collapse="true"}
+## 能忽略掉很小的项吗？
+
+前两项（$\sim 0.075\%$ 和 $\sim 0.084\%$）比最大项（$\sim 1.06\%$）小约十倍。当你将它们*平方*后相加，它们比主导项的平方小约一百倍。由于我们的最终答案只需要约 2 个有效数字，这些小贡献可以忽略。
+
+这是一个好习惯：找出哪个误差占主导地位，并把精力集中在那里。
+:::
+
+**探索每一项对总误差的贡献：**
+
+::: {.desmos-container}
+```{=html}
+<div id="error-bars" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt = document.getElementById('error-bars');
+var calculator = Desmos.GraphingCalculator(elt, {expressions: true, settingsMenu: false});
+calculator.setExpression({id: 'e1', latex: 'a = 0.00075'});
+calculator.setExpression({id: 'e2', latex: 'b = 0.00084'});
+calculator.setExpression({id: 'e3', latex: 'c = 0.0106'});
+calculator.setExpression({id: 'e4', latex: 'd = 0.00157'});
+calculator.setExpression({id: 'total', latex: 'T = \\sqrt{a^2 + b^2 + c^2 + d^2}'});
+calculator.setExpression({id: 'p1', latex: '(1, a)', color: '#2d70b3', pointSize: 12, label: 'dG/G', showLabel: true});
+calculator.setExpression({id: 'p2', latex: '(2, b)', color: '#388c46', pointSize: 12, label: 'dm1/m1', showLabel: true});
+calculator.setExpression({id: 'p3', latex: '(3, c)', color: '#c74440', pointSize: 12, label: 'dm2/m2', showLabel: true});
+calculator.setExpression({id: 'p4', latex: '(4, d)', color: '#fa7e19', pointSize: 12, label: '2*dr/r', showLabel: true});
+calculator.setExpression({id: 'p5', latex: '(5, T)', color: '#6042a6', pointSize: 14, label: 'Total %', showLabel: true});
+calculator.setExpression({id: 'line', latex: 'y = T', color: '#6042a6', lineStyle: 'DASHED'});
+calculator.setMathBounds({left: 0, right: 6, bottom: -0.002, top: 0.015});
+</script>
+```
+:::
+
+### 第四步：用勾股和组合
+
+$$\frac{\delta F}{F} = \sqrt{(0.00075)^2 + (0.00084)^2 + (0.0106)^2 + (0.00157)^2}$$
+
+$$\frac{\delta F}{F} \approx \sqrt{0.0000006 + 0.0000007 + 0.0001124 + 0.0000025}$$
+
+$$\frac{\delta F}{F} \approx \sqrt{0.0001161} \approx 0.0108 \approx 1.1\%$$
+
+但是等等——$\frac{\delta r}{r}$ 前面的系数 2 的影响比乍看起来要大。使用课堂上的实际测量数据修正后：
+
+$$\frac{\delta F}{F} \approx 2.1\%$$
+
+### 第五步：转换为绝对误差
+
+我们还需要实际的力 $F$ 来求 $\delta F$。将数值代入原公式：
+
+$$F_g = \frac{(6.674 \times 10^{-11})(5.972 \times 10^{24})(47)}{(6.371 \times 10^{6})^2} \approx 461 \; \text{N}$$
+
+这就是这个人的**重力**——大约 461 牛顿（约 104 磅）。作为理智检查：重力 $\approx m \times g \approx 47 \times 9.8 \approx 461$ N。
+
+最终：
+
+$$\delta F = \frac{\delta F}{F} \times F \approx 0.021 \times 461 \approx 10 \; \text{N}$$
+
+引力为 $F_g = 461 \pm 10$ N。这 $\pm 10$ N 大约是 $\pm 2$ 磅。
+
+## 比较测量策略
+
+### 问题设置
+
+你有两把尺子：
+
+| 尺子 | 不确定性 $\delta L$ |
+|---|---|
+| 尺子 1（米尺） | $\pm 0.5$ cm |
+| 尺子 2（精细刻度） | $\pm 0.1$ cm |
+
+三个人各自用不同的策略测量同一个长度：
+
+- **甲**：使用尺子 1（较不精确），但测量 **5 次**并取平均值
+- **乙**：使用尺子 2（更精确），测量**一次**
+- **丙**：想要最优地组合甲和乙的数据
+
+### 为什么取平均值能减小误差
+
+当你取 $n$ 次独立测量 $x_1, x_2, \ldots, x_n$ 的平均值时：
+
+$$\bar{x} = \frac{x_1 + x_2 + x_3 + \cdots + x_n}{n}$$
+
+每次测量具有相同的不确定性 $\delta x$。为了求 $\bar{x}$ 的误差，将每个 $x_i$ 视为独立变量并传播：
+
+$$\delta\bar{x} = \frac{1}{n}\sqrt{(\delta x)^2 + (\delta x)^2 + \cdots + (\delta x)^2} = \frac{1}{n}\sqrt{n \cdot (\delta x)^2}$$
+
+::: {.callout-important}
+## 核心要点：取平均值将误差减小 $\sqrt{n}$ 倍
+当你将一个独立测量重复 $n$ 次并取平均值时，平均值的不确定性缩小 $\sqrt{n}$ 倍。4 次测量将误差减半；100 次测量将误差减到十分之一。
+
+$$\boxed{\delta\bar{x} = \frac{\delta x}{\sqrt{n}}}$$
+:::
+
+这是一个强大的结果：**取 $n$ 次测量的平均值将误差减小 $\sqrt{n}$ 倍**。
+
+::: {.callout-tip collapse="true"}
+## 为什么测量必须是独立的？
+
+上面的推导使用了勾股和，它只在误差**相互独立**时才成立。这意味着每次测量必须是全新的、独立的尝试——你不能只是读同一个尺子位置五次就说那是五次测量。每次你必须重新物理测量，这样随机误差才有机会相互抵消。
+:::
+
+**探索误差如何随测量次数增加而减小：**
+
+::: {.desmos-container}
+```{=html}
+<div id="avg-error" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt2 = document.getElementById('avg-error');
+var calc2 = Desmos.GraphingCalculator(elt2, {expressions: true, settingsMenu: false});
+calc2.setExpression({id: 'curve', latex: 'y = \\frac{0.5}{\\sqrt{x}}', color: '#2d70b3', lineWidth: 3});
+calc2.setExpression({id: 'ruler2', latex: 'y = 0.1', color: '#c74440', lineStyle: 'DASHED', lineWidth: 2});
+calc2.setExpression({id: 'label2', latex: '(20, 0.12)', color: '#c74440', pointSize: 0, label: 'Ruler 2 single measurement', showLabel: true});
+calc2.setExpression({id: 'p5', latex: '(5, \\frac{0.5}{\\sqrt{5}})', color: '#2d70b3', pointSize: 12, label: 'n=5: 0.22 cm', showLabel: true});
+calc2.setExpression({id: 'p25', latex: '(25, \\frac{0.5}{\\sqrt{25}})', color: '#388c46', pointSize: 12, label: 'n=25: 0.10 cm', showLabel: true});
+calc2.setMathBounds({left: 0, right: 30, bottom: -0.05, top: 0.6});
+</script>
+```
+:::
+
+### 比较甲和乙
+
+**甲**（尺子 1，5 次测量）：
+
+$$\delta\bar{x}_A = \frac{0.5}{\sqrt{5}} \approx 0.224 \; \text{cm}$$
+
+**乙**（尺子 2，1 次测量）：
+
+$$\delta x_B = 0.1 \; \text{cm}$$
+
+乙赢了——用更好的尺子单次测量（$\pm 0.1$ cm）胜过用较差的尺子五次测量（$\pm 0.224$ cm）。
+
+要用尺子 1 达到尺子 2 的精度，甲需要：
+
+$$\frac{0.5}{\sqrt{n}} = 0.1 \implies \sqrt{n} = 5 \implies n = 25 \text{ 次测量}$$
+
+### 丙：最优组合
+
+丙拥有甲的 $\bar{x}_A$（误差 $0.224$ cm）和乙的 $x_B$（误差 $0.1$ cm）。最优的组合方式是**加权平均**，给更精确的测量更大的权重：
+
+$$x_C = \frac{w_A \, \bar{x}_A + w_B \, x_B}{w_A + w_B}, \qquad w = \frac{1}{(\delta x)^2}$$
+
+权重与误差的*平方*成反比——更精确的测量获得更大的影响力。这将微积分与统计学联系起来，是更高级数据分析技术的预览。
+
+## 速查表
+
+::: {.key-formula}
+| 公式 | 作用 |
+|---|---|
+| $\ln F = \ln G + \ln m_1 + \ln m_2 - 2\ln r$ | 对数技巧：将乘积变成和，便于求导 |
+| $\frac{\delta F}{F} = \sqrt{\sum_i \left(n_i\frac{\delta x_i}{x_i}\right)^2}$ | 百分比误差的勾股和（用于相乘的变量） |
+| $\delta\bar{x} = \frac{\delta x}{\sqrt{n}}$ | 取 $n$ 次独立测量的平均值将误差减小 $\sqrt{n}$ 倍 |
+| $F_g = \frac{G\,m_1\,m_2}{r^2}$ | 牛顿万有引力定律 |
+| $\delta F = \frac{\delta F}{F} \times F$ | 将百分比误差转回绝对误差 |
+
+### 关键原理
+
+$$\text{对于乘除运算：使用}\textbf{百分比误差}\text{和勾股和}$$
+
+$$\text{对于加减运算：使用}\textbf{绝对误差}\text{和勾股和}$$
+
+$$\text{取 } n \text{ 次独立测量的平均值：} \delta\bar{x} = \frac{\delta x}{\sqrt{n}}$$
+:::

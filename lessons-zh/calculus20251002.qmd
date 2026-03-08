@@ -1,0 +1,352 @@
+---
+title: "求导技巧复习：链式法则、对数微分与反函数导数"
+date: 2025-10-02
+---
+
+把今天的课想象成给你的微积分工具箱装满后续课程所需的所有扳手和螺丝刀。我们将练习链式法则、乘积法则和商法则，以及一个叫做对数微分的巧妙技巧——它能把噩梦般的乘积变成简单的求和。我们还将学习如何对反函数求导——并且发现当导数趋向无穷大时会发生什么（剧透：你常用的捷径不再适用，你需要一个 B 计划）。
+
+::: {.callout-tip collapse="true"}
+## 为什么掌握求导技巧很重要
+
+能够快速准确地求导是通往微积分其余部分的大门：
+
+- **物理学**：速度、加速度和力都来自对位置的求导——工程师每天都要对复杂的运动方程使用链式法则
+- **医学**：血液中的药物浓度遵循指数和有理函数——医生需要导数来知道药物何时最有效
+- **金融**：投资增长率取决于含乘积和指数的复利公式的导数
+- **计算机图形学**：在曲面上渲染逼真的光照需要对复合三角函数和多项式函数求导
+- **气候科学**：温度模型涉及多个函数的乘积和复合——科学家对它们求导以预测变化速率
+:::
+
+## 本课内容
+
+- 从二项展开复习**幂法则**：$\frac{d}{dx} x^r = r\,x^{r-1}$
+- 应用**链式法则**逐层剥离嵌套函数
+- 在复杂表达式上同时使用**乘积法则**和**商法则**
+- **对数微分**：通过 $\ln$ 将乘积转化为求和，简化复杂有理函数的导数
+- **反函数的导数**：$\frac{d}{dx}[f^{-1}(x)] = \frac{1}{f'(f^{-1}(x))}$
+- 利用微分和导数定义估算 $\operatorname{arccosh}(1.001)$
+- 识别导数为无穷大的情形并选择替代策略
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20251002.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20251002_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251002_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251002_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20251002_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是链式法则？
+
+当一个函数嵌套在另一个函数内部——即**复合函数**如 $f(g(x))$——链式法则告诉你如何求导：
+
+$$\frac{d}{dx}\bigl[f(g(x))\bigr] = f'(g(x)) \cdot g'(x)$$
+
+把它想象成剥洋葱：先对外层求导（保持内部不变），然后乘以内层的导数。
+
+**示例：** 如果 $h(x) = (3x+1)^5$，则：
+
+$$h'(x) = 5(3x+1)^4 \cdot 3 = 15(3x+1)^4$$
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是乘积法则和商法则？
+
+**乘积法则：** 当两个函数相乘时：
+
+$$\frac{d}{dx}[u \cdot v] = u' v + u v'$$
+
+**商法则：** 当一个函数除以另一个时：
+
+$$\frac{d}{dx}\!\left[\frac{u}{v}\right] = \frac{u'v - uv'}{v^2}$$
+
+这些法则让你能处理由更简单的部分通过乘法或除法组合而成的表达式。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是自然对数？
+
+**自然对数** $\ln(x)$ 是 $e^x$ 的反函数。它有一个使乘法变简单的关键性质：
+
+$$\ln(a \cdot b) = \ln a + \ln b, \qquad \ln\!\left(\frac{a}{b}\right) = \ln a - \ln b, \qquad \ln(a^n) = n\ln a$$
+
+这就是为什么对两边取 $\ln$ 可以把一个复杂的幂次乘积转化为简洁的求和——这正是**对数微分**使用的技巧。
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是 $\cosh x$（双曲余弦）？
+
+**双曲余弦**定义为：
+
+$$\cosh x = \frac{e^x + e^{-x}}{2}$$
+
+它的图像是一条 U 形曲线（称为**悬链线**——悬挂链条形成的形状）。关键事实：
+
+- $\cosh 0 = 1$（最小值）
+- $\cosh x$ 是**偶函数**：$\cosh(-x) = \cosh(x)$
+- 其导数为 $\sinh x = \frac{e^x - e^{-x}}{2}$
+- 其麦克劳林级数为 $\cosh x = 1 + \frac{x^2}{2!} + \frac{x^4}{4!} + \cdots$
+:::
+
+## 核心要点
+
+### 幂法则基础
+
+一切从**二项展开**开始。对于任意指数 $r$（正数、负数或分数）：
+
+$$(x + dx)^r = x^r\!\left(1 + \frac{dx}{x}\right)^r \approx x^r\!\left(1 + r\,\frac{dx}{x}\right)$$
+
+我们只保留最低阶无穷小量。减去 $x^r$ 并除以 $dx$：
+
+$$\frac{d}{dx}\,x^r = r\,x^{r-1}$$
+
+这不仅适用于简单的幂函数——通过**幂（麦克劳林）展开**，它可以处理多项式、有理函数、指数函数（$e^x = \sum x^k/k!$）和三角函数。
+
+### 链式法则实战：逐层剥离
+
+考虑课堂上的函数：
+
+$$f(x) = \Bigl(e^{3x + x^3\cos x} - e^{\sin x}\Bigr)^2$$
+
+求导时，**从外向内**操作：
+
+**第一层——平方：** 最外层的运算是 $(\cdots)^2$。由幂法则：
+
+$$f'(x) = 2\Bigl(e^{3x + x^3\cos x} - e^{\sin x}\Bigr) \cdot \frac{d}{dx}\Bigl(e^{3x + x^3\cos x} - e^{\sin x}\Bigr)$$
+
+**第二层——指数函数：** 分别对括号内的每一项求导。
+
+对于 $e^{\sin x}$：$e^u$ 的导数是 $e^u \cdot u'$，因此：
+
+$$\frac{d}{dx}\,e^{\sin x} = e^{\sin x}\cdot \cos x$$
+
+对于 $e^{3x + x^3\cos x}$：同样的模式，但内部函数更复杂：
+
+$$\frac{d}{dx}\,e^{3x + x^3\cos x} = e^{3x + x^3\cos x}\cdot \frac{d}{dx}(3x + x^3\cos x)$$
+
+**第三层——内部函数：** 对 $x^3 \cos x$ 应用乘积法则：
+
+$$\frac{d}{dx}(3x + x^3\cos x) = 3 + 3x^2\cos x - x^3\sin x$$
+
+将所有部分组合起来就得到完整的导数——虽然复杂，但每一步都是机械化的。
+
+**探索链式法则如何作用于嵌套函数：**
+
+::: {.desmos-container}
+```{=html}
+<div id="chain-rule-graph" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt = document.getElementById('chain-rule-graph');
+var calculator = Desmos.GraphingCalculator(elt);
+calculator.setExpression({id: 'f', latex: 'y=e^{\\sin(x)}', color: '#2d70b3', lineWidth: 3});
+calculator.setExpression({id: 'df', latex: 'y=e^{\\sin(x)}\\cos(x)', color: '#c74440', lineStyle: 'DASHED', lineWidth: 2});
+calculator.setExpression({id: 'a', latex: 'a=1', sliderBounds: {min: -6.28, max: 6.28, step: 0.01}});
+calculator.setExpression({id: 'pt', latex: '(a, e^{\\sin(a)})', color: '#2d70b3', pointSize: 10, label: 'f(a)', showLabel: true});
+calculator.setExpression({id: 'tan', latex: 'y=e^{\\sin(a)}+e^{\\sin(a)}\\cos(a)(x-a)', color: '#388c46', lineWidth: 1.5});
+calculator.setMathBounds({left: -7, right: 7, bottom: -2, top: 8});
+</script>
+```
+:::
+
+### 对数微分
+
+当一个函数是幂次乘积和商的庞大组合时，直接使用乘积法则是一场噩梦。相反，对两边取 $\ln$。
+
+**课堂示例：** 求 $R'(1)$，其中
+
+$$R(x) = \frac{(x+3)^7 \cdot (2x^2-1)^3 \cdot x^2}{(x+1)^4 \cdot (2-x)^2}$$
+
+**第一步——两边取 $\ln$：**
+
+$$\ln R = 7\ln(x+3) + 3\ln(2x^2-1) + 2\ln x - 4\ln(x+1) - 2\ln(2-x)$$
+
+乘积变为求和，商变为差，指数变为系数。
+
+**第二步——两边求导：**
+
+$$\frac{R'}{R} = \frac{7}{x+3} + \frac{12x}{2x^2-1} + \frac{2}{x} - \frac{4}{x+1} + \frac{2}{2-x}$$
+
+左边由链式法则给出 $\frac{1}{R}\cdot R'$。右边每个对数项都能简洁地求导。注意最后一项：$(2-x)$ 的导数是 $-1$，两个负号合并得到 $+\frac{2}{2-x}$。
+
+**第三步——解出 $R'$：**
+
+::: {.callout-important}
+## 核心要点：对数微分
+当一个函数是幂次乘积和商的庞大组合时，先对两边取 $\ln$。这将乘积转化为求和，使求导变得简单得多。然后将两边乘以 $R$ 来解出 $R'$。
+
+$$R'(x) = R(x)\left[\frac{7}{x+3} + \frac{12x}{2x^2-1} + \frac{2}{x} - \frac{4}{x+1} + \frac{2}{2-x}\right]$$
+:::
+
+在 $x = 1$ 处求值：先计算一次 $R(1)$，然后将 $x=1$ 代入每个简单分式并相加。这比在五个因子之间展开乘积法则要容易得多！
+
+::: {.callout-tip collapse="true"}
+## 为什么对数微分有效？
+
+对数微分利用**对数法则**将乘积分解为求和。求和的微分是平凡的——你只需逐项求导。结果等价于乘积法则，但组织方式使得每个因子贡献一个简洁的分式。
+
+如果你观察这个公式，每一项如 $\frac{7}{x+3}$ 都来自"固定所有其他因子，只对 $(x+3)^7$ 求导，然后除以整个 $R$"。这正是广义乘积法则所做的！
+:::
+
+**可视化函数 $R(x)$ 及其导数：**
+
+::: {.desmos-container}
+```{=html}
+<div id="log-diff-graph" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt2 = document.getElementById('log-diff-graph');
+var calc2 = Desmos.GraphingCalculator(elt2);
+calc2.setExpression({id: 'R', latex: 'y=\\frac{(x+3)^{7}(2x^{2}-1)^{3}x^{2}}{(x+1)^{4}(2-x)^{2}}', color: '#2d70b3', lineWidth: 2});
+calc2.setExpression({id: 'pt', latex: '(1, \\frac{(4)^{7}(1)^{3}(1)}{(2)^{4}(1)^{2}})', color: '#c74440', pointSize: 10, label: 'R(1)', showLabel: true});
+calc2.setMathBounds({left: -1, right: 2, bottom: -500, top: 2000});
+</script>
+```
+:::
+
+### 反函数的导数
+
+如果 $y = f(x)$ 有反函数 $x = f^{-1}(y)$，则：
+
+::: {.callout-important}
+## 核心要点：反函数导数
+要对反函数求导，只需翻转原函数的导数。如果你知道 $f'$，那么 $f^{-1}$ 的导数就是在对应点处 $f'$ 的倒数。
+
+$$\frac{d}{dy}\bigl[f^{-1}(y)\bigr] = \frac{1}{f'(x)} = \frac{1}{f'\!\bigl(f^{-1}(y)\bigr)}$$
+:::
+
+从图形上看，反函数在某点的导数是原函数在对应点导数的**倒数**。如果 $(x_0, y_0)$ 在 $f$ 的图上，那么 $(y_0, x_0)$ 在 $f^{-1}$ 的图上，并且：
+
+$$\bigl(f^{-1}\bigr)'(y_0) = \frac{1}{f'(x_0)}$$
+
+**探索 $\cosh x$ 和 $\operatorname{arccosh} x$ 关于 $y = x$ 的对称关系：**
+
+::: {.desmos-container}
+```{=html}
+<div id="inverse-graph" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt3 = document.getElementById('inverse-graph');
+var calc3 = Desmos.GraphingCalculator(elt3);
+calc3.setExpression({id: 'cosh', latex: 'y=\\cosh(x)', color: '#2d70b3', lineWidth: 2, domain: {min: 0, max: 3}});
+calc3.setExpression({id: 'acosh', latex: 'y=\\ln(x+\\sqrt{x^2-1})', color: '#c74440', lineWidth: 2, domain: {min: 1, max: 10}});
+calc3.setExpression({id: 'mirror', latex: 'y=x', color: '#aaaaaa', lineStyle: 'DASHED'});
+calc3.setExpression({id: 'pt1', latex: '(0, 1)', color: '#2d70b3', pointSize: 10, label: 'cosh(0)=1', showLabel: true});
+calc3.setExpression({id: 'pt2', latex: '(1, 0)', color: '#c74440', pointSize: 10, label: 'arccosh(1)=0', showLabel: true});
+calc3.setMathBounds({left: -1, right: 5, bottom: -1, top: 5});
+</script>
+```
+:::
+
+### 估算 $\operatorname{arccosh}(1.001)$：导数趋向无穷的情形
+
+我们想将 $\operatorname{arccosh}(1.001)$ 估算到三位有效数字。
+
+**第一次尝试——使用导数：**
+
+由于 $\operatorname{arccosh}(1) = 0$（因为 $\cosh(0) = 1$），而 $1.001$ 接近 $1$，我们可能尝试：
+
+$$\operatorname{arccosh}(1.001) \approx \operatorname{arccosh}(1) + 0.001 \cdot \frac{d}{dy}\operatorname{arccosh}(y)\Big|_{y=1}$$
+
+但 $\operatorname{arccosh}$ 在 $y=1$ 处的导数是 $\frac{1}{\sinh(\operatorname{arccosh}(1))} = \frac{1}{\sinh(0)} = \frac{1}{0} = \infty$！
+
+从图形上看，$\cosh x$ 在 $x = 0$ 处有**水平切线**，因此其反函数 $\operatorname{arccosh}$ 在 $y = 1$ 处有**竖直切线**。线性近似完全失败。
+
+**这意味着什么？** $\operatorname{arccosh}(1.001)$ 的值比 $0.001$ 所暗示的要大得多——它按增量的**分数幂**增长，而非线性增长。
+
+**第二次尝试——从定义直接求解：**
+
+令 $\cosh x = 1.001$，即 $\frac{e^x + e^{-x}}{2} = 1.001$。令 $u = e^x$：
+
+$$u + \frac{1}{u} = 2.002 \quad \Longrightarrow \quad u^2 - 2.002\,u + 1 = 0$$
+
+由求根公式：
+
+$$u = \frac{2.002 \pm \sqrt{2.002^2 - 4}}{2} = 1.001 \pm \sqrt{1.001^2 - 1}$$
+
+由于 $x > 0$，我们取正号：
+
+$$e^x = 1.001 + \sqrt{0.002001}$$
+
+现在 $\sqrt{0.002001} \approx 0.04473$，所以 $e^x \approx 1.04573$，因此：
+
+$$x = \ln(1.04573) \approx 0.04473 - \frac{0.04473^2}{2} + \cdots \approx 0.0447$$
+
+答案 $\operatorname{arccosh}(1.001) \approx 0.0447$ 远大于 $0.001$——证实了线性导数方法在这里行不通。
+
+::: {.callout-tip collapse="true"}
+## 教训：近似之前一定要检查你的导数！
+
+每当你想用微积分估算 $f(a + \epsilon)$ 时，近似 $f(a + \epsilon) \approx f(a) + \epsilon\,f'(a)$ 要求 $f'(a)$ 是**有限的**。如果导数是无穷大，函数按 $\epsilon$ 的分数幂变化而非线性变化，你需要不同的策略——比如直接求解定义方程。
+:::
+
+### 零附近的立方根：另一个导数无穷大的陷阱
+
+同样的问题出现在 $\sqrt[3]{0.007}$ 上。如果你试图在 $x = 0$ 附近展开 $x^{1/3}$：
+
+$$\frac{d}{dx}\,x^{1/3} = \frac{1}{3}\,x^{-2/3}$$
+
+在 $x = 0$ 处，这是 $\infty$。原点处的切线是**竖直的**，所以你不能在那里做泰勒展开。相反，你应该在附近一个方便的点（如 $x = 0.008 = 0.2^3$）处展开，那里的导数是有限的。
+
+**观察 $y = x^{1/3}$ 在原点处的竖直切线：**
+
+::: {.desmos-container}
+```{=html}
+<div id="cuberoot-graph" style="width: 100%; height: 400px;"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+var elt4 = document.getElementById('cuberoot-graph');
+var calc4 = Desmos.GraphingCalculator(elt4);
+calc4.setExpression({id: 'cbrt', latex: 'y=x^{1/3}', color: '#2d70b3', lineWidth: 2.5});
+calc4.setExpression({id: 'pt', latex: '(0.007, 0.007^{1/3})', color: '#c74440', pointSize: 10, label: '(0.007, 0.191...)', showLabel: true});
+calc4.setExpression({id: 'origin', latex: '(0,0)', color: '#388c46', pointSize: 8, label: 'vertical tangent here', showLabel: true});
+calc4.setMathBounds({left: -0.05, right: 0.5, bottom: -0.1, top: 1});
+</script>
+```
+:::
+
+## 速查表
+
+::: {.key-formula}
+| 公式 | 说明 |
+|---|---|
+| $\frac{d}{dx}\,x^r = r\,x^{r-1}$ | 幂法则——适用于任何实数 $r$ |
+| $\frac{d}{dx}\,e^{u} = e^{u}\cdot u'$ | 指数函数 + 链式法则 |
+| $\frac{d}{dx}[f(g(x))] = f'(g(x))\cdot g'(x)$ | 链式法则——从外向内逐层剥离 |
+| $(uv)' = u'v + uv'$ | 乘积法则 |
+| $\left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2}$ | 商法则 |
+
+### 对数微分
+
+对于 $R(x) = \prod f_i(x)^{a_i}$，两边取 $\ln$：
+
+$$\ln R = \sum a_i \ln f_i(x) \qquad \Longrightarrow \qquad \frac{R'}{R} = \sum \frac{a_i\,f_i'(x)}{f_i(x)}$$
+
+$$R'(x) = R(x)\sum \frac{a_i\,f_i'(x)}{f_i(x)}$$
+
+### 反函数导数
+
+$$\frac{d}{dy}\bigl[f^{-1}(y)\bigr] = \frac{1}{f'\!\bigl(f^{-1}(y)\bigr)}$$
+
+### 双曲函数
+
+$$\cosh x = \frac{e^x + e^{-x}}{2}, \qquad \sinh x = \frac{e^x - e^{-x}}{2}$$
+
+$$\frac{d}{dx}\cosh x = \sinh x, \qquad \frac{d}{dx}\sinh x = \cosh x$$
+
+$$\operatorname{arccosh}(y) = \ln\!\left(y + \sqrt{y^2 - 1}\right), \quad y \ge 1$$
+:::

@@ -1,0 +1,350 @@
+---
+title: "指数函数、对数及其导数"
+date: 2025-09-15
+---
+
+今天我们将深入研究微积分中两个最强大的函数族：指数函数和对数函数。你将看到 $e^x$ 的无穷级数如何证明它的导数就是自身（多酷啊！），学习如何对任意指数函数如 $2^x$ 或 $10^x$ 求导，以及认识自然对数 $\ln(x)$。最后，你还将初步领略欧拉公式——它在一个令人惊叹的方程中将指数函数、正弦、余弦和虚数联系在一起。
+
+::: {.callout-tip collapse="true"}
+## 为什么指数函数和对数很重要
+
+指数函数出现在任何**增长**或**衰减**的场景中：
+
+- **种群增长**：细菌每20分钟翻一倍——这就是指数增长！
+- **复利**：你的储蓄账户随时间指数增长
+- **放射性衰变**：科学家使用指数衰变来测定古代化石的年代
+- **声音响度**：分贝使用对数来衡量声音有多响
+- **地震**：里氏震级是对数的——7级地震比6级地震强10倍
+
+数字 $e \approx 2.718$ 是所有这些的"自然"底数。今天我们将发现 $e$ 的来源，以及为什么它使微积分变得如此优美简洁！
+:::
+
+## 本课内容
+
+- 逐项展开 $(1 + r/n)^n$ 的二项式
+- 取 $n \to \infty$ 的极限以发现 $e^r$ 的无穷级数
+- 数字 $e \approx 2.718\ldots$ 及其特殊性
+- 麦克劳林级数（幂级数）——将函数表示为无穷多项式
+- 用幂级数证明 $\frac{d}{dx}(e^x) = e^x$
+- $a^x$ 的导数：改写为 $e^{x \ln a}$，得到 $a^x \cdot \ln(a)$
+- 自然对数 $\ln(x)$ 作为 $e^x$ 的反函数
+- 证明 $\frac{d}{dx}\ln(x) = \frac{1}{x}$
+- 欧拉公式预览：$e^{i\theta} = \cos\theta + i\sin\theta$
+
+## 课程视频
+
+```{=html}
+<video controls width="100%" preload="metadata">
+  <source src="https://github.com/ymote/learningcalculus/releases/download/v1.0/calculus20250915.mp4" type="video/mp4">
+</video>
+```
+
+## 课程关键帧
+
+```{=html}
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 1em 0;">
+  <img src="../images/calculus20250915_frame1.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250915_frame2.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250915_frame3.jpg" style="width:100%; border-radius: 6px;">
+  <img src="../images/calculus20250915_frame4.jpg" style="width:100%; border-radius: 6px;">
+</div>
+```
+
+
+## 预备知识
+
+::: {.callout-note collapse="true"}
+## 什么是二项式定理？
+
+**二项式定理**告诉我们如何展开 $(a + b)^n$：
+
+$$(a + b)^n = \sum_{k=0}^{n} \binom{n}{k} a^{n-k} b^k$$
+
+其中 $\binom{n}{k} = \frac{n!}{k!(n-k)!}$ 是二项式系数（"$n$ 选 $k$"）。
+
+例如：
+
+$$(1 + x)^3 = 1 + 3x + 3x^2 + x^3$$
+
+系数 $1, 3, 3, 1$ 来自帕斯卡三角形。在这节课中，我们将对 $(1 + r/n)^n$ 使用二项式定理，然后让 $n$ 变得非常、非常大！
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是阶乘？
+
+**阶乘**是从1到 $n$ 的所有正整数的乘积：
+
+$$n! = n \times (n-1) \times (n-2) \times \cdots \times 2 \times 1$$
+
+例如：$3! = 6$，$4! = 24$，$5! = 120$。
+
+按照约定，$0! = 1$。
+
+阶乘增长极快——$10! = 3{,}628{,}800$，而 $20!$ 已经达到百京级别了！
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是复利？
+
+如果你以利率 $r$（小数形式）投资，每年计息 $n$ 次，那么1年后你的钱乘以：
+
+$$\left(1 + \frac{r}{n}\right)^n$$
+
+例如，当 $r = 1$（100%利率）每月计息（$n = 12$）时：
+
+$$\left(1 + \frac{1}{12}\right)^{12} \approx 2.613$$
+
+如果你越来越频繁地计息——每秒、每微秒呢？答案趋近于 $e \approx 2.718$。这正是我们今天要证明的！
+:::
+
+::: {.callout-note collapse="true"}
+## 什么是链式法则？
+
+**链式法则**告诉我们如何对复合函数求导：
+
+$$\frac{d}{dx} f(g(x)) = f'(g(x)) \cdot g'(x)$$
+
+可以把它想象成剥洋葱：先对外层函数求导，然后乘以内层函数的导数。
+
+例如：$\frac{d}{dx}(3x+1)^5 = 5(3x+1)^4 \cdot 3 = 15(3x+1)^4$。
+:::
+
+## 核心概念
+
+### 从复利到自然常数 $e$
+
+我们从复利公式出发，用二项式定理展开：
+
+$$\left(1 + \frac{r}{n}\right)^n = \sum_{k=0}^{n} \binom{n}{k} \left(\frac{r}{n}\right)^k$$
+
+写出二项式系数：
+
+$$\binom{n}{k} \frac{r^k}{n^k} = \frac{n(n-1)(n-2)\cdots(n-k+1)}{k! \cdot n^k} \cdot r^k$$
+
+现在看这里的巧妙之处。看 $r^k$ 的系数：
+
+$$\frac{n(n-1)(n-2)\cdots(n-k+1)}{n^k}$$
+
+这是 $k$ 个分数的乘积：$\frac{n}{n} \cdot \frac{n-1}{n} \cdot \frac{n-2}{n} \cdots$
+
+每个分数的形式为 $1 - \frac{\text{某个数}}{n}$。当 $n \to \infty$ 时，每个分数都趋近于 **1**。所以整个系数趋近于 $\frac{1}{k!}$，我们得到：
+
+$$\lim_{n \to \infty}\left(1 + \frac{r}{n}\right)^n = \sum_{k=0}^{\infty} \frac{r^k}{k!} = 1 + r + \frac{r^2}{2!} + \frac{r^3}{3!} + \frac{r^4}{4!} + \cdots$$
+
+**探索——观察复利值如何随 $n$ 增大而趋近 $e$：**
+
+```{=html}
+<div id="calc1" class="desmos-container"></div>
+<script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+<script>
+  var calc1 = Desmos.GraphingCalculator(document.getElementById('calc1'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc1.setExpression({ id: 'r', latex: 'r=1', sliderBounds: {min: 0.1, max: 3, step: 0.1} });
+  calc1.setExpression({ id: 'compound', latex: 'y=\\left(1+\\frac{r}{x}\\right)^x \\left\\{x>0\\right\\}', color: '#2d70b3' });
+  calc1.setExpression({ id: 'limit', latex: 'y=e^r', color: '#c74440', lineStyle: 'DASHED', lineWidth: 1.5 });
+  calc1.setExpression({ id: 'elabel', latex: '(50, e^r)', color: '#c74440', pointSize: 0, label: 'limit = e^r', showLabel: true });
+  calc1.setMathBounds({ left: -5, right: 60, bottom: -1, top: 10 });
+</script>
+```
+
+*设 $r = 1$，观察蓝色曲线如何随着 $x$ 增大而趋近 $e \approx 2.718$（红色虚线）。试试其他 $r$ 值！*
+
+### $e$ 的定义
+
+将 $r = 1$ 代入我们的级数：
+
+$$e = \sum_{k=0}^{\infty} \frac{1}{k!} = 1 + 1 + \frac{1}{2} + \frac{1}{6} + \frac{1}{24} + \frac{1}{120} + \cdots \approx 2.71828\ldots$$
+
+$e$ 是一个**无理数**——它的小数位永不循环、永无止境。它是所有数学中最重要的常数之一，与 $\pi$ 齐名。
+
+### 幂级数（麦克劳林级数）
+
+我们找到的表达式叫做**幂级数**——我们将 $e^r$ 写成了一个无穷多项式：
+
+$$e^r = 1 + r + \frac{r^2}{2!} + \frac{r^3}{3!} + \frac{r^4}{4!} + \cdots$$
+
+这也称为 $e^r$ 的**麦克劳林级数**。将函数表示为 $x$ 的幂次之和的思想是数学中最强大的工具之一。它让我们将复杂函数变成多项式，从而可以轻松地求导、积分和计算。
+
+### 证明 $\frac{d}{dx}(e^x) = e^x$
+
+这是微积分中最优雅的结果之一。我们对幂级数**逐项求导**：
+
+$$e^x = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \frac{x^5}{5!} + \cdots$$
+
+对每一项求导：
+
+$$\frac{d}{dx}(e^x) = 0 + 1 + \frac{2x}{2!} + \frac{3x^2}{3!} + \frac{4x^3}{4!} + \frac{5x^4}{5!} + \cdots$$
+
+现在化简每个分式。例如，$\frac{3x^2}{3!} = \frac{3x^2}{3 \cdot 2!} = \frac{x^2}{2!}$。一般地，$\frac{kx^{k-1}}{k!} = \frac{x^{k-1}}{(k-1)!}$。
+
+所以我们得到：
+
+$$\frac{d}{dx}(e^x) = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} + \cdots = e^x$$
+
+级数重现了自己！这就是 $e^x$ 特殊的原因：**它的导数就是自身**。
+
+**探索——看看 $e^x$ 和它的导数是同一条曲线：**
+
+```{=html}
+<div id="calc2" class="desmos-container"></div>
+<script>
+  var calc2 = Desmos.GraphingCalculator(document.getElementById('calc2'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc2.setExpression({ id: 'ex', latex: 'y=e^x', color: '#2d70b3', lineWidth: 3 });
+  calc2.setExpression({ id: 'a', latex: 'a=1', sliderBounds: {min: -2, max: 3, step: 0.01} });
+  calc2.setExpression({ id: 'pt', latex: '(a, e^a)', color: '#c74440', pointSize: 12, label: 'slope = height!', showLabel: true });
+  calc2.setExpression({ id: 'tangent', latex: 'y - e^a = e^a(x - a)', color: '#fa7e19', lineWidth: 2 });
+  calc2.setMathBounds({ left: -3, right: 4, bottom: -2, top: 15 });
+</script>
+```
+
+*拖动 $a$ 的滑块。注意切线的斜率始终等于该点的高度——因为 $\frac{d}{dx}(e^x) = e^x$！*
+
+### $a^x$ 的导数（任意指数底数）
+
+那 $\frac{d}{dx}(2^x)$ 或 $\frac{d}{dx}(10^x)$ 呢？技巧是用 $e$ 改写任意指数函数：
+
+$$a^x = e^{x \ln a}$$
+
+为什么？因为 $e^{\ln a} = a$，所以 $e^{x \ln a} = (e^{\ln a})^x = a^x$。
+
+现在用链式法则。令 $u = x \ln a$：
+
+$$\frac{d}{dx}(a^x) = \frac{d}{dx}(e^u) = e^u \cdot \frac{du}{dx} = e^{x \ln a} \cdot \ln a = a^x \cdot \ln a$$
+
+::: {.callout-important}
+## 核心要点：任意指数函数的导数
+要对任意底数的指数函数求导，用 $e$ 改写后应用链式法则。结果会多出一个 $\ln a$ 因子——这就是为什么 $e$ 是"最简洁"的底数（因为 $\ln e = 1$）。
+
+$$\boxed{\frac{d}{dx}(a^x) = a^x \cdot \ln a}$$
+:::
+
+注意：当 $a = e$ 时，$\ln e = 1$，所以 $\frac{d}{dx}(e^x) = e^x \cdot 1 = e^x$。一切都自洽！
+
+**探索——比较不同底数下 $a^x$ 与其导数 $a^x \ln a$：**
+
+```{=html}
+<div id="calc3" class="desmos-container"></div>
+<script>
+  var calc3 = Desmos.GraphingCalculator(document.getElementById('calc3'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc3.setExpression({ id: 'a', latex: 'a=2', sliderBounds: {min: 0.5, max: 5, step: 0.1} });
+  calc3.setExpression({ id: 'func', latex: 'y=a^x', color: '#2d70b3', lineWidth: 3 });
+  calc3.setExpression({ id: 'deriv', latex: 'y=a^x \\cdot \\ln(a)', color: '#c74440', lineWidth: 2, lineStyle: 'DASHED' });
+  calc3.setExpression({ id: 'note1', latex: '(2, a^2)', color: '#2d70b3', pointSize: 0, label: 'a^x', showLabel: true });
+  calc3.setExpression({ id: 'note2', latex: '(2, a^2 \\cdot \\ln(a))', color: '#c74440', pointSize: 0, label: 'derivative', showLabel: true });
+  calc3.setMathBounds({ left: -3, right: 4, bottom: -2, top: 15 });
+</script>
+```
+
+*将 $a$ 设为 $e \approx 2.718$，两条曲线完美重合——这就是 $e$ 的魔力！*
+
+### 自然对数
+
+**自然对数** $\ln(x)$ 是 $e^x$ 的反函数。它回答的问题是：
+
+$$\ln(a) = \text{"$e$ 的几次方等于 $a$？"}$$
+
+所以 $\ln(e) = 1$（因为 $e^1 = e$），$\ln(1) = 0$（因为 $e^0 = 1$），$\ln(e^3) = 3$。
+
+主要性质：
+
+- $e^{\ln x} = x$（对所有 $x > 0$）
+- $\ln(e^x) = x$（对所有 $x$）
+- $\ln(ab) = \ln a + \ln b$
+- $\ln(a^n) = n \ln a$
+
+### $\ln(x)$ 的导数等于 $\frac{1}{x}$
+
+从恒等式出发：
+
+$$e^{\ln x} = x$$
+
+用链式法则对两边求导：
+
+$$e^{\ln x} \cdot \frac{d}{dx}(\ln x) = 1$$
+
+但 $e^{\ln x} = x$，所以：
+
+$$x \cdot \frac{d}{dx}(\ln x) = 1$$
+
+::: {.callout-important}
+## 核心要点：自然对数的导数
+$\ln(x)$ 的导数将一个"超越"函数变成了一个简单的代数函数。这个结果直接来自对恒等式 $e^{\ln x} = x$ 求导并求解。
+
+$$\boxed{\frac{d}{dx}\ln(x) = \frac{1}{x}}$$
+:::
+
+这是一个了不起的结果：$\ln(x)$ 的导数是 $\frac{1}{x}$——一个简单的代数函数！后面我们还会看到反过来的情况：$\frac{1}{x}$ 的积分是 $\ln|x| + C$。
+
+**探索——$\ln(x)$ 在任意点处的斜率等于 $\frac{1}{x}$：**
+
+```{=html}
+<div id="calc4" class="desmos-container"></div>
+<script>
+  var calc4 = Desmos.GraphingCalculator(document.getElementById('calc4'), {
+    expressions: true,
+    settingsMenu: false
+  });
+  calc4.setExpression({ id: 'ln', latex: 'y=\\ln(x)', color: '#2d70b3', lineWidth: 3 });
+  calc4.setExpression({ id: 'a', latex: 'a=1', sliderBounds: {min: 0.2, max: 6, step: 0.01} });
+  calc4.setExpression({ id: 'pt', latex: '(a, \\ln(a))', color: '#c74440', pointSize: 12, showLabel: true, label: 'slope = 1/a' });
+  calc4.setExpression({ id: 'tangent', latex: 'y - \\ln(a) = \\frac{1}{a}(x - a)', color: '#fa7e19', lineWidth: 2 });
+  calc4.setExpression({ id: 'inv', latex: 'y=\\frac{1}{x}', color: '#388c46', lineWidth: 1.5, lineStyle: 'DASHED' });
+  calc4.setMathBounds({ left: -1, right: 7, bottom: -3, top: 4 });
+</script>
+```
+
+*拖动滑块并比较：$x = a$ 处切线的斜率始终等于 $\frac{1}{a}$（绿色虚线曲线）。*
+
+### 预览：欧拉公式
+
+这里有一个令人震撼的预告。如果我们将一个**虚数** $i\theta$ 代入 $e^x$ 的幂级数：
+
+$$e^{i\theta} = 1 + i\theta + \frac{(i\theta)^2}{2!} + \frac{(i\theta)^3}{3!} + \frac{(i\theta)^4}{4!} + \cdots$$
+
+利用 $i^2 = -1$，$i^3 = -i$，$i^4 = 1$，分离实部和虚部，我们得到**欧拉公式**：
+
+::: {.callout-important}
+## 核心要点：欧拉公式
+这一个方程统一了指数函数、三角函数和虚数。它来自将 $i\theta$ 代入 $e^x$ 的幂级数并分离实部和虚部。
+
+$$\boxed{e^{i\theta} = \cos\theta + i\sin\theta}$$
+:::
+
+这将指数函数、三角函数和复数联系在一个方程中。令 $\theta = \pi$ 得到**欧拉恒等式**：$e^{i\pi} + 1 = 0$——通常被称为数学中最美丽的方程。
+
+::: {.callout-tip collapse="true"}
+## 课后挑战
+
+利用欧拉公式和 $e^{i\theta}$ 的幂级数推导：
+
+- $\cos\theta$ 的麦克劳林级数（收集实部）
+- $\sin\theta$ 的麦克劳林级数（收集虚部）
+
+然后逐项对这些级数求导，证明 $\frac{d}{d\theta}\sin\theta = \cos\theta$ 和 $\frac{d}{d\theta}\cos\theta = -\sin\theta$。
+:::
+
+## 速查表
+
+::: {.key-formula}
+| 你想要什么 | 公式 |
+|---|---|
+| $e$ 的定义 | $e = \displaystyle\sum_{k=0}^{\infty} \frac{1}{k!} = 1 + 1 + \frac{1}{2} + \frac{1}{6} + \cdots \approx 2.718$ |
+| $e^r$ 的幂级数 | $e^r = \displaystyle\sum_{k=0}^{\infty} \frac{r^k}{k!} = 1 + r + \frac{r^2}{2!} + \frac{r^3}{3!} + \cdots$ |
+| $e^x$ 的导数 | $\frac{d}{dx}(e^x) = e^x$ |
+| $a^x$ 的导数 | $\frac{d}{dx}(a^x) = a^x \cdot \ln a$ |
+| 自然对数的定义 | $\ln(a) = $ "$e$ 的几次方等于 $a$？" |
+| $\ln(x)$ 的导数 | $\frac{d}{dx}\ln(x) = \frac{1}{x}$ |
+| 欧拉公式 | $e^{i\theta} = \cos\theta + i\sin\theta$ |
+
+### 核心思路链
+
+$$\text{复利} \;\longrightarrow\; \text{二项式展开} \;\longrightarrow\; \text{令 } n \to \infty \;\longrightarrow\; e^r \text{ 的幂级数} \;\longrightarrow\; \frac{d}{dx}e^x = e^x$$
+:::
