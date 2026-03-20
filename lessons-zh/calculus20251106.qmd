@@ -157,6 +157,109 @@ $$\int \sqrt{r^2 - x^2}\,dx$$
 
 *拖动滑块 $a$ 将阴影面积 $A(a)$ 从 $-r$ 扫到 $a$。这个扫过的面积正是我们正在计算的反导数。*
 
+### 动画演示：半圆下方面积的累积扫描
+
+```{=html}
+<div class="d3-container" id="semicircle_sweep_1106">
+  <h4 style="text-align:center; margin-bottom:4px;">Area Accumulation Under the Semicircle &radic;(R&sup2; - x&sup2;)</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="sweep_play">&#9654; Sweep</button>
+    <label style="margin-left:12px;">x: <input type="range" id="sweep_x" min="-3" max="3" step="0.02" value="-3"><span id="sweep_x_val">-3.00</span></label>
+    <label style="margin-left:12px;">R: <input type="range" id="sweep_r" min="1" max="4" step="0.1" value="3"><span id="sweep_r_val">3.0</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=600, h=440, margin={top:20,right:30,bottom:40,left:55};
+  var svg=d3.select("#semicircle_sweep_1106").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right, ih=h-margin.top-margin.bottom;
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xS=d3.scaleLinear().range([0,iw]);
+  var yS=d3.scaleLinear().range([ih,0]);
+  var xAxis=g.append("g").attr("class","xa1106").attr("transform","translate(0,"+ih+")");
+  var yAxis=g.append("g").attr("class","ya1106");
+
+  var semiPath=g.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  var sectorPath=g.append("path").attr("fill","rgba(199,68,64,0.2)").attr("stroke","#c74440").attr("stroke-width",1);
+  var trianglePath=g.append("path").attr("fill","rgba(56,140,70,0.2)").attr("stroke","#388c46").attr("stroke-width",1);
+  var sweepLine=g.append("line").attr("stroke","#333").attr("stroke-width",1.5);
+  var radiusLine=g.append("line").attr("stroke","#c74440").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  var dot=g.append("circle").attr("r",6).attr("fill","#c74440");
+
+  var sectorLabel=g.append("text").style("font-size","11px").attr("fill","#c74440").style("font-weight","bold");
+  var triLabel=g.append("text").style("font-size","11px").attr("fill","#388c46").style("font-weight","bold");
+  var totalLabel=g.append("text").attr("x",iw-10).attr("y",20).attr("text-anchor","end").style("font-size","13px").style("font-weight","bold").attr("fill","#2d70b3");
+
+  function render(xVal, R){
+    xS.domain([-R-1, R+1]);
+    yS.domain([-0.5, R+1]);
+    xAxis.call(d3.axisBottom(xS).ticks(6));
+    yAxis.call(d3.axisLeft(yS).ticks(5));
+
+    // Semicircle
+    var pts=d3.range(-R,R+0.01,0.02).map(function(t){return {x:t,y:Math.sqrt(Math.max(0,R*R-t*t))};});
+    var lineGen=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);});
+    semiPath.attr("d",lineGen(pts));
+
+    xVal=Math.max(-R,Math.min(R,xVal));
+    var yVal=Math.sqrt(Math.max(0,R*R-xVal*xVal));
+
+    // Sector: pie from negative x-axis to radius at (xVal, yVal)
+    var theta=Math.atan2(yVal, xVal); // angle from positive x-axis
+    var phi=Math.PI-theta; // angle of sector from negative x-axis
+    // sector as arc from angle pi down to theta
+    var arcPts=d3.range(Math.PI, theta-0.01,-0.02).map(function(a){return [xS(R*Math.cos(a)), yS(R*Math.sin(a))];});
+    if(arcPts.length>1){
+      var sectorD="M"+xS(0)+","+yS(0);
+      sectorD+=" L"+xS(-R)+","+yS(0);
+      arcPts.forEach(function(p){ sectorD+=" L"+p[0]+","+p[1]; });
+      sectorD+=" Z";
+      sectorPath.attr("d",sectorD);
+    }
+
+    // Triangle: (0,0), (xVal,0), (xVal, yVal)
+    if(xVal>-R+0.1){
+      trianglePath.attr("d","M"+xS(0)+","+yS(0)+" L"+xS(xVal)+","+yS(0)+" L"+xS(xVal)+","+yS(yVal)+" Z");
+    } else {
+      trianglePath.attr("d","");
+    }
+
+    sweepLine.attr("x1",xS(xVal)).attr("x2",xS(xVal)).attr("y1",yS(0)).attr("y2",yS(yVal));
+    radiusLine.attr("x1",xS(0)).attr("y1",yS(0)).attr("x2",xS(xVal)).attr("y2",yS(yVal));
+    dot.attr("cx",xS(xVal)).attr("cy",yS(yVal));
+
+    var sectorArea=0.5*R*R*(Math.PI - Math.acos(xVal/R));
+    var triArea=0.5*xVal*yVal;
+    var totalArea=sectorArea+triArea;
+
+    sectorLabel.attr("x",xS(-R*0.5)).attr("y",yS(R*0.25)).text("Sector: "+sectorArea.toFixed(2));
+    triLabel.attr("x",xS(xVal*0.3)).attr("y",yS(yVal*0.2+0.1)).text("Triangle: "+triArea.toFixed(2));
+    totalLabel.text("Total A(x) = "+totalArea.toFixed(2)+"  (full = "+((Math.PI*R*R/2).toFixed(2))+")");
+  }
+
+  render(-3,3);
+
+  function getVals(){ return {x:parseFloat(document.getElementById("sweep_x").value), r:parseFloat(document.getElementById("sweep_r").value)}; }
+  d3.select("#sweep_x").on("input",function(){ var v=getVals(); d3.select("#sweep_x_val").text(v.x.toFixed(2)); render(v.x,v.r); });
+  d3.select("#sweep_r").on("input",function(){ var v=getVals(); d3.select("#sweep_r_val").text(v.r.toFixed(1)); document.getElementById("sweep_x").min=-v.r; document.getElementById("sweep_x").max=v.r; render(v.x,v.r); });
+
+  d3.select("#sweep_play").on("click",function(){
+    var btn=this; btn.disabled=true;
+    var xv=-parseFloat(document.getElementById("sweep_r").value);
+    var R=parseFloat(document.getElementById("sweep_r").value);
+    var timer=setInterval(function(){
+      xv+=0.03;
+      if(xv>R){ xv=R; clearInterval(timer); btn.disabled=false; }
+      document.getElementById("sweep_x").value=xv;
+      d3.select("#sweep_x_val").text(xv.toFixed(2));
+      render(xv,R);
+    },20);
+  });
+})();
+</script>
+```
+
 ### 将面积与反导数联系起来
 
 当 $x$ 前进一个微小量 $dx$ 时，面积增长一条宽 $dx$、高 $y$ 的薄竖直条带：
@@ -261,6 +364,127 @@ $$\pi - \arccos\!\left(\frac{x}{r}\right) = \pi - \frac{\pi}{2} + \arcsin\!\left
 $$A(x) = \frac{1}{2}r^2\!\left[\frac{\pi}{2} + \arcsin\!\left(\frac{x}{r}\right)\right] + \frac{1}{2}\,x\sqrt{r^2 - x^2}$$
 
 常数 $\frac{1}{2}r^2 \cdot \frac{\pi}{2} = \frac{\pi r^2}{4}$ 只是一个积分常数——求导时它会消失。因此两种形式同样有效。
+
+### 动画演示：三角换元的几何解释
+
+```{=html}
+<div class="d3-container" id="trig_sub_1106">
+  <h4 style="text-align:center; margin-bottom:4px;">Trig Substitution: x = R sin(&theta;) on the Right Triangle</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="trigsub_play">&#9654; Animate &theta;</button>
+    <label style="margin-left:12px;">&theta;: <input type="range" id="trigsub_theta" min="-1.57" max="1.57" step="0.01" value="0"><span id="trigsub_theta_val">0.00</span></label>
+    <label style="margin-left:12px;">R: <input type="range" id="trigsub_r" min="1" max="4" step="0.1" value="3"><span id="trigsub_r_val">3.0</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=600, h=480, margin={top:20,right:40,bottom:40,left:55};
+  var svg=d3.select("#trig_sub_1106").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right, ih=h-margin.top-margin.bottom;
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xS=d3.scaleLinear().range([0,iw]);
+  var yS=d3.scaleLinear().range([ih,0]);
+  var xAxis=g.append("g").attr("class","xa_ts").attr("transform","translate(0,"+ih+")");
+  var yAxis=g.append("g").attr("class","ya_ts");
+
+  var semiPath=g.append("path").attr("fill","none").attr("stroke","#ccc").attr("stroke-width",1.5);
+
+  // Triangle
+  var triPath=g.append("path").attr("fill","rgba(45,112,179,0.12)").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+
+  // Angle arc
+  var angleArc=g.append("path").attr("fill","none").attr("stroke","#fa7e19").attr("stroke-width",2);
+  // Labels
+  var hypLabel=g.append("text").style("font-size","14px").style("font-weight","bold").attr("fill","#c74440");
+  var oppLabel=g.append("text").style("font-size","14px").style("font-weight","bold").attr("fill","#388c46");
+  var adjLabel=g.append("text").style("font-size","14px").style("font-weight","bold").attr("fill","#2d70b3");
+  var thetaLabel=g.append("text").style("font-size","14px").style("font-weight","bold").attr("fill","#fa7e19");
+
+  // Point on semicircle
+  var dot=g.append("circle").attr("r",6).attr("fill","#c74440").attr("stroke","#222").attr("stroke-width",1);
+
+  // Info panel
+  var info=g.append("g").attr("transform","translate(10,"+(ih-100)+")");
+  var infoLines=["","","","",""];
+  var infoTexts=infoLines.map(function(t,i){
+    return info.append("text").attr("y",i*20).style("font-size","13px").style("font-family","monospace");
+  });
+
+  // Right-angle marker
+  var rightAngle=g.append("path").attr("fill","none").attr("stroke","#333").attr("stroke-width",1);
+
+  function render(theta, R){
+    xS.domain([-R-1.5, R+1.5]);
+    yS.domain([-1, R+1.5]);
+    xAxis.call(d3.axisBottom(xS).ticks(6));
+    yAxis.call(d3.axisLeft(yS).ticks(5));
+
+    // Semicircle
+    var pts=d3.range(-R,R+0.01,0.02).map(function(t){return {x:t,y:Math.sqrt(Math.max(0,R*R-t*t))};});
+    var lineGen=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);});
+    semiPath.attr("d",lineGen(pts));
+
+    var x=R*Math.sin(theta);
+    var y=Math.sqrt(Math.max(0,R*R-x*x)); // = R*cos(theta)
+
+    // Triangle: origin -> (x,0) -> (x,y) -> origin
+    triPath.attr("d","M"+xS(0)+","+yS(0)+" L"+xS(x)+","+yS(0)+" L"+xS(x)+","+yS(y)+" Z");
+
+    dot.attr("cx",xS(x)).attr("cy",yS(y));
+
+    // right angle marker at (x, 0)
+    var sz=8;
+    rightAngle.attr("d","M"+(xS(x)-sz)+","+yS(0)+" L"+(xS(x)-sz)+","+(yS(0)-sz)+" L"+xS(x)+","+(yS(0)-sz));
+
+    // Angle arc at origin
+    var arcR=R*0.2;
+    var arcPts2=d3.range(0, theta+0.01*(theta>=0?1:-1), 0.03*(theta>=0?1:-1)).map(function(a){
+      return [xS(arcR*Math.cos(a)), yS(arcR*Math.sin(a))];
+    });
+    if(arcPts2.length>1){
+      var arcLine=d3.line().x(function(d){return d[0];}).y(function(d){return d[1];});
+      angleArc.attr("d",arcLine(arcPts2));
+    } else { angleArc.attr("d",""); }
+
+    // Labels on triangle sides
+    var mx=(xS(0)+xS(x))/2, my1=yS(0)+15;
+    var mx2=xS(x)+15, my2=(yS(0)+yS(y))/2;
+    var mx3=(xS(0)+xS(x))/2-10, my3=(yS(0)+yS(y))/2-10;
+    oppLabel.attr("x",mx).attr("y",my1).attr("text-anchor","middle").text("x = R sin\u03B8 = "+x.toFixed(2));
+    adjLabel.attr("x",mx2).attr("y",my2).text("\u221A(R\u00B2\u2212x\u00B2) = "+y.toFixed(2));
+    hypLabel.attr("x",mx3).attr("y",my3).attr("text-anchor","middle").text("R = "+R.toFixed(1));
+    thetaLabel.attr("x",xS(arcR*1.6*Math.cos(theta/2))).attr("y",yS(arcR*1.6*Math.sin(theta/2))).text("\u03B8");
+
+    // Info panel
+    infoTexts[0].text("x = R\u00B7sin(\u03B8) = "+R.toFixed(1)+"\u00B7sin("+theta.toFixed(2)+") = "+x.toFixed(3));
+    infoTexts[1].text("dx = R\u00B7cos(\u03B8)\u00B7d\u03B8");
+    infoTexts[2].text("\u221A(R\u00B2-x\u00B2) = R\u00B7cos(\u03B8) = "+y.toFixed(3));
+    infoTexts[3].text("So: \u221A(R\u00B2-x\u00B2) dx = R\u00B2cos\u00B2\u03B8 d\u03B8");
+    infoTexts[4].text("\u03B8 = arcsin(x/R) = arcsin("+(x/R).toFixed(3)+") = "+theta.toFixed(3));
+  }
+
+  render(0,3);
+
+  function getVals(){ return {theta:parseFloat(document.getElementById("trigsub_theta").value), r:parseFloat(document.getElementById("trigsub_r").value)}; }
+  d3.select("#trigsub_theta").on("input",function(){ var v=getVals(); d3.select("#trigsub_theta_val").text(v.theta.toFixed(2)); render(v.theta,v.r); });
+  d3.select("#trigsub_r").on("input",function(){ var v=getVals(); d3.select("#trigsub_r_val").text(v.r.toFixed(1)); render(v.theta,v.r); });
+
+  d3.select("#trigsub_play").on("click",function(){
+    var btn=this; btn.disabled=true;
+    var th=-1.57;
+    var R=parseFloat(document.getElementById("trigsub_r").value);
+    var timer=setInterval(function(){
+      th+=0.02;
+      if(th>1.57){ th=1.57; clearInterval(timer); btn.disabled=false; }
+      document.getElementById("trigsub_theta").value=th;
+      d3.select("#trigsub_theta_val").text(th.toFixed(2));
+      render(th,R);
+    },30);
+  });
+})();
+</script>
+```
 
 ### 通过求导验证
 

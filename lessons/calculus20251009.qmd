@@ -235,6 +235,90 @@ calc2.setMathBounds({left: -1.5, right: 1.5, bottom: -2, top: 5});
 
 *Drag the slider $n$ to add more terms. Watch how the red dashed approximation hugs the blue curve more closely within the radius of convergence $|x| < \sqrt{2/3} \approx 0.82$.*
 
+**Animated visualization -- geometric series partial sums accumulating toward $\frac{1}{1-x}$:**
+
+```{=html}
+<div class="d3-container" id="d3_geom_partial_sums">
+  <svg id="d3_geom_partial_sums_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_geom_play">&#9654; Play</button>
+  <label>Terms (N): <input type="range" id="d3_geom_slider" min="1" max="15" step="1" value="1"> <span id="d3_geom_val">1</span></label>
+  <label style="margin-left:15px;">x: <input type="range" id="d3_geom_x_slider" min="0.1" max="0.9" step="0.05" value="0.5"> <span id="d3_geom_x_val">0.50</span></label>
+</div>
+<script>
+(function(){
+  var W=640, H=400, m={top:30,right:20,bottom:50,left:55};
+  var w=W-m.left-m.right, h=H-m.top-m.bottom;
+  var svg=d3.select("#d3_geom_partial_sums_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.left+","+m.top+")");
+
+  var titleText=svg.append("text").attr("x",W/2).attr("y",18).attr("text-anchor","middle").attr("font-size","14px").attr("fill","#333").attr("font-weight","bold");
+
+  function draw(N, xVal){
+    g.selectAll("*").remove();
+
+    var target=1/(1-xVal);
+    var terms=[];
+    for(var k=0;k<N;k++) terms.push(Math.pow(xVal,k));
+    var partialSum=terms.reduce(function(a,b){return a+b;},0);
+
+    var maxY=Math.max(target*1.2, 3);
+    var xS=d3.scaleBand().domain(d3.range(N).map(String)).range([0,Math.min(w,N*50)]).padding(0.2);
+    var yS=d3.scaleLinear().domain([0,maxY]).range([h,0]);
+
+    g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).tickFormat(function(d){return "x^"+d;}));
+    g.append("g").call(d3.axisLeft(yS).ticks(5));
+
+    // target line
+    g.append("line").attr("x1",0).attr("y1",yS(target)).attr("x2",w).attr("y2",yS(target)).attr("stroke","#c74440").attr("stroke-width",2).attr("stroke-dasharray","6,3");
+    g.append("text").attr("x",w-5).attr("y",yS(target)-6).attr("text-anchor","end").text("1/(1-x) = "+target.toFixed(3)).attr("fill","#c74440").attr("font-size","12px");
+
+    // bars
+    g.selectAll(".bar").data(terms).enter().append("rect")
+      .attr("x",function(d,i){return xS(String(i));})
+      .attr("y",h)
+      .attr("width",xS.bandwidth())
+      .attr("height",0)
+      .attr("fill","#2d70b3").attr("opacity",0.7)
+      .transition().duration(300).delay(function(d,i){return i*80;})
+      .attr("y",function(d){return yS(d);})
+      .attr("height",function(d){return h-yS(d);});
+
+    // partial sum line
+    g.append("line").attr("x1",0).attr("y1",yS(partialSum)).attr("x2",Math.min(w,N*50)).attr("y2",yS(partialSum)).attr("stroke","#388c46").attr("stroke-width",2);
+    g.append("text").attr("x",Math.min(w,N*50)+5).attr("y",yS(partialSum)+4).text("sum = "+partialSum.toFixed(4)).attr("fill","#388c46").attr("font-size","12px");
+
+    titleText.text("Geometric series: 1 + x + x\u00B2 + ... + x^"+(N-1)+" at x = "+xVal.toFixed(2)+" (target = "+target.toFixed(3)+")");
+    document.getElementById("d3_geom_val").textContent=N;
+    document.getElementById("d3_geom_slider").value=N;
+    document.getElementById("d3_geom_x_val").textContent=xVal.toFixed(2);
+  }
+
+  draw(1, 0.5);
+
+  document.getElementById("d3_geom_slider").addEventListener("input",function(){
+    draw(+this.value, +document.getElementById("d3_geom_x_slider").value);
+  });
+  document.getElementById("d3_geom_x_slider").addEventListener("input",function(){
+    draw(+document.getElementById("d3_geom_slider").value, +this.value);
+  });
+
+  var playing=false,curN=1;
+  document.getElementById("d3_geom_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";return;}
+    playing=true;this.textContent="⏸ Pause";curN=1;
+    var iv=setInterval(function(){
+      if(!playing){clearInterval(iv);return;}
+      draw(curN, +document.getElementById("d3_geom_x_slider").value);
+      curN++;
+      if(curN>15){curN=1;playing=false;document.getElementById("d3_geom_play").textContent="▶ Play";clearInterval(iv);}
+    },600);
+  });
+})();
+</script>
+```
+
 ### Partial Fraction Decomposition
 
 When a denominator factors into linear terms, we can decompose the fraction into simpler pieces, each of which yields a geometric series.
@@ -307,6 +391,91 @@ calc3.setMathBounds({left: -2, right: 3, bottom: -8, top: 8});
 :::
 
 *The blue curve is the original function. The red and green dashed curves are the partial fraction pieces. Gray dashed lines mark the vertical asymptotes at $x = \frac{1}{2}$ and $x = 1$; the purple dashed line marks the horizontal asymptote at $y = \frac{1}{2}$.*
+
+**Animated visualization -- partial fraction decomposition: splitting a rational function into simpler parts:**
+
+```{=html}
+<div class="d3-container" id="d3_partial_frac_anim">
+  <svg id="d3_partial_frac_anim_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_pf_play">&#9654; Play</button>
+  <label>Step: <input type="range" id="d3_pf_slider" min="0" max="3" step="1" value="0"> <span id="d3_pf_val">0</span></label>
+</div>
+<script>
+(function(){
+  var W=650, H=420, m={top:30,right:20,bottom:40,left:55};
+  var w=W-m.left-m.right, h=H-m.top-m.bottom;
+  var svg=d3.select("#d3_partial_frac_anim_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.left+","+m.top+")");
+
+  var xS=d3.scaleLinear().domain([-1.5,2.5]).range([0,w]);
+  var yS=d3.scaleLinear().domain([-6,6]).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(8));
+
+  var line=d3.line().defined(function(d){return isFinite(d[1])&&Math.abs(d[1])<30;}).x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);});
+  var pts=d3.range(-1.5,2.51,0.01);
+
+  // original: x^2/(2x^2-3x+1)
+  function orig(x){var d=2*x*x-3*x+1;return d===0?NaN:x*x/d;}
+  // piece1: 1/2 + 1/(2(2x-1)) = 1/2 - 1/(2(1-2x))
+  function piece1(x){var d=2*x-1;return d===0?NaN:0.5+0.5/d;}
+  // piece2: 1/(x-1)
+  function piece2(x){return x===1?NaN:1/(x-1);}
+
+  var origPath=g.append("path").datum(pts.map(function(x){return [x,orig(x)];})).attr("d",line).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",3);
+  var p1Path=g.append("path").attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2.5).attr("stroke-dasharray","6,3").attr("opacity",0);
+  var p2Path=g.append("path").attr("fill","none").attr("stroke","#388c46").attr("stroke-width",2.5).attr("stroke-dasharray","6,3").attr("opacity",0);
+  var constLine=g.append("line").attr("x1",xS(-1.5)).attr("y1",yS(0.5)).attr("x2",xS(2.5)).attr("y2",yS(0.5)).attr("stroke","#6042a6").attr("stroke-width",2).attr("stroke-dasharray","4,3").attr("opacity",0);
+
+  p1Path.datum(pts.map(function(x){return [x,piece1(x)];})).attr("d",line);
+  p2Path.datum(pts.map(function(x){return [x,piece2(x)];})).attr("d",line);
+
+  var stepTitle=svg.append("text").attr("x",W/2).attr("y",18).attr("text-anchor","middle").attr("font-size","14px").attr("fill","#333").attr("font-weight","bold");
+
+  var labels=[
+    "Original: x\u00B2 / (2x\u00B2 \u2212 3x + 1)",
+    "Extract constant: 1/2 (horizontal asymptote)",
+    "First piece: \u22121/(2(2x\u22121)) handles the x=1/2 pole",
+    "Second piece: 1/(x\u22121) handles the x=1 pole"
+  ];
+
+  var labG1=g.append("text").attr("x",xS(-0.5)).attr("y",yS(piece1(-0.5))-8).text("\u22121/(2(2x\u22121))").attr("fill","#c74440").attr("font-size","12px").attr("opacity",0);
+  var labG2=g.append("text").attr("x",xS(1.8)).attr("y",yS(piece2(1.8))-8).text("1/(x\u22121)").attr("fill","#388c46").attr("font-size","12px").attr("opacity",0);
+  var labConst=g.append("text").attr("x",xS(-1)).attr("y",yS(0.5)-8).text("y = 1/2").attr("fill","#6042a6").attr("font-size","12px").attr("opacity",0);
+
+  function update(step){
+    stepTitle.text(labels[step]);
+    origPath.transition().duration(400).attr("opacity",1);
+    constLine.transition().duration(400).attr("opacity",step>=1?1:0);
+    labConst.transition().duration(400).attr("opacity",step>=1?1:0);
+    p1Path.transition().duration(400).attr("opacity",step>=2?1:0);
+    labG1.transition().duration(400).attr("opacity",step>=2?1:0);
+    p2Path.transition().duration(400).attr("opacity",step>=3?1:0);
+    labG2.transition().duration(400).attr("opacity",step>=3?1:0);
+    document.getElementById("d3_pf_val").textContent=step;
+    document.getElementById("d3_pf_slider").value=step;
+  }
+  update(0);
+
+  document.getElementById("d3_pf_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,curStep=0;
+  document.getElementById("d3_pf_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";return;}
+    playing=true;this.textContent="⏸ Pause";curStep=0;
+    var iv=setInterval(function(){
+      if(!playing){clearInterval(iv);return;}
+      update(curStep);curStep++;
+      if(curStep>3){curStep=0;playing=false;document.getElementById("d3_pf_play").textContent="▶ Play";clearInterval(iv);}
+    },2000);
+  });
+})();
+</script>
+```
+
+*Press Play to watch the original rational function (blue) being decomposed into its constituent parts: a constant (purple), and two simpler fractions (red, green) -- one for each pole.*
 
 ### Power Expansion of $\ln(1+x)$ and $\arcsin x$
 

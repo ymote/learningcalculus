@@ -182,6 +182,122 @@ Each term on the right is a **percent error** -- the ratio of the uncertainty to
 
 *Drag $a$ to change the radius. The red dashed tangent line shows the linear approximation -- its slope is $-2/a^3$, reflecting the factor of $2$ in front of $\frac{dr}{r}$. A small change in $r$ causes roughly twice as large a percent change in $F$.*
 
+### Interactive: Absolute vs. Relative Error Comparison
+
+```{=html}
+<div class="d3-container" id="error_comparison_1023">
+  <h4 style="text-align:center; margin-bottom: 4px;">Percent Error Visualization: Absolute vs. Relative Error</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="error_comparison_play">&#9654; Play</button>
+    <label style="margin-left:12px;">G error mult: <input type="range" id="error_g_slider" min="0.1" max="5" step="0.1" value="1"><span id="error_g_val">1.0</span></label>
+    <label style="margin-left:12px;">m error mult: <input type="range" id="error_m_slider" min="0.1" max="5" step="0.1" value="1"><span id="error_m_val">1.0</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=620, h=360, margin={top:40,right:30,bottom:70,left:60};
+  var svg=d3.select("#error_comparison_1023").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right, ih=h-margin.top-margin.bottom;
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var quantities=["G","M","m","r"];
+  var baseAbsErrors=[0.005e-11, 0.005e24, 0.5, 0.05e6];
+  var baseValues=[6.67e-11, 5.97e24, 47, 6.4e6];
+  var multipliers=[1,1,1,2]; // r has factor of 2
+
+  function getPercentErrors(gMult, mMult){
+    var mults=[gMult,1,mMult,1];
+    return quantities.map(function(q,i){
+      return multipliers[i]*((baseAbsErrors[i]*mults[i])/baseValues[i])*100;
+    });
+  }
+
+  var x=d3.scaleBand().domain(quantities).range([0,iw]).padding(0.25);
+  var xSub=d3.scaleBand().domain(["abs","rel"]).range([0,x.bandwidth()]).padding(0.08);
+  var y=d3.scaleLinear().range([ih,0]);
+
+  g.append("g").attr("class","x-axis").attr("transform","translate(0,"+ih+")");
+  g.append("g").attr("class","y-axis");
+  svg.append("text").attr("x",w/2).attr("y",h-8).attr("text-anchor","middle").style("font-size","12px").text("Measurement Quantity");
+  svg.append("text").attr("transform","rotate(-90)").attr("x",-h/2).attr("y",14).attr("text-anchor","middle").style("font-size","12px").text("Error (%)");
+
+  var legend=svg.append("g").attr("transform","translate("+(margin.left+10)+","+12+")");
+  legend.append("rect").attr("width",12).attr("height",12).attr("fill","#c74440");
+  legend.append("text").attr("x",16).attr("y",10).style("font-size","11px").text("Absolute Error (scaled x10)");
+  legend.append("rect").attr("x",180).attr("width",12).attr("height",12).attr("fill","#2d70b3");
+  legend.append("text").attr("x",196).attr("y",10).style("font-size","11px").text("Percent Error");
+
+  var totalLabel=g.append("text").attr("x",iw-10).attr("y",-5).attr("text-anchor","end").style("font-size","13px").style("font-weight","bold");
+
+  function update(gMult, mMult, dur){
+    var pctErrors=getPercentErrors(gMult, mMult);
+    // "Absolute errors" scaled to be visible: show raw Δ/max(Δ)*maxPct so bars are comparable
+    var mults=[gMult,1,mMult,1];
+    var absScaled=quantities.map(function(q,i){ return (baseAbsErrors[i]*mults[i])/(baseAbsErrors[3])*pctErrors[3]*0.5; });
+    var maxVal=d3.max(pctErrors.concat(absScaled))*1.2;
+    y.domain([0,maxVal]);
+
+    g.select(".x-axis").transition().duration(dur).call(d3.axisBottom(x));
+    g.select(".y-axis").transition().duration(dur).call(d3.axisLeft(y).ticks(6));
+
+    var data=quantities.map(function(q,i){ return {q:q, abs:absScaled[i], rel:pctErrors[i]}; });
+    var bars=g.selectAll(".bar-group").data(data, function(d){return d.q;});
+    var enter=bars.enter().append("g").attr("class","bar-group");
+    enter.append("rect").attr("class","abs-bar").attr("fill","#c74440");
+    enter.append("rect").attr("class","rel-bar").attr("fill","#2d70b3");
+    enter.append("text").attr("class","abs-label").attr("text-anchor","middle").style("font-size","10px");
+    enter.append("text").attr("class","rel-label").attr("text-anchor","middle").style("font-size","10px");
+    var merged=enter.merge(bars);
+    merged.select(".abs-bar").transition().duration(dur)
+      .attr("x",function(d){return x(d.q)+xSub("abs");})
+      .attr("y",function(d){return y(d.abs);})
+      .attr("width",xSub.bandwidth())
+      .attr("height",function(d){return ih-y(d.abs);});
+    merged.select(".rel-bar").transition().duration(dur)
+      .attr("x",function(d){return x(d.q)+xSub("rel");})
+      .attr("y",function(d){return y(d.rel);})
+      .attr("width",xSub.bandwidth())
+      .attr("height",function(d){return ih-y(d.rel);});
+    merged.select(".abs-label").transition().duration(dur)
+      .attr("x",function(d){return x(d.q)+xSub("abs")+xSub.bandwidth()/2;})
+      .attr("y",function(d){return y(d.abs)-3;})
+      .text(function(d){return d.abs.toFixed(2);});
+    merged.select(".rel-label").transition().duration(dur)
+      .attr("x",function(d){return x(d.q)+xSub("rel")+xSub.bandwidth()/2;})
+      .attr("y",function(d){return y(d.rel)-3;})
+      .text(function(d){return d.rel.toFixed(3)+"%";});
+
+    var pyth=Math.sqrt(pctErrors.reduce(function(s,v){return s+v*v;},0));
+    totalLabel.text("Pythagorean total: "+pyth.toFixed(3)+"%");
+  }
+
+  update(1,1,0);
+
+  d3.select("#error_g_slider").on("input",function(){ d3.select("#error_g_val").text(parseFloat(this.value).toFixed(1)); update(parseFloat(this.value),parseFloat(document.getElementById("error_m_slider").value),300); });
+  d3.select("#error_m_slider").on("input",function(){ d3.select("#error_m_val").text(parseFloat(this.value).toFixed(1)); update(parseFloat(document.getElementById("error_g_slider").value),parseFloat(this.value),300); });
+
+  var playing=false, animTimer;
+  d3.select("#error_comparison_play").on("click",function(){
+    if(playing){ clearInterval(animTimer); playing=false; this.textContent="\u25B6 Play"; return; }
+    playing=true; this.textContent="\u23F8 Pause";
+    var step=0;
+    animTimer=setInterval(function(){
+      step++;
+      var gm=1+2*Math.sin(step*0.05);
+      var mm=1+2*Math.cos(step*0.07);
+      document.getElementById("error_g_slider").value=gm;
+      document.getElementById("error_m_slider").value=mm;
+      d3.select("#error_g_val").text(gm.toFixed(1));
+      d3.select("#error_m_val").text(mm.toFixed(1));
+      update(gm,mm,80);
+    },80);
+  });
+})();
+</script>
+```
+
+*Use the sliders (or press Play) to vary the error multipliers for $G$ and $m$. The blue bars show percent errors $\frac{\Delta x}{x}$, the red bars show (scaled) absolute errors, and the total Pythagorean percent error is displayed at top right. Notice how the least precise measurements dominate the total.*
+
 ### Computing Each Percent Error
 
 Now we plug in the numbers:
@@ -230,6 +346,107 @@ $$\frac{\Delta F_G}{F_G} = \sqrt{\left(\frac{\Delta G}{G}\right)^2 + \left(\frac
 ```
 
 *Drag $a$ and $b$ to represent two error magnitudes. The green and orange segments are the "legs" (individual errors), the purple dashed line is the Pythagorean hypotenuse (realistic combined error), and the red dot shows the simple sum (worst case). The Pythagorean sum is always smaller or equal.*
+
+### Interactive: Log Differentiation Decomposition
+
+```{=html}
+<div class="d3-container" id="log_diff_1023">
+  <h4 style="text-align:center; margin-bottom:4px;">Log Differentiation: d(ln F) Decomposition</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="log_diff_play">&#9654; Animate Steps</button>
+    <label style="margin-left:12px;">Step: <input type="range" id="log_diff_step" min="0" max="4" step="1" value="0"><span id="log_diff_step_val">0</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=640, h=380, margin={top:30,right:20,bottom:30,left:20};
+  var svg=d3.select("#log_diff_1023").append("svg").attr("width",w).attr("height",h);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+  var iw=w-margin.left-margin.right, ih=h-margin.top-margin.bottom;
+
+  var steps=[
+    {label:"Step 0: Start with the product formula", eq:"F = G · M · m / r²", parts:[]},
+    {label:"Step 1: Take ln of both sides", eq:"ln F = ln G + ln M + ln m − 2 ln r", parts:["ln G","ln M","ln m","−2 ln r"]},
+    {label:"Step 2: Differentiate each term", eq:"dF/F = dG/G + dM/M + dm/m − 2 dr/r", parts:["dG/G","dM/M","dm/m","−2 dr/r"]},
+    {label:"Step 3: Interpret as percent errors", eq:"ΔF/F = ΔG/G + ΔM/M + Δm/m − 2 Δr/r", parts:["0.075%","0.084%","1.06%","1.56%"]},
+    {label:"Step 4: Combine via Pythagorean sum", eq:"ΔF/F = √( (ΔG/G)² + (ΔM/M)² + (Δm/m)² + (2Δr/r)² ) ≈ 1.89%", parts:["0.075%","0.084%","1.06%","1.56%"]}
+  ];
+  var colors=["#2d70b3","#388c46","#fa7e19","#c74440"];
+
+  var titleText=g.append("text").attr("x",iw/2).attr("y",0).attr("text-anchor","middle").style("font-size","14px").style("font-weight","bold");
+  var eqText=g.append("text").attr("x",iw/2).attr("y",40).attr("text-anchor","middle").style("font-size","16px").style("font-family","monospace");
+
+  var boxGroup=g.append("g").attr("transform","translate(0,80)");
+
+  function render(stepIdx, dur){
+    var s=steps[stepIdx];
+    titleText.transition().duration(dur).text(s.label);
+    eqText.transition().duration(dur).text(s.eq);
+
+    var boxes=boxGroup.selectAll(".step-box").data(s.parts, function(d,i){return i;});
+    boxes.exit().transition().duration(dur).style("opacity",0).remove();
+    var bw=iw/4-10, bh=160;
+    var enter=boxes.enter().append("g").attr("class","step-box").style("opacity",0);
+    enter.append("rect").attr("rx",8).attr("ry",8).attr("stroke","#333").attr("stroke-width",1.5);
+    enter.append("text").attr("class","box-text").attr("text-anchor","middle").style("font-size","14px").style("font-weight","bold");
+    if(stepIdx>=3){
+      enter.append("rect").attr("class","bar-fill").attr("rx",3);
+    }
+    var merged=enter.merge(boxes);
+    merged.transition().duration(dur).style("opacity",1)
+      .attr("transform",function(d,i){return "translate("+(i*(bw+10)+5)+",0)";});
+    merged.select("rect").attr("width",bw).attr("height",bh)
+      .attr("fill",function(d,i){return d3.color(colors[i]).copy({opacity:0.15});});
+    merged.select(".box-text").attr("x",bw/2).attr("y",bh/2+5).text(function(d){return d;})
+      .attr("fill",function(d,i){return colors[i];});
+    if(stepIdx>=3){
+      var maxPct=1.56;
+      merged.select(".bar-fill")
+        .attr("x",bw*0.15).attr("width",bw*0.7)
+        .attr("fill",function(d,i){return colors[i];}).style("opacity",0.6)
+        .transition().duration(dur)
+        .attr("y",function(d){var pct=parseFloat(d); return bh-20-(pct/maxPct)*(bh-50);})
+        .attr("height",function(d){var pct=parseFloat(d); return (pct/maxPct)*(bh-50);});
+    }
+    // Pythagorean arc for step 4
+    boxGroup.selectAll(".pyth-arc").remove();
+    if(stepIdx===4){
+      var arcG=boxGroup.append("g").attr("class","pyth-arc").attr("transform","translate(0,"+(bh+15)+")");
+      arcG.append("path")
+        .attr("d","M "+5+" 0 Q "+(iw/2)+" 30 "+(iw-15)+" 0")
+        .attr("fill","none").attr("stroke","#6042a6").attr("stroke-width",2).attr("stroke-dasharray","6,3");
+      arcG.append("text").attr("x",iw/2).attr("y",40).attr("text-anchor","middle")
+        .style("font-size","14px").style("fill","#6042a6").style("font-weight","bold")
+        .text("Pythagorean sum ≈ 1.89%");
+    }
+  }
+
+  render(0,0);
+
+  d3.select("#log_diff_step").on("input",function(){
+    var v=parseInt(this.value);
+    d3.select("#log_diff_step_val").text(v);
+    render(v,500);
+  });
+
+  d3.select("#log_diff_play").on("click",function(){
+    var btn=this, step=0;
+    btn.disabled=true;
+    function next(){
+      document.getElementById("log_diff_step").value=step;
+      d3.select("#log_diff_step_val").text(step);
+      render(step,600);
+      step++;
+      if(step<=4) setTimeout(next,1200);
+      else btn.disabled=false;
+    }
+    next();
+  });
+})();
+</script>
+```
+
+*Press "Animate Steps" or drag the step slider to walk through the log differentiation process: from the original product formula, through taking ln, differentiating, interpreting as percent errors, and finally combining them via the Pythagorean sum.*
 
 ### Crunching the Numbers
 

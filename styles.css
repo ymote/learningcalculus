@@ -37,6 +37,66 @@ h1, h2, h3, h4, h5, h6,
   height: 100%;
 }
 
+.d3-container {
+  width: 100%;
+  margin: 1.5em 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.d3-container svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.d3-controls {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.75em 1em;
+  background: #f0f0f0;
+  border-top: 1px solid #ddd;
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.d3-controls label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.d3-controls input[type="range"] {
+  flex: 1;
+  min-width: 120px;
+  accent-color: #2d70b3;
+}
+
+.d3-controls .value-display {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px;
+  min-width: 60px;
+}
+
+.d3-controls button {
+  padding: 0.4em 1.2em;
+  background: #2d70b3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.d3-controls button:hover {
+  background: #1a5490;
+}
+
 .key-formula {
   background: #f8f9fa;
   border-left: 4px solid #0d6efd;

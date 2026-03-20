@@ -89,6 +89,91 @@ $$\frac{d}{dx}(x^n) = n \cdot x^{n-1}$$
 考虑 $(x - r)^2$：平方总是非负的，因此该因子永远不会变号——图形触碰坐标轴后反弹回来。而 $(x - r)^1$ 在 $x$ 穿过 $r$ 时从负变正，图形必须穿过。其道理与乘以负数类似：奇数个负号翻转符号，偶数个负号保持不变。
 :::
 
+### 动画演示：多项式蛇形穿过根
+
+```{=html}
+<div class="d3-container" id="d3_0819_1">
+  <h4 style="text-align:center; margin-bottom:8px;">Polynomial Snaking Through Roots</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0819_1_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+    <label style="margin-left:16px;">Root 2 position: <input type="range" id="d3_0819_1_root2" min="-1" max="3" step="0.1" value="1"><span id="d3_0819_1_root2_val">1.0</span></label>
+    <label style="margin-left:16px;">Multiplicity at root 2: <input type="range" id="d3_0819_1_mult" min="1" max="3" step="1" value="2"><span id="d3_0819_1_mult_val">2</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w = 620, h = 360, m = {t:30,r:30,b:40,l:50};
+  var pw = w - m.l - m.r, ph = h - m.t - m.b;
+  var svg = d3.select("#d3_0819_1").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var g = svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+  var xScale = d3.scaleLinear().domain([-4,5]).range([0,pw]);
+  var yScale = d3.scaleLinear().domain([-30,30]).range([ph,0]);
+  g.append("g").attr("transform","translate(0,"+ph+")").call(d3.axisBottom(xScale).ticks(9));
+  g.append("g").call(d3.axisLeft(yScale).ticks(6));
+  g.append("line").attr("x1",0).attr("x2",pw).attr("y1",yScale(0)).attr("y2",yScale(0)).attr("stroke","#ccc").attr("stroke-dasharray","4,3");
+  var roots = [-3, 1, 4];
+  var mults = [1, 2, 1];
+  var rootDots = g.selectAll(".rootdot").data(roots).enter().append("circle")
+    .attr("cx",function(d){return xScale(d);}).attr("cy",yScale(0)).attr("r",7).attr("fill","#388c46").attr("opacity",0);
+  var rootLabels = g.selectAll(".rootlabel").data(roots).enter().append("text")
+    .attr("x",function(d){return xScale(d);}).attr("y",yScale(0)+22).attr("text-anchor","middle").attr("font-size","11px").attr("fill","#388c46").attr("opacity",0);
+  var curvePath = g.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  var bounceLbl = g.append("text").attr("font-size","10px").attr("fill","#c74440").attr("opacity",0);
+
+  function poly(x, r2, mult2){
+    var v = (x - roots[0]);
+    v *= Math.pow(x - r2, mult2);
+    v *= (x - roots[2]);
+    return v;
+  }
+  function genLine(r2, mult2){
+    var line = d3.line().x(function(d){return xScale(d);}).y(function(d){return yScale(poly(d,r2,mult2));}).curve(d3.curveBasis);
+    var pts = []; for(var x=-4;x<=5;x+=0.05) pts.push(x);
+    return line(pts);
+  }
+  function labelMult(mult2){return mult2%2===0?"bounces (even)":"crosses (odd)";}
+
+  function draw(r2, mult2, progress){
+    var allRoots = [roots[0], r2, roots[2]];
+    var allMults = [1, mult2, 1];
+    rootDots.data(allRoots).attr("cx",function(d){return xScale(d);}).attr("opacity", progress>0.1?1:0)
+      .attr("fill",function(d,i){return allMults[i]%2===0?"#c74440":"#388c46";});
+    rootLabels.data(allRoots).attr("x",function(d){return xScale(d);}).attr("opacity", progress>0.15?1:0)
+      .text(function(d,i){return allMults[i]%2===0?"bounce":"cross";});
+    bounceLbl.attr("x",xScale(r2)).attr("y",yScale(0)-12).attr("text-anchor","middle")
+      .text(labelMult(mult2)).attr("opacity", progress>0.2?1:0);
+    if(progress > 0.25){
+      var full = genLine(r2, mult2);
+      var len = curvePath.attr("d",full).node().getTotalLength();
+      curvePath.attr("stroke-dasharray",len).attr("stroke-dashoffset", len*(1-Math.min(1,(progress-0.25)/0.75)));
+    } else { curvePath.attr("d",null); }
+  }
+  draw(1, 2, 0);
+
+  var playing = false, anim;
+  d3.select("#d3_0819_1_play").on("click",function(){
+    if(playing){playing=false;d3.select(this).html("&#9654; Play");if(anim)anim.stop();return;}
+    playing=true; d3.select(this).html("&#9724; Stop");
+    var r2=+d3.select("#d3_0819_1_root2").property("value"), mult2=+d3.select("#d3_0819_1_mult").property("value");
+    var t0=Date.now(), dur=2500;
+    anim=d3.timer(function(){
+      var p=Math.min(1,(Date.now()-t0)/dur);
+      draw(r2, mult2, p);
+      if(p>=1){playing=false;d3.select("#d3_0819_1_play").html("&#9654; Play");anim.stop();}
+    });
+  });
+  d3.select("#d3_0819_1_root2").on("input",function(){
+    d3.select("#d3_0819_1_root2_val").text((+this.value).toFixed(1));
+    draw(+this.value, +d3.select("#d3_0819_1_mult").property("value"), 1);
+  });
+  d3.select("#d3_0819_1_mult").on("input",function(){
+    d3.select("#d3_0819_1_mult_val").text(this.value);
+    draw(+d3.select("#d3_0819_1_root2").property("value"), +this.value, 1);
+  });
+})();
+</script>
+```
+
 **探索蛇形法——拖动滑块移动根并改变重数：**
 
 ```{=html}
@@ -125,6 +210,84 @@ $$f'(x) = 3x^2 - 3 = 3(x^2 - 1) = 3(x-1)(x+1)$$
 
 - $f(1) = 1 - 3 = -2$ → 临界点在 $(1, -2)$
 - $f(-1) = -1 + 3 = 2$ → 临界点在 $(-1, 2)$
+
+### 动画演示：切线沿曲线滑动，在临界点处变平
+
+```{=html}
+<div class="d3-container" id="d3_0819_2">
+  <h4 style="text-align:center; margin-bottom:8px;">Critical Point Finder: Sliding Tangent Line</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0819_2_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+    <label style="margin-left:16px;">x position: <input type="range" id="d3_0819_2_x" min="-2.5" max="2.5" step="0.01" value="-2.5"><span id="d3_0819_2_x_val">-2.50</span></label>
+  </div>
+  <div style="text-align:center; font-size:13px;">
+    Slope: <strong><span id="d3_0819_2_slope">15.75</span></strong> &nbsp;|&nbsp;
+    f(x): <strong><span id="d3_0819_2_fx">-8.125</span></strong>
+  </div>
+</div>
+<script>
+(function(){
+  var w=620,h=380,m={t:30,r:30,b:40,l:50};
+  var pw=w-m.l-m.r, ph=h-m.t-m.b;
+  var svg=d3.select("#d3_0819_2").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+  var xS=d3.scaleLinear().domain([-3,3]).range([0,pw]);
+  var yS=d3.scaleLinear().domain([-6,6]).range([ph,0]);
+  g.append("g").attr("transform","translate(0,"+ph+")").call(d3.axisBottom(xS).ticks(7));
+  g.append("g").call(d3.axisLeft(yS).ticks(7));
+  g.append("line").attr("x1",0).attr("x2",pw).attr("y1",yS(0)).attr("y2",yS(0)).attr("stroke","#ddd").attr("stroke-dasharray","3,3");
+  g.append("line").attr("x1",xS(0)).attr("x2",xS(0)).attr("y1",0).attr("y2",ph).attr("stroke","#ddd").attr("stroke-dasharray","3,3");
+
+  function f(x){return x*x*x - 3*x;}
+  function fp(x){return 3*x*x - 3;}
+
+  var line=d3.line().x(function(d){return xS(d);}).y(function(d){return yS(f(d));}).curve(d3.curveBasis);
+  var pts=[]; for(var i=-3;i<=3;i+=0.03) pts.push(i);
+  g.append("path").attr("d",line(pts)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  g.append("text").attr("x",xS(2.2)).attr("y",yS(f(2.2))-8).text("f(x) = x\u00B3 - 3x").attr("fill","#2d70b3").attr("font-size","12px");
+
+  // critical point markers
+  [[-1,2],[1,-2]].forEach(function(cp){
+    g.append("circle").attr("cx",xS(cp[0])).attr("cy",yS(cp[1])).attr("r",6).attr("fill","none").attr("stroke","#388c46").attr("stroke-width",2);
+    g.append("text").attr("x",xS(cp[0])+10).attr("y",yS(cp[1])-8).text("("+cp[0]+", "+cp[1]+")").attr("fill","#388c46").attr("font-size","11px");
+  });
+
+  var tangentLine=g.append("line").attr("stroke","#c74440").attr("stroke-width",2);
+  var dot=g.append("circle").attr("r",6).attr("fill","#c74440");
+  var slopeLabel=g.append("text").attr("fill","#c74440").attr("font-size","11px").attr("font-weight","bold");
+  var cpFlash=g.append("text").attr("fill","#388c46").attr("font-size","14px").attr("font-weight","bold").attr("opacity",0);
+
+  function update(x){
+    var y=f(x), slope=fp(x);
+    dot.attr("cx",xS(x)).attr("cy",yS(y));
+    var dx=2;
+    tangentLine.attr("x1",xS(x-dx)).attr("y1",yS(y-slope*dx)).attr("x2",xS(x+dx)).attr("y2",yS(y+slope*dx));
+    slopeLabel.attr("x",xS(x)+12).attr("y",yS(y)-14).text("slope="+slope.toFixed(2));
+    d3.select("#d3_0819_2_slope").text(slope.toFixed(2));
+    d3.select("#d3_0819_2_fx").text(y.toFixed(3));
+    d3.select("#d3_0819_2_x_val").text(x.toFixed(2));
+    var nearCrit=Math.abs(slope)<0.3;
+    cpFlash.attr("opacity",nearCrit?1:0).attr("x",xS(x)+12).attr("y",yS(y)+22).text("Critical Point!");
+  }
+  update(-2.5);
+
+  var playing=false,anim;
+  d3.select("#d3_0819_2_play").on("click",function(){
+    if(playing){playing=false;d3.select(this).html("&#9654; Play");if(anim)anim.stop();return;}
+    playing=true;d3.select(this).html("&#9724; Stop");
+    var t0=Date.now(),dur=5000;
+    anim=d3.timer(function(){
+      var p=Math.min(1,(Date.now()-t0)/dur);
+      var x=-2.5+5*p;
+      d3.select("#d3_0819_2_x").property("value",x);
+      update(x);
+      if(p>=1){playing=false;d3.select("#d3_0819_2_play").html("&#9654; Play");anim.stop();}
+    });
+  });
+  d3.select("#d3_0819_2_x").on("input",function(){update(+this.value);});
+})();
+</script>
+```
 
 **同时查看函数及其导数：**
 

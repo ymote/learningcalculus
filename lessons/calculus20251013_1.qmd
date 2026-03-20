@@ -299,6 +299,168 @@ $$\frac{dA}{dt} = 2\pi(10)(2) = 40\pi \approx 125.7 \text{ m}^2/\text{s}$$
 
 Even though the radius grows at a constant rate, the area grows **faster and faster** because $\frac{dA}{dt}$ depends on $r$, which is increasing.
 
+**Animated demonstration -- expanding circle with dr/dt and dA/dt:**
+
+```{=html}
+<div class="d3-container" id="expanding_circle_1013_1">
+  <svg id="expanding_circle_svg_1013_1" width="100%" height="400"></svg>
+  <div class="d3-controls">
+    <button id="expanding_circle_play_1013_1">&#9654; Play</button>
+    <label>dr/dt: <input type="range" id="expanding_circle_drdt_1013_1" min="0.5" max="5" step="0.1" value="2">
+    <span id="expanding_circle_drdt_val_1013_1">2.0</span> m/s</label>
+  </div>
+</div>
+<script>
+(function(){
+  var svg = d3.select("#expanding_circle_svg_1013_1");
+  var width = 600, height = 400;
+  svg.attr("viewBox", "0 0 " + width + " " + height);
+  var cx = width / 2, cy = height / 2 - 20;
+  var maxR = 150, minR = 10;
+  var r = minR, playing = false, animId = null;
+  var drdt = 2;
+
+  var circle = svg.append("circle").attr("cx", cx).attr("cy", cy).attr("r", r)
+    .attr("fill", "rgba(45,112,179,0.15)").attr("stroke", "#2d70b3").attr("stroke-width", 2);
+  var radiusLine = svg.append("line").attr("x1", cx).attr("y1", cy).attr("x2", cx + r).attr("y2", cy)
+    .attr("stroke", "#c74440").attr("stroke-width", 2).attr("stroke-dasharray", "5,3");
+  var rLabel = svg.append("text").attr("x", cx + r / 2).attr("y", cy - 8)
+    .attr("text-anchor", "middle").attr("font-size", "14px").attr("fill", "#c74440");
+  var infoText = svg.append("text").attr("x", cx).attr("y", height - 30)
+    .attr("text-anchor", "middle").attr("font-size", "15px").attr("fill", "#333");
+  var areaText = svg.append("text").attr("x", cx).attr("y", height - 8)
+    .attr("text-anchor", "middle").attr("font-size", "15px").attr("fill", "#2d70b3");
+
+  function update() {
+    var rScaled = r / maxR * 10;
+    circle.attr("r", r);
+    radiusLine.attr("x2", cx + r);
+    rLabel.attr("x", cx + r / 2).text("r = " + rScaled.toFixed(1) + " m");
+    var A = Math.PI * rScaled * rScaled;
+    var dAdt = 2 * Math.PI * rScaled * drdt;
+    infoText.text("A = \u03C0r\u00B2 = " + A.toFixed(1) + " m\u00B2");
+    areaText.text("dA/dt = 2\u03C0r\u00B7dr/dt = " + dAdt.toFixed(1) + " m\u00B2/s");
+  }
+
+  function animate() {
+    if (!playing) return;
+    r += drdt * 0.3;
+    if (r > maxR) r = minR;
+    update();
+    animId = requestAnimationFrame(animate);
+  }
+
+  document.getElementById("expanding_circle_play_1013_1").addEventListener("click", function() {
+    playing = !playing;
+    this.textContent = playing ? "\u23F8 Pause" : "\u25B6 Play";
+    if (playing) animate();
+    else if (animId) cancelAnimationFrame(animId);
+  });
+
+  document.getElementById("expanding_circle_drdt_1013_1").addEventListener("input", function() {
+    drdt = parseFloat(this.value);
+    document.getElementById("expanding_circle_drdt_val_1013_1").textContent = drdt.toFixed(1);
+    update();
+  });
+
+  update();
+})();
+</script>
+```
+
+**Animated demonstration -- sliding ladder against a wall:**
+
+A ladder of length $L$ leans against a vertical wall. As the base slides outward, the top slides down. The Pythagorean theorem gives $x^2 + y^2 = L^2$, and differentiating: $x\frac{dx}{dt} + y\frac{dy}{dt} = 0$.
+
+```{=html}
+<div class="d3-container" id="sliding_ladder_1013_1">
+  <svg id="sliding_ladder_svg_1013_1" width="100%" height="420"></svg>
+  <div class="d3-controls">
+    <button id="sliding_ladder_play_1013_1">&#9654; Play</button>
+    <label>dx/dt: <input type="range" id="sliding_ladder_speed_1013_1" min="0.5" max="4" step="0.1" value="1.5">
+    <span id="sliding_ladder_speed_val_1013_1">1.5</span> m/s</label>
+  </div>
+</div>
+<script>
+(function(){
+  var svg = d3.select("#sliding_ladder_svg_1013_1");
+  var width = 600, height = 420;
+  svg.attr("viewBox", "0 0 " + width + " " + height);
+  var ox = 80, oy = height - 60;
+  var L = 300, scale = 1;
+  var theta = 1.2, playing = false, animId = null;
+  var dxdt = 1.5;
+
+  var wall = svg.append("line").attr("x1", ox).attr("y1", oy - L - 20).attr("x2", ox).attr("y2", oy)
+    .attr("stroke", "#888").attr("stroke-width", 4);
+  var floor = svg.append("line").attr("x1", ox).attr("y1", oy).attr("x2", ox + L + 40).attr("y2", oy)
+    .attr("stroke", "#888").attr("stroke-width", 4);
+  var ladder = svg.append("line").attr("stroke", "#388c46").attr("stroke-width", 5).attr("stroke-linecap", "round");
+  var baseDot = svg.append("circle").attr("r", 6).attr("fill", "#c74440");
+  var topDot = svg.append("circle").attr("r", 6).attr("fill", "#2d70b3");
+  var vxArrow = svg.append("line").attr("stroke", "#c74440").attr("stroke-width", 2).attr("marker-end", "url(#arrowRed1013)");
+  var vyArrow = svg.append("line").attr("stroke", "#2d70b3").attr("stroke-width", 2).attr("marker-end", "url(#arrowBlue1013)");
+
+  svg.append("defs").html(
+    '<marker id="arrowRed1013" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#c74440"/></marker>' +
+    '<marker id="arrowBlue1013" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#2d70b3"/></marker>'
+  );
+
+  var infoText = svg.append("text").attr("x", width / 2).attr("y", height - 10)
+    .attr("text-anchor", "middle").attr("font-size", "14px").attr("fill", "#333");
+  var vxLabel = svg.append("text").attr("font-size", "13px").attr("fill", "#c74440");
+  var vyLabel = svg.append("text").attr("font-size", "13px").attr("fill", "#2d70b3");
+
+  function update() {
+    var x = L * Math.cos(theta);
+    var y = L * Math.sin(theta);
+    var bx = ox + x, by = oy;
+    var tx = ox, ty = oy - y;
+    ladder.attr("x1", bx).attr("y1", by).attr("x2", tx).attr("y2", ty);
+    baseDot.attr("cx", bx).attr("cy", by);
+    topDot.attr("cx", tx).attr("cy", ty);
+
+    var xm = x / L * 10;
+    var ym = y / L * 10;
+    var dydt = -(xm * dxdt) / ym;
+    var vxLen = dxdt * 25;
+    var vyLen = Math.abs(dydt) * 25;
+
+    vxArrow.attr("x1", bx).attr("y1", by - 5).attr("x2", bx + vxLen).attr("y2", by - 5);
+    vyArrow.attr("x1", tx + 5).attr("y1", ty).attr("x2", tx + 5).attr("y2", ty + vyLen);
+
+    vxLabel.attr("x", bx + vxLen / 2).attr("y", by - 15).text("dx/dt=" + dxdt.toFixed(1));
+    vyLabel.attr("x", tx + 15).attr("y", ty + vyLen / 2).text("dy/dt=" + dydt.toFixed(2));
+
+    infoText.text("x=" + xm.toFixed(1) + "m, y=" + ym.toFixed(1) + "m, L=10m | x\u00B7dx/dt + y\u00B7dy/dt = 0");
+  }
+
+  function animate() {
+    if (!playing) return;
+    theta -= dxdt * 0.003;
+    if (theta < 0.15) { theta = 1.4; }
+    update();
+    animId = requestAnimationFrame(animate);
+  }
+
+  document.getElementById("sliding_ladder_play_1013_1").addEventListener("click", function() {
+    playing = !playing;
+    this.textContent = playing ? "\u23F8 Pause" : "\u25B6 Play";
+    if (playing) animate();
+    else if (animId) cancelAnimationFrame(animId);
+  });
+
+  document.getElementById("sliding_ladder_speed_1013_1").addEventListener("input", function() {
+    dxdt = parseFloat(this.value);
+    document.getElementById("sliding_ladder_speed_val_1013_1").textContent = dxdt.toFixed(1);
+    update();
+  });
+
+  update();
+})();
+</script>
+```
+
 ## Cheat Sheet
 
 ::: {.key-formula}

@@ -155,6 +155,102 @@ $(x_0, y_0)$ 处的**切线方向**沿向量 $\left(1, \; -\frac{18(x_0 - 5)}{32
 $$\vec{n} = \left(\frac{x_0 - 5}{32}, \;\frac{y_0 + 3}{18}\right)$$
 :::
 
+### 动画演示：在椭圆上寻找离目标点最近的点
+
+```{=html}
+<div class="d3-container" id="d3_0905_1">
+  <h4 style="margin:0 0 8px;">Closest Point on Ellipse to Target</h4>
+  <svg id="d3_0905_1_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0905_1_play" style="padding:4px 16px;cursor:pointer;">&#9654; Play</button>
+    <label>Target X: <input type="range" id="d3_0905_1_tx" min="14" max="28" value="20" step="0.5"><span id="d3_0905_1_tx_val">20</span></label>
+    <label>Target Y: <input type="range" id="d3_0905_1_ty" min="-12" max="8" value="0" step="0.5"><span id="d3_0905_1_ty_val">0</span></label>
+    <span id="d3_0905_1_info" style="font-size:13px;color:#555;"></span>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=400, cx=5, cy=-3, a=8, b=6;
+  var margin={top:20,right:20,bottom:30,left:40};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0905_1_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+  var xS=d3.scaleLinear().domain([-6,30]).range([0,w]);
+  var yS=d3.scaleLinear().domain([-14,10]).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(6));
+
+  // Draw ellipse
+  var ellipseData=[];
+  for(var i=0;i<=200;i++){var t=i/200*2*Math.PI;ellipseData.push([cx+a*Math.cos(t),cy+b*Math.sin(t)]);}
+  var line=d3.line().x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);}).curve(d3.curveLinearClosed);
+  g.append("path").datum(ellipseData).attr("d",line).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+
+  var targetDot=g.append("circle").attr("r",7).attr("fill","#388c46");
+  var targetLabel=g.append("text").attr("font-size",12).attr("fill","#388c46").attr("dy",-12).attr("text-anchor","middle");
+  var movingDot=g.append("circle").attr("r",6).attr("fill","#c74440");
+  var connectLine=g.append("line").attr("stroke","#fa7e19").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+  var normalLine=g.append("line").attr("stroke","#9b59b6").attr("stroke-width",1.5);
+  var bestDot=g.append("circle").attr("r",7).attr("fill","#e74c3c").attr("stroke","#fff").attr("stroke-width",2).attr("opacity",0);
+  var bestLine=g.append("line").attr("stroke","#e74c3c").attr("stroke-width",2).attr("opacity",0);
+  var distText=g.append("text").attr("font-size",12).attr("fill","#c74440");
+  var minText=g.append("text").attr("font-size",12).attr("fill","#e74c3c").attr("x",10).attr("y",20).attr("opacity",0);
+
+  var tParam=0, animating=false, animId=null, tx=20, ty=0;
+  var info=document.getElementById("d3_0905_1_info");
+
+  function ellipsePoint(t){return [cx+a*Math.cos(t), cy+b*Math.sin(t)];}
+  function dist(p,q){return Math.sqrt((p[0]-q[0])*(p[0]-q[0])+(p[1]-q[1])*(p[1]-q[1]));}
+
+  function findBest(){
+    var best=0, bd=1e9;
+    for(var i=0;i<1000;i++){var t=i/1000*2*Math.PI;var p=ellipsePoint(t);var d=dist(p,[tx,ty]);if(d<bd){bd=d;best=t;}}
+    return {t:best,d:bd,p:ellipsePoint(best)};
+  }
+
+  function update(){
+    var p=ellipsePoint(tParam);
+    var d=dist(p,[tx,ty]);
+    movingDot.attr("cx",xS(p[0])).attr("cy",yS(p[1]));
+    connectLine.attr("x1",xS(p[0])).attr("y1",yS(p[1])).attr("x2",xS(tx)).attr("y2",yS(ty));
+    targetDot.attr("cx",xS(tx)).attr("cy",yS(ty));
+    targetLabel.attr("x",xS(tx)).attr("y",yS(ty)).text("A=("+tx+","+ty+")");
+    distText.attr("x",xS((p[0]+tx)/2)).attr("y",yS((p[1]+ty)/2)-8).text("d="+d.toFixed(2));
+
+    // normal vector at point
+    var nx=(p[0]-cx)/(a*a), ny=(p[1]-cy)/(b*b);
+    var nm=Math.sqrt(nx*nx+ny*ny); nx/=nm; ny/=nm;
+    var nLen=3;
+    normalLine.attr("x1",xS(p[0])).attr("y1",yS(p[1])).attr("x2",xS(p[0]+nx*nLen)).attr("y2",yS(p[1]+ny*nLen));
+
+    var best=findBest();
+    bestDot.attr("cx",xS(best.p[0])).attr("cy",yS(best.p[1])).attr("opacity",1);
+    bestLine.attr("x1",xS(best.p[0])).attr("y1",yS(best.p[1])).attr("x2",xS(tx)).attr("y2",yS(ty)).attr("opacity",0.4);
+    minText.text("Min dist = "+best.d.toFixed(2)+" at ("+best.p[0].toFixed(1)+", "+best.p[1].toFixed(1)+")").attr("opacity",1);
+    info.textContent="t="+tParam.toFixed(2)+" | P=("+p[0].toFixed(1)+","+p[1].toFixed(1)+") | d="+d.toFixed(2);
+  }
+
+  function animate(){
+    tParam+=0.02;
+    if(tParam>2*Math.PI) tParam=0;
+    update();
+    if(animating) animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById("d3_0905_1_play").addEventListener("click",function(){
+    animating=!animating;
+    this.textContent=animating?"\u23F8 Pause":"\u25B6 Play";
+    if(animating) animate();
+    else if(animId) cancelAnimationFrame(animId);
+  });
+  document.getElementById("d3_0905_1_tx").addEventListener("input",function(){tx=+this.value;document.getElementById("d3_0905_1_tx_val").textContent=tx;update();});
+  document.getElementById("d3_0905_1_ty").addEventListener("input",function(){ty=+this.value;document.getElementById("d3_0905_1_ty_val").textContent=ty;update();});
+
+  update();
+})();
+</script>
+```
+
 ### 几何直觉
 
 ::: {.callout-important}
@@ -206,6 +302,89 @@ $$\frac{32(20 - x_0)}{x_0 - 5} = \frac{-18\,y_0}{y_0 + 3}$$
 ```
 
 *拖动滑块 $t$ 使点 $P$ 沿椭圆移动，观察距离的变化。*
+
+### 动画演示：距离函数的颜色编码网格
+
+```{=html}
+<div class="d3-container" id="d3_0905_2">
+  <h4 style="margin:0 0 8px;">Distance Function Shown as Color-Coded Dots</h4>
+  <p style="margin:0 0 8px;font-size:13px;color:#555;">Each dot shows the distance from that grid point to the target A. Darker blue = closer, darker red = farther. The ellipse boundary is overlaid.</p>
+  <svg id="d3_0905_2_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0905_2_play" style="padding:4px 16px;cursor:pointer;">&#9654; Animate Target</button>
+    <label>Target X: <input type="range" id="d3_0905_2_tx" min="10" max="28" value="20" step="0.5"><span id="d3_0905_2_tx_val">20</span></label>
+    <label>Target Y: <input type="range" id="d3_0905_2_ty" min="-12" max="8" value="0" step="0.5"><span id="d3_0905_2_ty_val">0</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=420, cx=5, cy=-3, a=8, b=6;
+  var margin={top:20,right:30,bottom:30,left:40};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0905_2_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+  var xMin=-6, xMax=28, yMin=-14, yMax=10;
+  var xS=d3.scaleLinear().domain([xMin,xMax]).range([0,w]);
+  var yS=d3.scaleLinear().domain([yMin,yMax]).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(6));
+
+  // Ellipse path
+  var ellipseData=[];
+  for(var i=0;i<=200;i++){var t=i/200*2*Math.PI;ellipseData.push([cx+a*Math.cos(t),cy+b*Math.sin(t)]);}
+  var line=d3.line().x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);}).curve(d3.curveLinearClosed);
+  g.append("path").datum(ellipseData).attr("d",line).attr("fill","none").attr("stroke","#333").attr("stroke-width",2);
+
+  // Grid dots
+  var step=1.5, dots=[];
+  for(var gx=xMin+1;gx<xMax;gx+=step){
+    for(var gy=yMin+1;gy<yMax;gy+=step){
+      dots.push({x:gx,y:gy});
+    }
+  }
+  var colorScale=d3.scaleSequential(d3.interpolateRdYlBu).domain([35,0]);
+  var dotSel=g.selectAll(".gdot").data(dots).enter().append("circle").attr("class","gdot")
+    .attr("cx",function(d){return xS(d.x);}).attr("cy",function(d){return yS(d.y);}).attr("r",5).attr("opacity",0.7);
+
+  var targetDot=g.append("circle").attr("r",8).attr("fill","#388c46").attr("stroke","#fff").attr("stroke-width",2);
+  var targetLabel=g.append("text").attr("font-size",12).attr("fill","#388c46").attr("dy",-14).attr("text-anchor","middle");
+
+  var tx=20, ty=0, animating=false, animId=null, angle=0;
+
+  function update(){
+    dotSel.attr("fill",function(d){
+      var dist=Math.sqrt((d.x-tx)*(d.x-tx)+(d.y-ty)*(d.y-ty));
+      return colorScale(dist);
+    });
+    targetDot.attr("cx",xS(tx)).attr("cy",yS(ty));
+    targetLabel.attr("x",xS(tx)).attr("y",yS(ty)).text("A=("+tx.toFixed(1)+","+ty.toFixed(1)+")");
+  }
+
+  function animate(){
+    angle+=0.015;
+    tx=16+10*Math.cos(angle);
+    ty=-3+8*Math.sin(angle);
+    document.getElementById("d3_0905_2_tx").value=tx;
+    document.getElementById("d3_0905_2_ty").value=ty;
+    document.getElementById("d3_0905_2_tx_val").textContent=tx.toFixed(1);
+    document.getElementById("d3_0905_2_ty_val").textContent=ty.toFixed(1);
+    update();
+    if(animating) animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById("d3_0905_2_play").addEventListener("click",function(){
+    animating=!animating;
+    this.textContent=animating?"\u23F8 Pause":"\u25B6 Animate Target";
+    if(animating) animate();
+    else if(animId) cancelAnimationFrame(animId);
+  });
+  document.getElementById("d3_0905_2_tx").addEventListener("input",function(){tx=+this.value;document.getElementById("d3_0905_2_tx_val").textContent=tx;update();});
+  document.getElementById("d3_0905_2_ty").addEventListener("input",function(){ty=+this.value;document.getElementById("d3_0905_2_ty_val").textContent=ty;update();});
+
+  update();
+})();
+</script>
+```
 
 ### 拓展到三维：椭球体
 

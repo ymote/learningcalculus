@@ -204,6 +204,81 @@ $$\frac{d}{dx}(e^x) = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \frac{x^4}{4!} +
 
 *拖动 $a$ 的滑块，可以观察到切线的斜率始终等于该点的高度——这正是 $\frac{d}{dx}(e^x) = e^x$ 的体现。*
 
+### 动画演示：e^x 的切线——斜率等于函数值
+
+```{=html}
+<div class="d3-container" id="d3_0915_1">
+  <h4 style="margin:0 0 8px;">e<sup>x</sup> with Animated Tangent Line</h4>
+  <p style="margin:0 0 8px;font-size:13px;color:#555;">The tangent line's slope at any point equals the function value e<sup>x</sup> — the defining property of e.</p>
+  <svg id="d3_0915_1_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0915_1_play" style="padding:4px 16px;cursor:pointer;">&#9654; Play</button>
+    <label>x₀: <input type="range" id="d3_0915_1_x0" min="-2.5" max="2.8" value="0" step="0.05"><span id="d3_0915_1_x0_val">0.00</span></label>
+    <span id="d3_0915_1_info" style="font-size:13px;color:#555;"></span>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=380;
+  var margin={top:20,right:20,bottom:35,left:50};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0915_1_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xDom=[-3,3.5], yDom=[-1,16];
+  var xS=d3.scaleLinear().domain(xDom).range([0,w]);
+  var yS=d3.scaleLinear().domain(yDom).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(8));
+
+  // e^x curve
+  var pts=[];
+  for(var x=xDom[0];x<=xDom[1];x+=0.05) pts.push({x:x,y:Math.exp(x)});
+  var ln=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);}).curve(d3.curveBasis);
+  g.append("path").datum(pts).attr("d",ln).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  g.append("text").attr("x",xS(2.5)).attr("y",yS(Math.exp(2.5))-8).attr("font-size",13).attr("fill","#2d70b3").text("y = eˣ");
+
+  var tangentLine=g.append("line").attr("stroke","#fa7e19").attr("stroke-width",2);
+  var dot=g.append("circle").attr("r",7).attr("fill","#c74440");
+  var valLabel=g.append("text").attr("font-size",12).attr("fill","#c74440");
+  var slopeLabel=g.append("text").attr("font-size",12).attr("fill","#fa7e19");
+  var info=document.getElementById("d3_0915_1_info");
+
+  var x0=0, animating=false, animId=null, dir=0.015;
+
+  function update(){
+    var y0=Math.exp(x0), slope=y0;
+    dot.attr("cx",xS(x0)).attr("cy",yS(y0));
+    // tangent line from x0-2 to x0+2
+    var x1=x0-2, x2=x0+2;
+    var y1=y0+slope*(x1-x0), y2=y0+slope*(x2-x0);
+    tangentLine.attr("x1",xS(x1)).attr("y1",yS(y1)).attr("x2",xS(x2)).attr("y2",yS(y2));
+    valLabel.attr("x",xS(x0)+10).attr("y",yS(y0)-10).text("f("+x0.toFixed(2)+") = "+y0.toFixed(3));
+    slopeLabel.attr("x",xS(x0)+10).attr("y",yS(y0)+18).text("slope = "+slope.toFixed(3));
+    info.textContent="x₀ = "+x0.toFixed(2)+" | eˣ⁰ = "+y0.toFixed(4)+" | slope = "+slope.toFixed(4)+" (they match!)";
+  }
+
+  function animate(){
+    x0+=dir;
+    if(x0>2.8||x0<-2.5) dir=-dir;
+    document.getElementById("d3_0915_1_x0").value=x0;
+    document.getElementById("d3_0915_1_x0_val").textContent=x0.toFixed(2);
+    update();
+    if(animating) animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById("d3_0915_1_play").addEventListener("click",function(){
+    animating=!animating;
+    this.textContent=animating?"\u23F8 Pause":"\u25B6 Play";
+    if(animating) animate(); else if(animId) cancelAnimationFrame(animId);
+  });
+  document.getElementById("d3_0915_1_x0").addEventListener("input",function(){x0=+this.value;document.getElementById("d3_0915_1_x0_val").textContent=x0.toFixed(2);update();});
+
+  update();
+})();
+</script>
+```
+
 ### $a^x$ 的导数（任意指数底数）
 
 对于 $\frac{d}{dx}(2^x)$ 或 $\frac{d}{dx}(10^x)$ 等问题，关键技巧是用 $e$ 改写任意指数函数：
@@ -302,6 +377,97 @@ $$\boxed{\frac{d}{dx}\ln(x) = \frac{1}{x}}$$
 ```
 
 *拖动滑块并比较：$x = a$ 处切线的斜率始终等于 $\frac{1}{a}$（绿色虚线曲线）。*
+
+### 动画演示：ln(x) 的割线趋近切线——导数趋近 1/x
+
+```{=html}
+<div class="d3-container" id="d3_0915_2">
+  <h4 style="margin:0 0 8px;">Secant Line on ln(x) Approaching the Tangent</h4>
+  <p style="margin:0 0 8px;font-size:13px;color:#555;">As Δx shrinks toward 0, the secant line becomes the tangent, and its slope approaches 1/x.</p>
+  <svg id="d3_0915_2_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0915_2_play" style="padding:4px 16px;cursor:pointer;">&#9654; Shrink Δx</button>
+    <label>x₀: <input type="range" id="d3_0915_2_x0" min="0.5" max="5" value="2" step="0.1"><span id="d3_0915_2_x0_val">2.0</span></label>
+    <label>Δx: <input type="range" id="d3_0915_2_dx" min="0.01" max="3" value="2" step="0.01"><span id="d3_0915_2_dx_val">2.00</span></label>
+    <span id="d3_0915_2_info" style="font-size:13px;color:#555;"></span>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=380;
+  var margin={top:20,right:20,bottom:35,left:50};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0915_2_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xDom=[0,6.5], yDom=[-2,2.5];
+  var xS=d3.scaleLinear().domain(xDom).range([0,w]);
+  var yS=d3.scaleLinear().domain(yDom).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(6));
+
+  // ln(x) curve
+  var pts=[];
+  for(var x=0.05;x<=xDom[1];x+=0.05) pts.push({x:x,y:Math.log(x)});
+  var ln=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);}).curve(d3.curveBasis);
+  g.append("path").datum(pts).attr("d",ln).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  g.append("text").attr("x",xS(5.5)).attr("y",yS(Math.log(5.5))-8).attr("font-size",13).attr("fill","#2d70b3").text("y = ln(x)");
+
+  // 1/x curve (faint)
+  var pts2=[];
+  for(var x=0.3;x<=xDom[1];x+=0.05) pts2.push({x:x,y:1/x});
+  g.append("path").datum(pts2).attr("d",ln).attr("fill","none").attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3").attr("opacity",0.6);
+  g.append("text").attr("x",xS(1.2)).attr("y",yS(1/1.2)-10).attr("font-size",11).attr("fill","#388c46").text("1/x (true derivative)");
+
+  var secantLine=g.append("line").attr("stroke","#fa7e19").attr("stroke-width",2);
+  var tangentLine=g.append("line").attr("stroke","#9b59b6").attr("stroke-width",1.5).attr("stroke-dasharray","5,3");
+  var dot1=g.append("circle").attr("r",6).attr("fill","#c74440");
+  var dot2=g.append("circle").attr("r",5).attr("fill","#fa7e19");
+  var slopeText=g.append("text").attr("font-size",12);
+  var trueText=g.append("text").attr("font-size",12).attr("fill","#388c46");
+  var info=document.getElementById("d3_0915_2_info");
+
+  var x0=2, dx=2, animating=false, animId=null;
+
+  function update(){
+    var y0=Math.log(x0), y1=Math.log(x0+dx);
+    var secSlope=(y1-y0)/dx;
+    var trueSlope=1/x0;
+    dot1.attr("cx",xS(x0)).attr("cy",yS(y0));
+    dot2.attr("cx",xS(x0+dx)).attr("cy",yS(y1));
+    // extend secant
+    var ext=3;
+    secantLine.attr("x1",xS(x0-ext)).attr("y1",yS(y0-secSlope*ext))
+      .attr("x2",xS(x0+dx+ext)).attr("y2",yS(y1+secSlope*ext));
+    // tangent line
+    tangentLine.attr("x1",xS(x0-ext)).attr("y1",yS(y0-trueSlope*ext))
+      .attr("x2",xS(x0+ext)).attr("y2",yS(y0+trueSlope*ext));
+    slopeText.attr("x",xS(x0+dx)+10).attr("y",yS(y1)-5).attr("fill","#fa7e19")
+      .text("secant slope = "+secSlope.toFixed(4));
+    trueText.attr("x",10).attr("y",20).text("1/x₀ = "+trueSlope.toFixed(4)+" (true derivative)");
+    info.textContent="Δx = "+dx.toFixed(3)+" | secant = "+secSlope.toFixed(5)+" | 1/x₀ = "+trueSlope.toFixed(5)+" | error = "+Math.abs(secSlope-trueSlope).toFixed(5);
+  }
+
+  function animate(){
+    dx*=0.97;
+    if(dx<0.015){animating=false;document.getElementById("d3_0915_2_play").textContent="\u25B6 Shrink \u0394x";dx=0.01;}
+    document.getElementById("d3_0915_2_dx").value=dx;
+    document.getElementById("d3_0915_2_dx_val").textContent=dx.toFixed(2);
+    update();
+    if(animating) animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById("d3_0915_2_play").addEventListener("click",function(){
+    if(!animating){animating=true;dx=2;this.textContent="\u23F8 Pause";animate();}
+    else{animating=false;this.textContent="\u25B6 Shrink \u0394x";if(animId)cancelAnimationFrame(animId);}
+  });
+  document.getElementById("d3_0915_2_x0").addEventListener("input",function(){x0=+this.value;document.getElementById("d3_0915_2_x0_val").textContent=x0.toFixed(1);update();});
+  document.getElementById("d3_0915_2_dx").addEventListener("input",function(){dx=+this.value;document.getElementById("d3_0915_2_dx_val").textContent=dx.toFixed(2);update();});
+
+  update();
+})();
+</script>
+```
 
 ### 预览：欧拉公式
 

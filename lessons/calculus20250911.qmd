@@ -109,6 +109,114 @@ The number never blows up to infinity — it settles down to the special constan
 Start with $k = 1$ and gradually increase it. Observe how rapidly the value approaches $e$ — by $k = 100$ the approximation is already within a few hundredths. The value never reaches $e$ exactly; it approaches it asymptotically. This is the nature of a **limit**.
 :::
 
+### Interactive: $(1+1/n)^n$ Convergence to $e$
+
+```{=html}
+<div class="d3-container" id="d3_0911_1">
+  <h4 style="margin:0 0 8px;">Watch (1 + 1/n)<sup>n</sup> Approach e</h4>
+  <svg id="d3_0911_1_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0911_1_play" style="padding:4px 16px;cursor:pointer;">&#9654; Play</button>
+    <label>Max n: <input type="range" id="d3_0911_1_nmax" min="5" max="200" value="50" step="1"><span id="d3_0911_1_nmax_val">50</span></label>
+    <span id="d3_0911_1_info" style="font-size:13px;color:#555;"></span>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=360;
+  var margin={top:20,right:20,bottom:40,left:55};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0911_1_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var E=Math.E, nMax=50;
+  var xS=d3.scaleLinear().domain([0,nMax]).range([0,w]);
+  var yS=d3.scaleLinear().domain([1.8,2.85]).range([h,0]);
+  var xAxis=g.append("g").attr("transform","translate(0,"+h+")");
+  var yAxis=g.append("g");
+  g.append("text").attr("x",w/2).attr("y",h+35).attr("text-anchor","middle").attr("font-size",12).text("n");
+  g.append("text").attr("transform","rotate(-90)").attr("x",-h/2).attr("y",-42).attr("text-anchor","middle").attr("font-size",12).text("(1 + 1/n)^n");
+
+  // e line
+  var eLine=g.append("line").attr("stroke","#e74c3c").attr("stroke-width",1.5).attr("stroke-dasharray","6,3");
+  var eLabel=g.append("text").attr("fill","#e74c3c").attr("font-size",12).attr("dy",-5);
+
+  var barsGroup=g.append("g");
+  var curN=0, animating=false, animId=null, speed=0;
+  var info=document.getElementById("d3_0911_1_info");
+
+  function val(n){return Math.pow(1+1/n,n);}
+
+  function redraw(){
+    xS.domain([0,nMax+1]);
+    xAxis.call(d3.axisBottom(xS).ticks(Math.min(nMax,10)));
+    yAxis.call(d3.axisLeft(yS).ticks(6));
+    eLine.attr("x1",0).attr("y1",yS(E)).attr("x2",w).attr("y2",yS(E));
+    eLabel.attr("x",w-5).attr("y",yS(E)).text("e ≈ 2.71828");
+  }
+
+  function drawBars(upTo){
+    var data=[];
+    for(var i=1;i<=Math.min(upTo,nMax);i++) data.push({n:i,v:val(i)});
+    var barW=Math.max(1,w/(nMax+1)-1);
+    var sel=barsGroup.selectAll("rect").data(data,function(d){return d.n;});
+    sel.enter().append("rect")
+      .attr("x",function(d){return xS(d.n)-barW/2;})
+      .attr("width",barW)
+      .attr("y",yS(1.8))
+      .attr("height",0)
+      .attr("fill",function(d){return d3.interpolateBlues(0.3+(d.v-2)*1.2);})
+      .transition().duration(200)
+      .attr("y",function(d){return yS(d.v);})
+      .attr("height",function(d){return yS(1.8)-yS(d.v);});
+    sel.attr("x",function(d){return xS(d.n)-barW/2;}).attr("width",barW)
+      .attr("y",function(d){return yS(d.v);}).attr("height",function(d){return yS(1.8)-yS(d.v);});
+    if(upTo>0 && upTo<=nMax){
+      var v=val(Math.min(upTo,nMax));
+      info.textContent="n = "+Math.min(upTo,nMax)+" | (1+1/n)^n = "+v.toFixed(6)+" | error = "+(E-v).toFixed(6);
+    }
+  }
+
+  function animate(){
+    speed++;
+    if(speed%2===0){
+      curN++;
+      if(curN>nMax){animating=false;document.getElementById("d3_0911_1_play").textContent="\u25B6 Play";return;}
+      drawBars(curN);
+    }
+    if(animating) animId=requestAnimationFrame(animate);
+  }
+
+  document.getElementById("d3_0911_1_play").addEventListener("click",function(){
+    if(!animating){
+      animating=true;
+      curN=0;speed=0;
+      barsGroup.selectAll("rect").remove();
+      this.textContent="\u23F8 Pause";
+      animate();
+    } else {
+      animating=false;
+      this.textContent="\u25B6 Play";
+      if(animId) cancelAnimationFrame(animId);
+    }
+  });
+  document.getElementById("d3_0911_1_nmax").addEventListener("input",function(){
+    nMax=+this.value;
+    document.getElementById("d3_0911_1_nmax_val").textContent=nMax;
+    barsGroup.selectAll("rect").remove();
+    curN=0;
+    redraw();
+    drawBars(nMax);
+  });
+
+  redraw();
+  drawBars(nMax);
+})();
+</script>
+```
+
+*Press Play to watch bars appear one-by-one as n increases. Each bar's height is $(1+1/n)^n$. Notice how rapidly the values approach the dashed line at $e$.*
+
 ## Generalizing: The Rate $r$
 
 If the interest rate is not 100% but some general rate $r$, then after one year with $k$ compoundings:
@@ -212,6 +320,107 @@ $$\lim_{k \to \infty}\left(1 + \frac{r}{k}\right)^k = 1 + r + \frac{r^2}{2!} + \
 :::
 
 That infinite sum is the **Taylor series for $e^r$** — and that is how compound interest leads us to the number $e$.
+
+### Interactive: Binomial Expansion Terms
+
+```{=html}
+<div class="d3-container" id="d3_0911_2">
+  <h4 style="margin:0 0 8px;">Binomial Expansion of (1 + r/k)<sup>k</sup> — Term by Term</h4>
+  <p style="margin:0 0 8px;font-size:13px;color:#555;">Each colored bar segment shows one term C(k,i)·(r/k)<sup>i</sup>. As k grows, the terms approach r<sup>i</sup>/i!, the Taylor series for e<sup>r</sup>.</p>
+  <svg id="d3_0911_2_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0911_2_play" style="padding:4px 16px;cursor:pointer;">&#9654; Play</button>
+    <label>k: <input type="range" id="d3_0911_2_k" min="2" max="50" value="4" step="1"><span id="d3_0911_2_k_val">4</span></label>
+    <label>r: <input type="range" id="d3_0911_2_r" min="0.5" max="3" value="1" step="0.1"><span id="d3_0911_2_r_val">1</span></label>
+    <span id="d3_0911_2_info" style="font-size:13px;color:#555;"></span>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=360;
+  var margin={top:20,right:20,bottom:40,left:55};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0911_2_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var yS=d3.scaleLinear().domain([0,3.5]).range([h,0]);
+  var yAxis=g.append("g").call(d3.axisLeft(yS).ticks(6));
+  g.append("text").attr("transform","rotate(-90)").attr("x",-h/2).attr("y",-42).attr("text-anchor","middle").attr("font-size",12).text("Cumulative value");
+
+  var colors=d3.schemeTableau10;
+  var barsGroup=g.append("g");
+  var eLine=g.append("line").attr("stroke","#e74c3c").attr("stroke-width",1.5).attr("stroke-dasharray","6,3");
+  var eLabel=g.append("text").attr("fill","#e74c3c").attr("font-size",12).attr("dy",-5);
+  var info=document.getElementById("d3_0911_2_info");
+
+  var k=4, r=1, animating=false, animId=null, animK=2;
+
+  function binom(n,i){
+    if(i>n) return 0;
+    var v=1;for(var j=0;j<i;j++) v*=(n-j)/(j+1);
+    return v;
+  }
+  function term(k,i,r){return binom(k,i)*Math.pow(r/k,i);}
+
+  function draw(kv,rv){
+    barsGroup.selectAll("*").remove();
+    var maxTerms=Math.min(kv+1,10);
+    var terms=[];
+    for(var i=0;i<maxTerms;i++) terms.push(term(kv,i,rv));
+    var rest=Math.pow(1+rv/kv,kv)-terms.reduce(function(a,b){return a+b;},0);
+    if(rest>0.001) terms.push(rest);
+
+    var barW=40;
+    var xCenter=w/2;
+    var cum=0;
+    for(var i=0;i<terms.length;i++){
+      var tv=terms[i];
+      barsGroup.append("rect")
+        .attr("x",xCenter-barW/2)
+        .attr("y",yS(cum+tv))
+        .attr("width",barW)
+        .attr("height",yS(cum)-yS(cum+tv))
+        .attr("fill",colors[i%10])
+        .attr("opacity",0.8)
+        .attr("stroke","#fff").attr("stroke-width",0.5);
+      if(tv>0.05){
+        barsGroup.append("text").attr("x",xCenter+barW/2+5).attr("y",yS(cum+tv/2)+4)
+          .attr("font-size",11).attr("fill","#333")
+          .text(i<maxTerms?(i<6?"i="+i+": "+tv.toFixed(3):""):("+rest"));
+      }
+      cum+=tv;
+    }
+    var total=Math.pow(1+rv/kv,kv);
+    var target=Math.exp(rv);
+    eLine.attr("x1",0).attr("y1",yS(target)).attr("x2",w).attr("y2",yS(target));
+    eLabel.attr("x",w-5).attr("y",yS(target)).text("e^"+rv.toFixed(1)+" = "+target.toFixed(4));
+    info.textContent="k="+kv+" | (1+r/k)^k = "+total.toFixed(5)+" | e^r = "+target.toFixed(5);
+  }
+
+  // Also show Taylor terms as reference bar
+  function animate(){
+    animK++;
+    if(animK>50){animating=false;document.getElementById("d3_0911_2_play").textContent="\u25B6 Play";return;}
+    document.getElementById("d3_0911_2_k").value=animK;
+    document.getElementById("d3_0911_2_k_val").textContent=animK;
+    k=animK;
+    draw(k,r);
+    if(animating) animId=setTimeout(function(){if(animating) requestAnimationFrame(animate);},120);
+  }
+
+  document.getElementById("d3_0911_2_play").addEventListener("click",function(){
+    if(!animating){animating=true;animK=1;r=+document.getElementById("d3_0911_2_r").value;this.textContent="\u23F8 Pause";animate();}
+    else{animating=false;this.textContent="\u25B6 Play";}
+  });
+  document.getElementById("d3_0911_2_k").addEventListener("input",function(){k=+this.value;document.getElementById("d3_0911_2_k_val").textContent=k;draw(k,r);});
+  document.getElementById("d3_0911_2_r").addEventListener("input",function(){r=+this.value;document.getElementById("d3_0911_2_r_val").textContent=r;draw(k,r);});
+
+  draw(k,r);
+})();
+</script>
+```
+
+*Each colored segment represents one term of the binomial expansion. Press Play to watch k increase from 2 to 50 -- the stacked bar converges toward the dashed line at $e^r$.*
 
 ## Why the Derivative of $e^x$ Is $e^x$ Itself
 

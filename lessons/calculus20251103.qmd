@@ -169,6 +169,105 @@ This is a **parabola**. Larger $g$ makes it steeper (the ball drops faster); lar
 
 *Drag $g$ to increase gravity (the parabola steepens) or increase $u$ to increase the horizontal speed (the parabola flattens). The ball always follows a parabolic path.*
 
+### Interactive: Riemann Sum Approximation
+
+```{=html}
+<div class="d3-container" id="riemann_sum_1103">
+  <h4 style="text-align:center; margin-bottom:4px;">Riemann Sum: Area Under a Curve as N Increases</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="riemann_play">&#9654; Animate N</button>
+    <label style="margin-left:12px;">N (rectangles): <input type="range" id="riemann_n" min="1" max="80" step="1" value="4"><span id="riemann_n_val">4</span></label>
+    <label style="margin-left:12px;">Function: <select id="riemann_fn"><option value="para">x(4-x)</option><option value="semi">sqrt(9-x^2)</option><option value="sin">sin(x)</option></select></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=620, h=380, margin={top:20,right:30,bottom:50,left:55};
+  var svg=d3.select("#riemann_sum_1103").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right, ih=h-margin.top-margin.bottom;
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var funcs={
+    para:{fn:function(x){return x*(4-x);}, a:0, b:4, ymax:5, exact:32/3, label:"x(4-x)"},
+    semi:{fn:function(x){return Math.sqrt(9-x*x);}, a:-3, b:3, ymax:4, exact:Math.PI*9/2, label:"\u221A(9-x\u00B2)"},
+    sin:{fn:function(x){return Math.sin(x);}, a:0, b:Math.PI, ymax:1.3, exact:2, label:"sin(x)"}
+  };
+
+  var xS=d3.scaleLinear().range([0,iw]);
+  var yS=d3.scaleLinear().range([ih,0]);
+  g.append("g").attr("class","x-axis-r").attr("transform","translate(0,"+ih+")");
+  g.append("g").attr("class","y-axis-r");
+
+  var curvePath=g.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  var barsGroup=g.append("g");
+  var infoText=g.append("text").attr("x",iw-10).attr("y",20).attr("text-anchor","end").style("font-size","13px").style("font-weight","bold").attr("fill","#333");
+  var exactText=g.append("text").attr("x",iw-10).attr("y",38).attr("text-anchor","end").style("font-size","12px").attr("fill","#888");
+
+  function render(N, fnKey, dur){
+    var cfg=funcs[fnKey];
+    xS.domain([cfg.a-0.5, cfg.b+0.5]);
+    yS.domain([-0.2, cfg.ymax]);
+    g.select(".x-axis-r").transition().duration(dur).call(d3.axisBottom(xS).ticks(6));
+    g.select(".y-axis-r").transition().duration(dur).call(d3.axisLeft(yS).ticks(5));
+
+    // Curve
+    var cpts=d3.range(cfg.a,cfg.b+0.01,0.02).map(function(x){return {x:x,y:cfg.fn(x)};});
+    var lineGen=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);});
+    curvePath.transition().duration(dur).attr("d",lineGen(cpts));
+
+    // Bars
+    var dx=(cfg.b-cfg.a)/N;
+    var barData=d3.range(N).map(function(i){
+      var xl=cfg.a+i*dx;
+      var xm=xl+dx/2;
+      var h=cfg.fn(xm);
+      return {xl:xl, w:dx, h:Math.max(0,h)};
+    });
+    var bars=barsGroup.selectAll("rect").data(barData);
+    bars.exit().transition().duration(dur).style("opacity",0).remove();
+    bars.enter().append("rect").attr("stroke","#c74440").attr("stroke-width",0.5)
+      .merge(bars).transition().duration(dur)
+      .attr("x",function(d){return xS(d.xl);})
+      .attr("y",function(d){return yS(d.h);})
+      .attr("width",function(d){return xS(d.xl+d.w)-xS(d.xl);})
+      .attr("height",function(d){return ih-yS(d.h);})
+      .attr("fill","rgba(199,68,64,0.3)");
+
+    var approx=barData.reduce(function(s,d){return s+d.h*d.w;},0);
+    infoText.text("N="+N+"  Approx area = "+approx.toFixed(4));
+    exactText.text("Exact area = "+cfg.exact.toFixed(4)+"  Error = "+Math.abs(approx-cfg.exact).toFixed(4));
+  }
+
+  render(4,"para",0);
+
+  d3.select("#riemann_n").on("input",function(){
+    var n=parseInt(this.value);
+    d3.select("#riemann_n_val").text(n);
+    render(n, document.getElementById("riemann_fn").value, 250);
+  });
+  d3.select("#riemann_fn").on("change",function(){
+    render(parseInt(document.getElementById("riemann_n").value), this.value, 400);
+  });
+
+  d3.select("#riemann_play").on("click",function(){
+    var btn=this; btn.disabled=true;
+    var n=1, fnKey=document.getElementById("riemann_fn").value;
+    function next(){
+      document.getElementById("riemann_n").value=n;
+      d3.select("#riemann_n_val").text(n);
+      render(n,fnKey,200);
+      n=n<10?n+1:(n<30?n+2:n+5);
+      if(n<=80) setTimeout(next,300);
+      else btn.disabled=false;
+    }
+    next();
+  });
+})();
+</script>
+```
+
+*Press "Animate N" to watch the Riemann rectangles refine from $N=1$ up to $N=80$. As $N$ increases, the approximation converges to the exact area. Choose different functions from the dropdown. The error (difference between the approximation and the exact integral) shrinks toward zero.*
+
 ### From Differential to Integral Calculus
 
 Up to this point, the focus has been on **differential calculus**: decomposing quantities into infinitesimals and finding rates of change. We now begin **integral calculus**: assembling infinitesimals to compute totals. The key insight is that differentiation and antidifferentiation are **inverse operations** -- as demonstrated by recovering position from velocity in the projectile problem above.
@@ -216,6 +315,122 @@ Now the problem reduces to finding the antiderivative of $2\sqrt{r^2 - x^2}$.
 ```
 
 *Drag $a$ from $-3$ to $3$. The shaded blue region is $A(a)$. The red strip is the infinitesimal slice $dA$ — its height is $2\sqrt{9 - a^2}$. When $a$ reaches $3$, the shaded area equals the full circle: $\pi(3)^2 = 9\pi \approx 28.27$.*
+
+### Interactive: Antiderivative Construction -- Area Function Growing
+
+```{=html}
+<div class="d3-container" id="antideriv_area_1103">
+  <h4 style="text-align:center; margin-bottom:4px;">Antiderivative as Area: A(x) = &int; f(t) dt from a to x</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="antideriv_play">&#9654; Sweep x</button>
+    <label style="margin-left:12px;">x (right endpoint): <input type="range" id="antideriv_x" min="-3" max="3" step="0.02" value="-3"><span id="antideriv_x_val">-3.00</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=640, h=500, margin={top:20,right:20,bottom:40,left:55};
+  var svg=d3.select("#antideriv_area_1103").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right;
+  var panelH=190, gap=40;
+
+  // f(t) = sqrt(9 - t^2), the semicircle
+  function f(t){ return t>=-3 && t<=3 ? Math.sqrt(9-t*t) : 0; }
+
+  // Top panel: f(t) with shaded area
+  var g1=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+  var xS=d3.scaleLinear().domain([-4,4]).range([0,iw]);
+  var yS=d3.scaleLinear().domain([-0.5,4]).range([panelH,0]);
+  g1.append("g").attr("transform","translate(0,"+panelH+")").call(d3.axisBottom(xS).ticks(8));
+  g1.append("g").call(d3.axisLeft(yS).ticks(4));
+  g1.append("text").attr("x",iw/2).attr("y",-5).attr("text-anchor","middle").style("font-size","12px").style("font-weight","bold").text("f(t) = \u221A(9 - t\u00B2)  (upper semicircle, r=3)");
+
+  // Draw semicircle
+  var cpts=d3.range(-3,3.01,0.02).map(function(t){return {x:t,y:f(t)};});
+  var lineGen=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);});
+  g1.append("path").datum(cpts).attr("d",lineGen).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+
+  var areaPath=g1.append("path").attr("fill","rgba(45,112,179,0.25)").attr("stroke","none");
+  var sweepLine=g1.append("line").attr("stroke","#c74440").attr("stroke-width",2);
+  var areaLabel=g1.append("text").attr("text-anchor","middle").style("font-size","12px").style("font-weight","bold").attr("fill","#2d70b3");
+
+  // Bottom panel: A(x) accumulating
+  var g2=svg.append("g").attr("transform","translate("+margin.left+","+(margin.top+panelH+gap)+")");
+  var yA=d3.scaleLinear().domain([-1,15]).range([panelH,0]);
+  g2.append("g").attr("transform","translate(0,"+panelH+")").call(d3.axisBottom(xS).ticks(8));
+  g2.append("g").call(d3.axisLeft(yA).ticks(5));
+  g2.append("text").attr("x",iw/2).attr("y",-5).attr("text-anchor","middle").style("font-size","12px").style("font-weight","bold").text("A(x) = \u222B from -3 to x of f(t) dt");
+
+  // Precompute A(x)
+  var dtA=0.01, areaVals={};
+  var cum=0;
+  for(var tt=-3;tt<=3.001;tt+=dtA){
+    areaVals[tt.toFixed(2)]=cum;
+    cum+=f(tt)*dtA;
+  }
+  function getArea(x){
+    var key=Math.max(-3,Math.min(3,x)).toFixed(2);
+    return areaVals[key]||0;
+  }
+
+  // Full A(x) curve
+  var aFullPts=d3.range(-3,3.01,0.02).map(function(x){return {x:x, y:getArea(x)};});
+  var lineGen2=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yA(d.y);});
+  g2.append("path").datum(aFullPts).attr("d",lineGen2).attr("fill","none").attr("stroke","#ddd").attr("stroke-width",1.5);
+
+  var areaTraceCurve=g2.append("path").attr("fill","none").attr("stroke","#388c46").attr("stroke-width",2.5);
+  var dot2=g2.append("circle").attr("r",5).attr("fill","#388c46");
+  var areaValText=g2.append("text").style("font-size","13px").style("font-weight","bold").attr("fill","#388c46");
+
+  // exact: area of semicircle = pi*9/2 ~ 14.137
+  g2.append("line").attr("x1",xS(-3)).attr("x2",xS(3)).attr("y1",yA(Math.PI*9/2)).attr("y2",yA(Math.PI*9/2)).attr("stroke","#aaa").attr("stroke-dasharray","4,3");
+  g2.append("text").attr("x",xS(3)+5).attr("y",yA(Math.PI*9/2)+4).style("font-size","10px").attr("fill","#888").text("\u03C0r\u00B2/2");
+
+  svg.append("text").attr("x",w/2).attr("y",h-5).attr("text-anchor","middle").style("font-size","12px").text("x");
+
+  function render(xVal){
+    // shaded area in top panel
+    var pts=d3.range(-3,xVal+0.01,0.02).map(function(t){return {x:t,y:f(t)};});
+    if(pts.length>0){
+      var areaD="M"+xS(-3)+","+yS(0);
+      pts.forEach(function(p){ areaD+=" L"+xS(p.x)+","+yS(p.y); });
+      areaD+=" L"+xS(xVal)+","+yS(0)+" Z";
+      areaPath.attr("d",areaD);
+    }
+    sweepLine.attr("x1",xS(xVal)).attr("x2",xS(xVal)).attr("y1",yS(0)).attr("y2",yS(f(xVal)));
+    areaLabel.attr("x",xS(Math.max(-2.5,(xVal-3)/2))).attr("y",yS(1.5)).text("A="+getArea(xVal).toFixed(2));
+
+    // traced A(x) in bottom panel
+    var aPts=d3.range(-3,xVal+0.01,0.02).map(function(x){return {x:x, y:getArea(x)};});
+    areaTraceCurve.datum(aPts).attr("d",lineGen2);
+    var av=getArea(xVal);
+    dot2.attr("cx",xS(xVal)).attr("cy",yA(av));
+    areaValText.attr("x",xS(xVal)+8).attr("y",yA(av)-6).text("A("+xVal.toFixed(1)+") = "+av.toFixed(2));
+  }
+
+  render(-3);
+
+  d3.select("#antideriv_x").on("input",function(){
+    var v=parseFloat(this.value);
+    d3.select("#antideriv_x_val").text(v.toFixed(2));
+    render(v);
+  });
+
+  d3.select("#antideriv_play").on("click",function(){
+    var btn=this; btn.disabled=true;
+    var xv=-3;
+    var timer=setInterval(function(){
+      xv+=0.03;
+      if(xv>3){ xv=3; clearInterval(timer); btn.disabled=false; }
+      document.getElementById("antideriv_x").value=xv;
+      d3.select("#antideriv_x_val").text(xv.toFixed(2));
+      render(xv);
+    },20);
+  });
+})();
+</script>
+```
+
+*Press "Sweep x" or drag the slider. The top panel shows the integrand $f(t) = \sqrt{9-t^2}$ with the shaded area growing as $x$ moves right. The bottom panel shows the area function $A(x)$ being constructed in real time. When $x$ reaches $3$, the total area equals $\frac{\pi r^2}{2} \approx 14.14$ -- half the circle.*
 
 ### Review: Seven Families and Their Derivatives
 

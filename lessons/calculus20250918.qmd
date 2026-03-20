@@ -174,6 +174,127 @@ To find the $n$th derivative, one divides $n$ by 4 and examines the remainder:
 
 For example, the 100th derivative of $\sin x$: $100 \div 4 = 25$ remainder $0$, so $f^{(100)}(x) = \sin x$.
 
+### Interactive: Taylor Polynomial Approximations
+
+```{=html}
+<div class="d3-container" id="d3_0918_1">
+  <h4 style="margin:0 0 8px;">Taylor Polynomials Building Up to the True Function</h4>
+  <p style="margin:0 0 8px;font-size:13px;color:#555;">Watch successive Taylor polynomial terms appear, each improving the approximation.</p>
+  <svg id="d3_0918_1_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0918_1_play" style="padding:4px 16px;cursor:pointer;">&#9654; Add Terms</button>
+    <label>Terms: <input type="range" id="d3_0918_1_n" min="1" max="12" value="1" step="1"><span id="d3_0918_1_n_val">1</span></label>
+    <label>Function:
+      <select id="d3_0918_1_fn" style="padding:2px;">
+        <option value="ex">e^x</option>
+        <option value="cos">cos(x)</option>
+        <option value="sin">sin(x)</option>
+      </select>
+    </label>
+    <span id="d3_0918_1_info" style="font-size:13px;color:#555;"></span>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=380;
+  var margin={top:20,right:20,bottom:35,left:50};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0918_1_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xDom=[-5,5], yDom=[-3,8];
+  var xS=d3.scaleLinear().domain(xDom).range([0,w]);
+  var yS=d3.scaleLinear().domain(yDom).range([h,0]);
+  g.append("g").attr("class","xax").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").attr("class","yax").call(d3.axisLeft(yS).ticks(8));
+
+  var truePath=g.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  var trueLabel=g.append("text").attr("font-size",13).attr("fill","#2d70b3");
+  var polyPaths=[];
+  var colors=["#e74c3c","#fa7e19","#f1c40f","#2ecc71","#1abc9c","#3498db","#9b59b6","#e91e63","#795548","#607d8b","#ff5722","#00bcd4"];
+  for(var i=0;i<12;i++){
+    polyPaths.push(g.append("path").attr("fill","none").attr("stroke",colors[i]).attr("stroke-width",1.5).attr("stroke-dasharray","4,2").attr("opacity",0));
+  }
+  var info=document.getElementById("d3_0918_1_info");
+  var nTerms=1, fn="ex", animating=false, animId=null;
+
+  function factorial(n){var r=1;for(var i=2;i<=n;i++)r*=i;return r;}
+
+  function trueFunc(x){
+    if(fn==="ex") return Math.exp(x);
+    if(fn==="cos") return Math.cos(x);
+    return Math.sin(x);
+  }
+
+  function taylorTerm(k,x){
+    if(fn==="ex") return Math.pow(x,k)/factorial(k);
+    if(fn==="cos"){
+      if(k%2!==0) return 0;
+      var m=k/2;
+      return Math.pow(-1,m)*Math.pow(x,k)/factorial(k);
+    }
+    // sin
+    if(k%2===0) return 0;
+    var m=(k-1)/2;
+    return Math.pow(-1,m)*Math.pow(x,k)/factorial(k);
+  }
+
+  function taylorSum(n,x){var s=0;for(var k=0;k<n;k++)s+=taylorTerm(k,x);return s;}
+
+  function makeLine(func){
+    var pts=[];
+    for(var x=xDom[0];x<=xDom[1];x+=0.08){
+      var y=func(x);
+      if(y>yDom[1]+10||y<yDom[0]-10) y=NaN;
+      pts.push({x:x,y:y});
+    }
+    return d3.line().defined(function(d){return !isNaN(d.y);}).x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);}).curve(d3.curveBasis)(pts);
+  }
+
+  function draw(){
+    var yMax=fn==="ex"?8:2;
+    var yMin=fn==="ex"?-2:-2;
+    yS.domain([yMin,yMax]);
+    g.select(".yax").call(d3.axisLeft(yS).ticks(8));
+
+    truePath.attr("d",makeLine(trueFunc));
+    var lbl=fn==="ex"?"eˣ":fn==="cos"?"cos(x)":"sin(x)";
+    trueLabel.attr("x",xS(xDom[1]-1)).attr("y",yS(trueFunc(xDom[1]-1))-10).text(lbl);
+
+    for(var i=0;i<12;i++){
+      if(i<nTerms){
+        var n=i+1;
+        polyPaths[i].attr("d",makeLine(function(x){return taylorSum(n,x);})).attr("opacity",0.7);
+      } else {
+        polyPaths[i].attr("opacity",0);
+      }
+    }
+    info.textContent=nTerms+" term(s) shown — higher-order polynomials match the true curve over wider ranges.";
+  }
+
+  function animate(){
+    nTerms++;
+    if(nTerms>12){animating=false;document.getElementById("d3_0918_1_play").textContent="\u25B6 Add Terms";nTerms=12;}
+    document.getElementById("d3_0918_1_n").value=nTerms;
+    document.getElementById("d3_0918_1_n_val").textContent=nTerms;
+    draw();
+    if(animating) animId=setTimeout(function(){if(animating) requestAnimationFrame(animate);},500);
+  }
+
+  document.getElementById("d3_0918_1_play").addEventListener("click",function(){
+    if(!animating){animating=true;nTerms=0;this.textContent="\u23F8 Pause";animate();}
+    else{animating=false;this.textContent="\u25B6 Add Terms";}
+  });
+  document.getElementById("d3_0918_1_n").addEventListener("input",function(){nTerms=+this.value;document.getElementById("d3_0918_1_n_val").textContent=nTerms;draw();});
+  document.getElementById("d3_0918_1_fn").addEventListener("change",function(){fn=this.value;draw();});
+
+  draw();
+})();
+</script>
+```
+
+*Press Play to watch Taylor polynomials appear one by one. Each new term (dashed line) matches the blue curve over a wider range. Try switching between $e^x$, $\cos(x)$, and $\sin(x)$.*
+
 ### Geometric Series as a Power Series
 
 Recall the geometric series formula:
@@ -249,6 +370,96 @@ This is valid for $-1 < x \le 1$.
 ```
 
 *Increase $n$ and watch the series (red dashed) hug the real $\ln(1+x)$ curve (blue) more closely, especially between $-1$ and $1$.*
+
+### Interactive: ln(1+x) Series — Partial Sums Converging
+
+```{=html}
+<div class="d3-container" id="d3_0918_2">
+  <h4 style="margin:0 0 8px;">Partial Sums of ln(1+x) = x − x²/2 + x³/3 − ...</h4>
+  <p style="margin:0 0 8px;font-size:13px;color:#555;">Watch partial sums accumulate term by term. Convergence occurs for |x| &lt; 1.</p>
+  <svg id="d3_0918_2_svg"></svg>
+  <div class="d3-controls" style="margin-top:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+    <button id="d3_0918_2_play" style="padding:4px 16px;cursor:pointer;">&#9654; Add Terms</button>
+    <label>Terms: <input type="range" id="d3_0918_2_n" min="1" max="25" value="1" step="1"><span id="d3_0918_2_n_val">1</span></label>
+    <label>Eval at x: <input type="range" id="d3_0918_2_x" min="-0.95" max="1" value="0.5" step="0.05"><span id="d3_0918_2_x_val">0.50</span></label>
+    <span id="d3_0918_2_info" style="font-size:13px;color:#555;"></span>
+  </div>
+</div>
+<script>
+(function(){
+  var W=560, H=380;
+  var margin={top:20,right:20,bottom:35,left:50};
+  var w=W-margin.left-margin.right, h=H-margin.top-margin.bottom;
+  var svg=d3.select("#d3_0918_2_svg").attr("width",W).attr("height",H);
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xDom=[-1.5,1.5], yDom=[-2.5,1.5];
+  var xS=d3.scaleLinear().domain(xDom).range([0,w]);
+  var yS=d3.scaleLinear().domain(yDom).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(6));
+
+  // convergence boundary
+  g.append("line").attr("x1",xS(-1)).attr("y1",0).attr("x2",xS(-1)).attr("y2",h).attr("stroke","#aaa").attr("stroke-dasharray","3,3");
+  g.append("line").attr("x1",xS(1)).attr("y1",0).attr("x2",xS(1)).attr("y2",h).attr("stroke","#aaa").attr("stroke-dasharray","3,3");
+  g.append("text").attr("x",xS(1)+3).attr("y",15).attr("font-size",11).attr("fill","#aaa").text("|x|=1");
+
+  // true ln(1+x)
+  var pts=[];
+  for(var x=-0.98;x<=1.5;x+=0.03) pts.push({x:x,y:Math.log(1+x)});
+  var line=d3.line().x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);}).curve(d3.curveBasis);
+  g.append("path").datum(pts).attr("d",line).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  g.append("text").attr("x",xS(1.2)).attr("y",yS(Math.log(2.2))-8).attr("font-size",13).attr("fill","#2d70b3").text("ln(1+x)");
+
+  var polyPath=g.append("path").attr("fill","none").attr("stroke","#e74c3c").attr("stroke-width",2).attr("stroke-dasharray","5,3");
+  var evalDot=g.append("circle").attr("r",6).attr("fill","#388c46");
+  var evalText=g.append("text").attr("font-size",12).attr("fill","#388c46");
+  var trueDot=g.append("circle").attr("r",4).attr("fill","#2d70b3");
+  var info=document.getElementById("d3_0918_2_info");
+
+  var nTerms=1, evalX=0.5, animating=false, animId=null;
+
+  function partialSum(n,x){var s=0;for(var k=1;k<=n;k++) s+=Math.pow(-1,k+1)*Math.pow(x,k)/k;return s;}
+
+  function draw(){
+    var ppts=[];
+    for(var x=-0.98;x<=1.4;x+=0.02){
+      var y=partialSum(nTerms,x);
+      if(y>yDom[1]+5||y<yDom[0]-5) y=NaN;
+      ppts.push({x:x,y:y});
+    }
+    var pl=d3.line().defined(function(d){return !isNaN(d.y);}).x(function(d){return xS(d.x);}).y(function(d){return yS(d.y);}).curve(d3.curveBasis);
+    polyPath.attr("d",pl(ppts));
+
+    var sv=partialSum(nTerms,evalX), tv=Math.log(1+evalX);
+    evalDot.attr("cx",xS(evalX)).attr("cy",yS(sv));
+    trueDot.attr("cx",xS(evalX)).attr("cy",yS(tv));
+    evalText.attr("x",xS(evalX)+10).attr("y",yS(sv)).text("S_"+nTerms+"="+sv.toFixed(5));
+    info.textContent=nTerms+" terms | S_"+nTerms+"("+evalX.toFixed(2)+") = "+sv.toFixed(6)+" | ln(1+x) = "+tv.toFixed(6)+" | error = "+Math.abs(sv-tv).toFixed(6);
+  }
+
+  function animate(){
+    nTerms++;
+    if(nTerms>25){animating=false;document.getElementById("d3_0918_2_play").textContent="\u25B6 Add Terms";nTerms=25;}
+    document.getElementById("d3_0918_2_n").value=nTerms;
+    document.getElementById("d3_0918_2_n_val").textContent=nTerms;
+    draw();
+    if(animating) animId=setTimeout(function(){if(animating) requestAnimationFrame(animate);},350);
+  }
+
+  document.getElementById("d3_0918_2_play").addEventListener("click",function(){
+    if(!animating){animating=true;nTerms=0;this.textContent="\u23F8 Pause";animate();}
+    else{animating=false;this.textContent="\u25B6 Add Terms";}
+  });
+  document.getElementById("d3_0918_2_n").addEventListener("input",function(){nTerms=+this.value;document.getElementById("d3_0918_2_n_val").textContent=nTerms;draw();});
+  document.getElementById("d3_0918_2_x").addEventListener("input",function(){evalX=+this.value;document.getElementById("d3_0918_2_x_val").textContent=evalX.toFixed(2);draw();});
+
+  draw();
+})();
+</script>
+```
+
+*Press Play to add terms one at a time. The red dashed curve (partial sum) converges to the blue ln(1+x) curve inside $|x| < 1$. Try setting x outside this range to see divergence.*
 
 ### Recognizing Derivatives of Known Functions
 

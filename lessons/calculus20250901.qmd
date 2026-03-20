@@ -167,6 +167,84 @@ $$2x^3 - x - 3 = 0$$
 
 This is a **cubic equation** — and we need to solve it!
 
+**Animated: Find the point on y = x^2 closest to P(3, 1)**
+
+```{=html}
+<div class="d3-container" id="d3_0901_1">
+  <h4 style="text-align:center; margin-bottom:8px;">Optimization: Minimum Distance from P(3,1) to y=x&sup2;</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0901_1_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+    <label style="margin-left:12px;">x on curve: <input type="range" id="d3_0901_1_x" min="-2" max="3" step="0.01" value="-2"><span id="d3_0901_1_x_val">-2.00</span></label>
+  </div>
+  <div id="d3_0901_1_info" style="text-align:center; font-size:13px; margin-top:4px;"></div>
+</div>
+<script>
+(function(){
+  var w=560,h=420,m={t:25,r:25,b:40,l:50};
+  var pw=w-m.l-m.r, ph=h-m.t-m.b;
+  var svg=d3.select("#d3_0901_1").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+  var xS=d3.scaleLinear().domain([-3,5]).range([0,pw]);
+  var yS=d3.scaleLinear().domain([-1,9]).range([ph,0]);
+  g.append("g").attr("transform","translate(0,"+ph+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(6));
+  g.append("line").attr("x1",0).attr("x2",pw).attr("y1",yS(0)).attr("y2",yS(0)).attr("stroke","#ddd").attr("stroke-dasharray","3,3");
+
+  // parabola
+  var lineP=d3.line().x(function(d){return xS(d);}).y(function(d){return yS(d*d);}).curve(d3.curveBasis);
+  var pts=[];for(var i=-3;i<=3.2;i+=0.04)pts.push(i);
+  g.append("path").attr("d",lineP(pts)).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  g.append("text").attr("x",xS(2.8)).attr("y",yS(8.2)).text("y = x\u00B2").attr("fill","#2d70b3").attr("font-size","12px");
+
+  // fixed point P
+  g.append("circle").attr("cx",xS(3)).attr("cy",yS(1)).attr("r",8).attr("fill","#c74440");
+  g.append("text").attr("x",xS(3)+12).attr("y",yS(1)+5).text("P(3, 1)").attr("fill","#c74440").attr("font-size","12px").attr("font-weight","bold");
+
+  var moveDot=g.append("circle").attr("r",7).attr("fill","#388c46");
+  var distLine=g.append("line").attr("stroke","#fa7e19").attr("stroke-width",2);
+  var distLabel=g.append("text").attr("fill","#fa7e19").attr("font-size","12px").attr("font-weight","bold");
+  var minMarker=g.append("circle").attr("r",9).attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2.5).attr("stroke-dasharray","4,3").attr("opacity",0);
+  var minLabel=g.append("text").attr("fill","#c74440").attr("font-size","12px").attr("font-weight","bold").attr("opacity",0);
+
+  var bestX=1.18, bestDist=Infinity;
+
+  function dist(x){return Math.sqrt((x-3)*(x-3)+(x*x-1)*(x*x-1));}
+
+  function update(x){
+    var y=x*x, d=dist(x);
+    moveDot.attr("cx",xS(x)).attr("cy",yS(y));
+    distLine.attr("x1",xS(x)).attr("y1",yS(y)).attr("x2",xS(3)).attr("y2",yS(1));
+    var mx=(x+3)/2, my=(y+1)/2;
+    distLabel.attr("x",xS(mx)+8).attr("y",yS(my)-8).text("D = "+d.toFixed(3));
+    d3.select("#d3_0901_1_x_val").text(x.toFixed(2));
+    d3.select("#d3_0901_1_info").html("Q("+x.toFixed(2)+", "+y.toFixed(2)+") &nbsp;|&nbsp; D\u00B2 = "+((x-3)*(x-3)+(y-1)*(y-1)).toFixed(3)+" &nbsp;|&nbsp; D = "+d.toFixed(3));
+
+    // show if near minimum
+    if(d<bestDist+0.01){
+      var approxMin=dist(1.18);
+      if(Math.abs(d-approxMin)<0.15){
+        minMarker.attr("cx",xS(x)).attr("cy",yS(y)).attr("opacity",1);
+        minLabel.attr("x",xS(x)-60).attr("y",yS(y)-14).text("Closest!").attr("opacity",1);
+      } else { minMarker.attr("opacity",0); minLabel.attr("opacity",0); }
+    }
+  }
+  update(-2);
+
+  d3.select("#d3_0901_1_x").on("input",function(){update(+this.value);});
+  d3.select("#d3_0901_1_play").on("click",function(){
+    var dur=4000,t0=Date.now();
+    var timer=d3.timer(function(){
+      var p=Math.min(1,(Date.now()-t0)/dur);
+      var x=-2+5*p;
+      d3.select("#d3_0901_1_x").property("value",x);
+      update(x);
+      if(p>=1)timer.stop();
+    });
+  });
+})();
+</script>
+```
+
 **Explore — drag the point along the parabola to see the distance change:**
 
 ```{=html}
@@ -201,6 +279,117 @@ $$x^3 - \frac{1}{2}x - \frac{3}{2} = 0$$
 By inspection or numerical methods, $x = 1$ doesn't work, but we can verify that $2(1)^3 - 1 - 3 = -2$. We check that the cubic has one real root near $x \approx 1.18$.
 
 For this course, the important takeaway is the **method**: substitute $x = a + b$, use the identity $(a+b)^3 = a^3 + 3ab(a+b) + b^3$, and match coefficients to turn the cubic into a quadratic.
+
+**Animated: Derivative sign analysis with increasing/decreasing shading and min/max markers**
+
+```{=html}
+<div class="d3-container" id="d3_0901_2">
+  <h4 style="text-align:center; margin-bottom:8px;">Derivative Sign Analysis: f(x) = x&sup3; - 6x&sup2; + 9x + 1</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0901_2_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+  </div>
+</div>
+<script>
+(function(){
+  var w=620,h=380,m={t:30,r:30,b:40,l:50};
+  var pw=w-m.l-m.r, ph=h-m.t-m.b;
+  var svg=d3.select("#d3_0901_2").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+  var xS=d3.scaleLinear().domain([-1,5]).range([0,pw]);
+  var yS=d3.scaleLinear().domain([-4,10]).range([ph,0]);
+  g.append("g").attr("transform","translate(0,"+ph+")").call(d3.axisBottom(xS).ticks(7));
+  g.append("g").call(d3.axisLeft(yS).ticks(7));
+  g.append("line").attr("x1",0).attr("x2",pw).attr("y1",yS(0)).attr("y2",yS(0)).attr("stroke","#ddd").attr("stroke-dasharray","3,3");
+
+  // f(x) = x^3 - 6x^2 + 9x + 1, f'(x) = 3x^2 - 12x + 9 = 3(x-1)(x-3)
+  // critical points: x=1 (local max, f(1)=5), x=3 (local min, f(3)=1)
+  function f(x){return x*x*x - 6*x*x + 9*x + 1;}
+  function fp(x){return 3*x*x - 12*x + 9;}
+
+  var lineF=d3.line().x(function(d){return xS(d);}).y(function(d){return yS(f(d));}).curve(d3.curveBasis);
+  var pts=[];for(var i=-1;i<=5;i+=0.04)pts.push(i);
+  var curvePath=g.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  g.append("text").attr("x",xS(4.2)).attr("y",yS(f(4.2))-10).text("f(x)").attr("fill","#2d70b3").attr("font-size","12px");
+
+  // shading regions
+  var regions=[
+    {x1:-1,x2:1,inc:true,color:"rgba(46,160,67,0.12)"},
+    {x1:1,x2:3,inc:false,color:"rgba(214,39,40,0.12)"},
+    {x1:3,x2:5,inc:true,color:"rgba(46,160,67,0.12)"}
+  ];
+  var shades=regions.map(function(r){
+    return g.append("rect").attr("x",xS(r.x1)).attr("y",0).attr("width",xS(r.x2)-xS(r.x1)).attr("height",ph)
+      .attr("fill",r.color).attr("opacity",0);
+  });
+  var shadeLbls=regions.map(function(r){
+    return g.append("text").attr("x",(xS(r.x1)+xS(r.x2))/2).attr("y",ph-8).attr("text-anchor","middle")
+      .attr("font-size","12px").attr("font-weight","bold").attr("fill",r.inc?"#2ca02c":"#d62728").attr("opacity",0)
+      .text(r.inc?"f' > 0 (inc)":"f' < 0 (dec)");
+  });
+
+  // critical point markers
+  var cpData=[{x:1,y:5,label:"Local Max (1, 5)"},{x:3,y:1,label:"Local Min (3, 1)"}];
+  var cpDots=cpData.map(function(cp){
+    return g.append("circle").attr("cx",xS(cp.x)).attr("cy",yS(cp.y)).attr("r",8).attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2.5).attr("opacity",0);
+  });
+  var cpLabels=cpData.map(function(cp,i){
+    return g.append("text").attr("x",xS(cp.x)+(i===0?10:-10)).attr("y",yS(cp.y)+(i===0?-14:18))
+      .attr("text-anchor",i===0?"start":"end").attr("font-size","12px").attr("font-weight","bold").attr("fill","#c74440").attr("opacity",0).text(cp.label);
+  });
+
+  // scan dot
+  var scanDot=g.append("circle").attr("r",5).attr("fill","#333").attr("opacity",0);
+
+  function animate(){
+    // phase 1: draw curve
+    var full=lineF(pts);
+    curvePath.attr("d",full);
+    var len=curvePath.node().getTotalLength();
+    curvePath.attr("stroke-dasharray",len).attr("stroke-dashoffset",len).transition().duration(1000).attr("stroke-dashoffset",0);
+    shades.forEach(function(s){s.attr("opacity",0);});
+    shadeLbls.forEach(function(s){s.attr("opacity",0);});
+    cpDots.forEach(function(d){d.attr("opacity",0);});
+    cpLabels.forEach(function(l){l.attr("opacity",0);});
+    scanDot.attr("opacity",0);
+
+    // phase 2: scan with derivative sign
+    setTimeout(function(){
+      scanDot.attr("opacity",1);
+      var dur=3500,t0=Date.now();
+      var timer=d3.timer(function(){
+        var p=Math.min(1,(Date.now()-t0)/dur);
+        var x=-1+6*p;
+        scanDot.attr("cx",xS(x)).attr("cy",yS(f(x)));
+        // reveal shading as scan passes
+        regions.forEach(function(r,i){
+          if(x>=r.x1){
+            var revealP=Math.min(1,(x-r.x1)/(r.x2-r.x1));
+            shades[i].attr("opacity",revealP>0?1:0).attr("width",xS(Math.min(x,r.x2))-xS(r.x1));
+            if(revealP>0.5)shadeLbls[i].attr("opacity",1);
+          }
+        });
+        if(p>=1){
+          timer.stop();
+          scanDot.transition().duration(300).attr("opacity",0);
+          // phase 3: show critical points
+          cpDots.forEach(function(d,i){d.transition().delay(i*400).duration(500).attr("opacity",1);});
+          cpLabels.forEach(function(l,i){l.transition().delay(i*400+200).duration(500).attr("opacity",1);});
+        }
+      });
+    },1200);
+  }
+
+  // initial draw
+  curvePath.attr("d",lineF(pts));
+  shades.forEach(function(s,i){s.attr("opacity",1).attr("width",xS(regions[i].x2)-xS(regions[i].x1));});
+  shadeLbls.forEach(function(s){s.attr("opacity",1);});
+  cpDots.forEach(function(d){d.attr("opacity",1);});
+  cpLabels.forEach(function(l){l.attr("opacity",1);});
+
+  d3.select("#d3_0901_2_play").on("click",function(){animate();});
+})();
+</script>
+```
 
 ### The Geometric Approach: Normal Lines
 

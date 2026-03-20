@@ -157,6 +157,110 @@ $$x^3 - 4x = x(x-2)(x+2)$$
 
 注意：$f'(x) = 0$ 在 $x = -1$ 和 $x = 1$ 处——正好是 $f(x)$ 取得极大值和极小值的位置。
 
+### 动画演示：导数符号图——f'(x) 正/负对应 f(x) 递增/递减
+
+```{=html}
+<div class="d3-container" id="d3_0821_1">
+  <h4 style="text-align:center; margin-bottom:8px;">Derivative Sign Chart for f(x) = x&sup3; - 3x</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0821_1_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+  </div>
+</div>
+<script>
+(function(){
+  var w=640,h=440,m={t:25,r:30,b:30,l:50};
+  var pw=w-m.l-m.r, topH=180, gap=50, botH=140;
+  var svg=d3.select("#d3_0821_1").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var gTop=svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+  var gBot=svg.append("g").attr("transform","translate("+m.l+","+(m.t+topH+gap)+")");
+  var xS=d3.scaleLinear().domain([-3,3]).range([0,pw]);
+  var yTop=d3.scaleLinear().domain([-5,5]).range([topH,0]);
+  var yBot=d3.scaleLinear().domain([-5,10]).range([botH,0]);
+  gTop.append("g").attr("transform","translate(0,"+topH+")").call(d3.axisBottom(xS).ticks(7));
+  gTop.append("g").call(d3.axisLeft(yTop).ticks(5));
+  gBot.append("g").attr("transform","translate(0,"+botH+")").call(d3.axisBottom(xS).ticks(7));
+  gBot.append("g").call(d3.axisLeft(yBot).ticks(5));
+  gTop.append("line").attr("x1",0).attr("x2",pw).attr("y1",yTop(0)).attr("y2",yTop(0)).attr("stroke","#ccc").attr("stroke-dasharray","3,3");
+  gBot.append("line").attr("x1",0).attr("x2",pw).attr("y1",yBot(0)).attr("y2",yBot(0)).attr("stroke","#ccc").attr("stroke-dasharray","3,3");
+  gTop.append("text").attr("x",pw/2).attr("y",-8).attr("text-anchor","middle").attr("font-size","13px").attr("font-weight","bold").text("f(x) = x\u00B3 - 3x");
+  gBot.append("text").attr("x",pw/2).attr("y",-8).attr("text-anchor","middle").attr("font-size","13px").attr("font-weight","bold").text("f'(x) = 3x\u00B2 - 3");
+  // sign chart labels between
+  var gMid=svg.append("g").attr("transform","translate("+m.l+","+(m.t+topH+12)+")");
+  var regions=[{x1:-3,x2:-1,label:"+  inc",color:"#2ca02c"},{x1:-1,x2:1,label:"-  dec",color:"#d62728"},{x1:1,x2:3,label:"+  inc",color:"#2ca02c"}];
+  var bars=gMid.selectAll(".signbar").data(regions).enter().append("rect")
+    .attr("x",function(d){return xS(d.x1);}).attr("y",4)
+    .attr("width",function(d){return xS(d.x2)-xS(d.x1);}).attr("height",24)
+    .attr("fill",function(d){return d.color;}).attr("opacity",0).attr("rx",4);
+  var barLabels=gMid.selectAll(".signlbl").data(regions).enter().append("text")
+    .attr("x",function(d){return (xS(d.x1)+xS(d.x2))/2;}).attr("y",21)
+    .attr("text-anchor","middle").attr("fill","#fff").attr("font-size","12px").attr("font-weight","bold").attr("opacity",0)
+    .text(function(d){return d.label;});
+
+  function f(x){return x*x*x-3*x;}
+  function fp(x){return 3*x*x-3;}
+
+  // curves
+  var line1=d3.line().x(function(d){return xS(d);}).y(function(d){return yTop(f(d));}).curve(d3.curveBasis);
+  var line2=d3.line().x(function(d){return xS(d);}).y(function(d){return yBot(fp(d));}).curve(d3.curveBasis);
+  var pts=[];for(var i=-3;i<=3;i+=0.04)pts.push(i);
+  var fPath=gTop.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  var fpPath=gBot.append("path").attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2.5);
+
+  // shading in top graph
+  var incDec=gTop.selectAll(".shade").data(regions).enter().append("rect")
+    .attr("x",function(d){return xS(d.x1);}).attr("y",0)
+    .attr("width",function(d){return xS(d.x2)-xS(d.x1);}).attr("height",topH)
+    .attr("fill",function(d){return d.color;}).attr("opacity",0);
+
+  // scan line
+  var scanTop=gTop.append("line").attr("y1",0).attr("y2",topH).attr("stroke","#333").attr("stroke-width",1.5).attr("opacity",0);
+  var scanBot=gBot.append("line").attr("y1",0).attr("y2",botH).attr("stroke","#333").attr("stroke-width",1.5).attr("opacity",0);
+  var dotTop=gTop.append("circle").attr("r",5).attr("fill","#2d70b3").attr("opacity",0);
+  var dotBot=gBot.append("circle").attr("r",5).attr("fill","#c74440").attr("opacity",0);
+
+  function animate(){
+    // phase 1: draw curves
+    var fullF=line1(pts), fullFp=line2(pts);
+    fPath.attr("d",fullF); fpPath.attr("d",fullFp);
+    var lenF=fPath.node().getTotalLength(), lenFp=fpPath.node().getTotalLength();
+    fPath.attr("stroke-dasharray",lenF).attr("stroke-dashoffset",lenF).transition().duration(1200).attr("stroke-dashoffset",0);
+    fpPath.attr("stroke-dasharray",lenFp).attr("stroke-dashoffset",lenFp).transition().duration(1200).attr("stroke-dashoffset",0);
+
+    // phase 2: scan line
+    setTimeout(function(){
+      scanTop.attr("opacity",0.7); scanBot.attr("opacity",0.7);
+      dotTop.attr("opacity",1); dotBot.attr("opacity",1);
+      var dur=4000, t0=Date.now();
+      var timer=d3.timer(function(){
+        var p=Math.min(1,(Date.now()-t0)/dur);
+        var x=-3+6*p;
+        scanTop.attr("x1",xS(x)).attr("x2",xS(x));
+        scanBot.attr("x1",xS(x)).attr("x2",xS(x));
+        dotTop.attr("cx",xS(x)).attr("cy",yTop(f(x)));
+        dotBot.attr("cx",xS(x)).attr("cy",yBot(fp(x)));
+        if(p>=1){timer.stop();
+          // phase 3: show bars
+          bars.transition().duration(600).attr("opacity",0.7);
+          barLabels.transition().duration(600).attr("opacity",1);
+          incDec.transition().duration(600).attr("opacity",0.08);
+          scanTop.transition().duration(400).attr("opacity",0);
+          scanBot.transition().duration(400).attr("opacity",0);
+        }
+      });
+    },1400);
+  }
+
+  d3.select("#d3_0821_1_play").on("click",function(){
+    bars.attr("opacity",0);barLabels.attr("opacity",0);incDec.attr("opacity",0);
+    scanTop.attr("opacity",0);scanBot.attr("opacity",0);dotTop.attr("opacity",0);dotBot.attr("opacity",0);
+    fPath.attr("stroke-dashoffset",null).attr("stroke-dasharray",null).attr("d",null);
+    fpPath.attr("stroke-dashoffset",null).attr("stroke-dasharray",null).attr("d",null);
+    animate();
+  });
+})();
+</script>
+```
+
 ## 分数求导：改写为幂的形式
 
 ::: {.callout-note collapse="true"}
@@ -220,6 +324,81 @@ $$dy = \frac{Q(P + dP) - P(Q + dQ)}{Q(Q + dQ)} = \frac{Q \cdot dP - P \cdot dQ}{
 
 $$\frac{dy}{dx} = \frac{Q \cdot \dfrac{dP}{dx} - P \cdot \dfrac{dQ}{dx}}{Q^2}$$
 :::
+
+### 动画演示：商法则可视化——矩形面积模型
+
+```{=html}
+<div class="d3-container" id="d3_0821_2">
+  <h4 style="text-align:center; margin-bottom:8px;">Quotient Rule: Q&middot;P' &minus; P&middot;Q' over Q&sup2;</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0821_2_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+    <label style="margin-left:16px;">x = <input type="range" id="d3_0821_2_x" min="0.5" max="2.5" step="0.05" value="1"><span id="d3_0821_2_x_val">1.00</span></label>
+  </div>
+  <div id="d3_0821_2_info" style="text-align:center; font-size:13px; margin-top:4px;"></div>
+</div>
+<script>
+(function(){
+  var w=620,h=340,m={t:30,r:30,b:50,l:60};
+  var pw=w-m.l-m.r, ph=h-m.t-m.b;
+  var svg=d3.select("#d3_0821_2").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+
+  // P=x^2+1, Q=x-3, P'=2x, Q'=1
+  // at given x: show bars for Q*P', P*Q', and the difference
+  var barW=pw/5;
+  var yS=d3.scaleLinear().domain([-20,20]).range([ph,0]);
+  g.append("g").call(d3.axisLeft(yS).ticks(8));
+  g.append("line").attr("x1",0).attr("x2",pw).attr("y1",yS(0)).attr("y2",yS(0)).attr("stroke","#999").attr("stroke-width",1);
+
+  var barQP=g.append("rect").attr("rx",4);
+  var barPQ=g.append("rect").attr("rx",4);
+  var barResult=g.append("rect").attr("rx",4);
+  var lblQP=g.append("text").attr("text-anchor","middle").attr("font-size","11px").attr("fill","#2d70b3");
+  var lblPQ=g.append("text").attr("text-anchor","middle").attr("font-size","11px").attr("fill","#c74440");
+  var lblRes=g.append("text").attr("text-anchor","middle").attr("font-size","11px").attr("fill","#388c46");
+  var titleQP=g.append("text").attr("text-anchor","middle").attr("font-size","12px").attr("font-weight","bold").attr("y",ph+18);
+  var titlePQ=g.append("text").attr("text-anchor","middle").attr("font-size","12px").attr("font-weight","bold").attr("y",ph+18);
+  var titleRes=g.append("text").attr("text-anchor","middle").attr("font-size","12px").attr("font-weight","bold").attr("y",ph+18);
+
+  var cx1=pw*0.18, cx2=pw*0.5, cx3=pw*0.82;
+  titleQP.attr("x",cx1).text("Q\u00B7P'").attr("fill","#2d70b3");
+  titlePQ.attr("x",cx2).text("P\u00B7Q'").attr("fill","#c74440");
+  titleRes.attr("x",cx3).text("Numerator").attr("fill","#388c46");
+
+  function update(x, animated){
+    var P=x*x+1, Q=x-3, dP=2*x, dQ=1;
+    var qp=Q*dP, pq=P*dQ, res=qp-pq;
+    var dur=animated?600:0;
+
+    function drawBar(bar,lbl,cx,val,color){
+      var y0=yS(0), y1=yS(val);
+      var top=Math.min(y0,y1), ht=Math.abs(y1-y0);
+      bar.transition().duration(dur).attr("x",cx-barW/2).attr("y",top).attr("width",barW).attr("height",Math.max(ht,1)).attr("fill",color).attr("opacity",0.7);
+      lbl.transition().duration(dur).attr("x",cx).attr("y",val>=0?Math.min(y1-5,yS(0)-5):Math.max(y1+14,yS(0)+14)).text(val.toFixed(1));
+    }
+    drawBar(barQP,lblQP,cx1,qp,"#2d70b3");
+    drawBar(barPQ,lblPQ,cx2,pq,"#c74440");
+    drawBar(barResult,lblRes,cx3,res,"#388c46");
+
+    d3.select("#d3_0821_2_x_val").text(x.toFixed(2));
+    d3.select("#d3_0821_2_info").html("P="+P.toFixed(1)+", Q="+(Q).toFixed(1)+", P'="+(dP).toFixed(1)+", Q'=1 &nbsp;|&nbsp; Result = ("+qp.toFixed(1)+" - "+pq.toFixed(1)+") / "+(Q*Q).toFixed(1)+" = "+(res/(Q*Q)).toFixed(3));
+  }
+  update(1,false);
+
+  d3.select("#d3_0821_2_x").on("input",function(){update(+this.value,false);});
+  d3.select("#d3_0821_2_play").on("click",function(){
+    var dur=3000,t0=Date.now();
+    var timer=d3.timer(function(){
+      var p=Math.min(1,(Date.now()-t0)/dur);
+      var x=0.5+2*p;
+      d3.select("#d3_0821_2_x").property("value",x);
+      update(x,false);
+      if(p>=1)timer.stop();
+    });
+  });
+})();
+</script>
+```
 
 **示例：** 对 $\dfrac{x^2 + 1}{x - 3}$ 求导。
 

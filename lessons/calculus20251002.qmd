@@ -144,6 +144,74 @@ $$\frac{d}{dx}(3x + x^3\cos x) = 3 + 3x^2\cos x - x^3\sin x$$
 
 Assembling all components yields the complete derivative — lengthy, but each step is mechanical.
 
+**Animated visualization -- chain rule unwinding: peeling nested functions layer by layer:**
+
+```{=html}
+<div class="d3-container" id="d3_chain_rule_unwind">
+  <svg id="d3_chain_rule_unwind_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_chain_play">&#9654; Play</button>
+  <label>Step: <input type="range" id="d3_chain_slider" min="0" max="3" step="1" value="0"> <span id="d3_chain_val">0</span></label>
+</div>
+<script>
+(function(){
+  var W=650, H=380;
+  var svg=d3.select("#d3_chain_rule_unwind_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+
+  var layers=[
+    {label:"f(x) = (sin(x\u00B2))³", color:"#6042a6", desc:"Outermost: cube  \u2192  3(sin(x\u00B2))²", deriv:"3u²", u:"sin(x²)"},
+    {label:"sin(x\u00B2)", color:"#2d70b3", desc:"Middle: sine  \u2192  cos(x\u00B2)", deriv:"\u00D7 cos(v)", u:"x²"},
+    {label:"x\u00B2", color:"#388c46", desc:"Innermost: square  \u2192  2x", deriv:"\u00D7 2x", u:"x"},
+    {label:"Result", color:"#c74440", desc:"f'(x) = 3(sin(x\u00B2))² \u00B7 cos(x\u00B2) \u00B7 2x = 6x\u00B7sin\u00B2(x\u00B2)\u00B7cos(x\u00B2)", deriv:"", u:""}
+  ];
+
+  var boxW=520, boxH=55, gap=18, startY=30, startX=65;
+
+  // Draw all boxes faded
+  var boxes=[];
+  for(var i=0;i<layers.length;i++){
+    var grp=svg.append("g").attr("transform","translate("+startX+","+(startY+i*(boxH+gap))+")").attr("opacity",0.15);
+    grp.append("rect").attr("width",boxW).attr("height",boxH).attr("rx",10).attr("fill",layers[i].color).attr("opacity",0.15);
+    grp.append("text").attr("x",15).attr("y",22).text(layers[i].label).attr("fill",layers[i].color).attr("font-size","15px").attr("font-weight","bold");
+    grp.append("text").attr("x",15).attr("y",44).text(layers[i].desc).attr("fill","#333").attr("font-size","13px");
+    if(i<3){
+      var arrowY=boxH+gap/2;
+      grp.append("text").attr("x",boxW/2).attr("y",boxH+14).text("\u25BC").attr("text-anchor","middle").attr("fill","#999").attr("font-size","16px");
+    }
+    boxes.push(grp);
+  }
+
+  // highlight arrow
+  var stepLabel=svg.append("text").attr("x",W/2).attr("y",startY+4*(boxH+gap)+10).attr("text-anchor","middle").attr("font-size","14px").attr("fill","#333").attr("font-weight","bold");
+
+  function update(step){
+    for(var i=0;i<boxes.length;i++){
+      boxes[i].transition().duration(400).attr("opacity",i<=step?1:0.15);
+    }
+    var msgs=["Start with the full composite function","Layer 1: differentiate the outermost (cube)","Layer 2: differentiate the middle (sine), multiply","Layer 3: differentiate the innermost (square), multiply \u2192 final answer"];
+    stepLabel.text(msgs[step]);
+    document.getElementById("d3_chain_val").textContent=step;
+    document.getElementById("d3_chain_slider").value=step;
+  }
+  update(0);
+
+  document.getElementById("d3_chain_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,anim,curStep=0;
+  document.getElementById("d3_chain_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";return;}
+    playing=true;this.textContent="⏸ Pause";curStep=0;
+    var iv=setInterval(function(){
+      if(!playing){clearInterval(iv);return;}
+      update(curStep);curStep++;
+      if(curStep>3){curStep=0;playing=false;document.getElementById("d3_chain_play").textContent="▶ Play";clearInterval(iv);}
+    },1500);
+  });
+})();
+</script>
+```
+
 **Explore how the chain rule works on nested functions:**
 
 ::: {.desmos-container}
@@ -193,6 +261,72 @@ $$R'(x) = R(x)\left[\frac{7}{x+3} + \frac{12x}{2x^2-1} + \frac{2}{x} - \frac{4}{
 :::
 
 To evaluate at $x = 1$: compute $R(1)$ once, then substitute $x=1$ into each simple fraction and sum. This is far more efficient than expanding the product rule across five factors.
+
+**Animated visualization -- logarithmic differentiation: transforming a product into a sum of logs step by step:**
+
+```{=html}
+<div class="d3-container" id="d3_log_diff_steps">
+  <svg id="d3_log_diff_steps_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_log_diff_play">&#9654; Play</button>
+  <label>Step: <input type="range" id="d3_log_diff_slider" min="0" max="4" step="1" value="0"> <span id="d3_log_diff_val">0</span></label>
+</div>
+<script>
+(function(){
+  var W=680, H=420;
+  var svg=d3.select("#d3_log_diff_steps_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+
+  var steps=[
+    {title:"Original function", lines:["R(x) = (x+3)\u2077 \u00B7 (2x\u00B2\u22121)\u00B3 \u00B7 x\u00B2 / [(x+1)\u2074 \u00B7 (2\u2212x)\u00B2]"], color:"#2d70b3"},
+    {title:"Step 1: Take ln of both sides", lines:["ln R = 7\u00B7ln(x+3) + 3\u00B7ln(2x\u00B2\u22121) + 2\u00B7ln(x)","       \u2212 4\u00B7ln(x+1) \u2212 2\u00B7ln(2\u2212x)"], color:"#388c46"},
+    {title:"Step 2: Differentiate both sides", lines:["R\u2032/R = 7/(x+3) + 12x/(2x\u00B2\u22121) + 2/x","       \u2212 4/(x+1) + 2/(2\u2212x)"], color:"#c74440"},
+    {title:"Step 3: Multiply both sides by R", lines:["R\u2032(x) = R(x) \u00B7 [7/(x+3) + 12x/(2x\u00B2\u22121) + 2/x","                  \u2212 4/(x+1) + 2/(2\u2212x)]"], color:"#6042a6"},
+    {title:"Step 4: Evaluate at x = 1", lines:["R(1) = 4\u2077\u00B71\u00B71 / (2\u2074\u00B71) = 1024","R\u2032(1)/R(1) = 7/4 + 12 + 2 \u2212 2 + 2 = 15.75","R\u2032(1) = 1024 \u00D7 15.75 = 16128"], color:"#e67300"}
+  ];
+
+  var boxW=620, boxH=80, startX=30, startY=10;
+
+  // title
+  var titleText=svg.append("text").attr("x",W/2).attr("y",30).attr("text-anchor","middle").attr("font-size","16px").attr("font-weight","bold");
+
+  var lineGroups=[];
+  for(var s=0;s<steps.length;s++){
+    var grp=svg.append("g").attr("opacity",0);
+    var yOff=60+s*72;
+    grp.append("rect").attr("x",startX).attr("y",yOff).attr("width",boxW).attr("height",65).attr("rx",8).attr("fill",steps[s].color).attr("opacity",0.08).attr("stroke",steps[s].color).attr("stroke-width",1.5);
+    grp.append("text").attr("x",startX+10).attr("y",yOff+18).text(steps[s].title).attr("fill",steps[s].color).attr("font-size","13px").attr("font-weight","bold");
+    for(var l=0;l<steps[s].lines.length;l++){
+      grp.append("text").attr("x",startX+15).attr("y",yOff+36+l*16).text(steps[s].lines[l]).attr("fill","#333").attr("font-size","13px").attr("font-family","monospace");
+    }
+    lineGroups.push(grp);
+  }
+
+  function update(step){
+    for(var i=0;i<lineGroups.length;i++){
+      lineGroups[i].transition().duration(500).attr("opacity",i<=step?1:0);
+    }
+    titleText.text("Logarithmic Differentiation \u2014 Step "+(step+1)+" of 5");
+    document.getElementById("d3_log_diff_val").textContent=step;
+    document.getElementById("d3_log_diff_slider").value=step;
+  }
+  update(0);
+
+  document.getElementById("d3_log_diff_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,curStep=0;
+  document.getElementById("d3_log_diff_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";return;}
+    playing=true;this.textContent="⏸ Pause";curStep=0;
+    var iv=setInterval(function(){
+      if(!playing){clearInterval(iv);return;}
+      update(curStep);curStep++;
+      if(curStep>4){curStep=0;playing=false;document.getElementById("d3_log_diff_play").textContent="▶ Play";clearInterval(iv);}
+    },2000);
+  });
+})();
+</script>
+```
 
 ::: {.callout-tip collapse="true"}
 ## Why does logarithmic differentiation work?

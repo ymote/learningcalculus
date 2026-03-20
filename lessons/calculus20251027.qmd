@@ -167,6 +167,94 @@ This is an **ellipse** with semi-major axis $a = 4$ (along $x$) and semi-minor a
 
 *Drag the slider for $t_{\max}$ to observe the particle tracing out the ellipse. It starts at $(4, 0)$ and moves counterclockwise.*
 
+### Interactive: 2D Trajectory with Velocity Vector
+
+```{=html}
+<div class="d3-container" id="trajectory_2d_1027">
+  <h4 style="text-align:center; margin-bottom:4px;">Particle Tracing an Elliptical Path with Velocity Arrow</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="traj2d_play">&#9654; Play</button>
+    <label style="margin-left:12px;">t: <input type="range" id="traj2d_t" min="0" max="6.28" step="0.02" value="0"><span id="traj2d_t_val">0.00</span></label>
+    <label style="margin-left:12px;">Speed: <input type="range" id="traj2d_speed" min="0.2" max="3" step="0.1" value="1"><span id="traj2d_speed_val">1.0</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=600, h=440, margin={top:20,right:30,bottom:40,left:50};
+  var svg=d3.select("#trajectory_2d_1027").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right, ih=h-margin.top-margin.bottom;
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xScale=d3.scaleLinear().domain([-6,6]).range([0,iw]);
+  var yScale=d3.scaleLinear().domain([-5,5]).range([ih,0]);
+
+  g.append("g").attr("transform","translate(0,"+ih+")").call(d3.axisBottom(xScale).ticks(6));
+  g.append("g").call(d3.axisLeft(yScale).ticks(5));
+  g.append("line").attr("x1",xScale(-6)).attr("x2",xScale(6)).attr("y1",yScale(0)).attr("y2",yScale(0)).attr("stroke","#ccc").attr("stroke-dasharray","3,3");
+  g.append("line").attr("x1",xScale(0)).attr("x2",xScale(0)).attr("y1",yScale(-5)).attr("y2",yScale(5)).attr("stroke","#ccc").attr("stroke-dasharray","3,3");
+
+  // Draw full ellipse
+  var ellipseData=d3.range(0,6.3,0.02).map(function(t){return [4*Math.cos(3*t),3*Math.sin(3*t)];});
+  var line=d3.line().x(function(d){return xScale(d[0]);}).y(function(d){return yScale(d[1]);});
+  g.append("path").datum(ellipseData).attr("d",line).attr("fill","none").attr("stroke","#ccc").attr("stroke-width",1.5);
+
+  // Traced path
+  var tracePath=g.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+
+  // Velocity arrow
+  svg.append("defs").append("marker").attr("id","arrowhead1027").attr("viewBox","0 0 10 10").attr("refX",8).attr("refY",5).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M0,0 L10,5 L0,10 Z").attr("fill","#c74440");
+  var velArrow=g.append("line").attr("stroke","#c74440").attr("stroke-width",2.5).attr("marker-end","url(#arrowhead1027)");
+
+  // Particle dot
+  var dot=g.append("circle").attr("r",7).attr("fill","#388c46").attr("stroke","#222").attr("stroke-width",1);
+  // Start dot
+  g.append("circle").attr("cx",xScale(4)).attr("cy",yScale(0)).attr("r",5).attr("fill","#fa7e19");
+  g.append("text").attr("x",xScale(4)+8).attr("y",yScale(0)+4).text("Start (4,0)").style("font-size","11px").attr("fill","#fa7e19");
+
+  var infoText=g.append("text").attr("x",10).attr("y",ih-10).style("font-size","12px").attr("fill","#333");
+  var speedText=g.append("text").attr("x",10).attr("y",ih+25).style("font-size","12px").attr("fill","#c74440").style("font-weight","bold");
+
+  function render(t){
+    var px=4*Math.cos(3*t), py=3*Math.sin(3*t);
+    var vx=-12*Math.sin(3*t), vy=9*Math.cos(3*t);
+    var speed=Math.sqrt(vx*vx+vy*vy);
+    var scale=0.15;
+    dot.attr("cx",xScale(px)).attr("cy",yScale(py));
+    velArrow.attr("x1",xScale(px)).attr("y1",yScale(py))
+      .attr("x2",xScale(px+vx*scale)).attr("y2",yScale(py+vy*scale));
+    // traced path
+    var pts=d3.range(0,t+0.01,0.02).map(function(s){return [4*Math.cos(3*s),3*Math.sin(3*s)];});
+    tracePath.datum(pts).attr("d",line);
+    infoText.text("Position: ("+px.toFixed(2)+", "+py.toFixed(2)+")   Velocity: ("+vx.toFixed(1)+", "+vy.toFixed(1)+")");
+    speedText.text("Speed |v| = "+speed.toFixed(2));
+  }
+
+  render(0);
+
+  d3.select("#traj2d_t").on("input",function(){ var v=parseFloat(this.value); d3.select("#traj2d_t_val").text(v.toFixed(2)); render(v); });
+
+  var playing=false, animTimer, animT=0;
+  d3.select("#traj2d_play").on("click",function(){
+    if(playing){ clearInterval(animTimer); playing=false; this.textContent="\u25B6 Play"; return; }
+    playing=true; this.textContent="\u23F8 Pause";
+    animT=parseFloat(document.getElementById("traj2d_t").value);
+    var sp=parseFloat(document.getElementById("traj2d_speed").value);
+    animTimer=setInterval(function(){
+      sp=parseFloat(document.getElementById("traj2d_speed").value);
+      animT+=0.02*sp;
+      if(animT>6.28) animT=0;
+      document.getElementById("traj2d_t").value=animT;
+      d3.select("#traj2d_t_val").text(animT.toFixed(2));
+      render(animT);
+    },30);
+  });
+  d3.select("#traj2d_speed").on("input",function(){ d3.select("#traj2d_speed_val").text(parseFloat(this.value).toFixed(1)); });
+})();
+</script>
+```
+
+*Press Play to watch the green particle trace the ellipse counterclockwise from $(4,0)$. The red arrow shows the velocity vector $\vec{v}(t) = (-12\sin 3t,\; 9\cos 3t)$, always tangent to the curve. Use the speed slider to control animation rate.*
+
 ### Starting Point and Direction of Motion
 
 The trajectory equation $\frac{x^2}{16} + \frac{y^2}{9} = 1$ tells us the shape but **not** where the motion starts or which way it goes. To recover that, we go back to the parametric equations.
@@ -244,6 +332,99 @@ $$\boxed{\text{Accelerating:} \quad a(t) \cdot v(t) > 0 \qquad\qquad \text{Decel
 ```
 
 *The blue curve is velocity $v(t)$. The red dashed curve is speed $|v(t)|$. The speed increases from $t=0$ to $t=\frac{50}{7}$ (accelerating), then decreases from $t=\frac{50}{7}$ to $t = \frac{100}{7}$ (decelerating) -- even though the acceleration $a(t)$ changes sign at $t = \frac{50}{7}$, not at the same points!*
+
+### Interactive: Speed vs. Velocity Comparison
+
+```{=html}
+<div class="d3-container" id="speed_vs_vel_1027">
+  <h4 style="text-align:center; margin-bottom:4px;">Speed (scalar) vs. Velocity (vector) on the Ellipse</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="speedvel_play">&#9654; Play</button>
+    <label style="margin-left:12px;">t: <input type="range" id="speedvel_t" min="0" max="6.28" step="0.02" value="0"><span id="speedvel_t_val">0.00</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=640, h=500, margin={top:20,right:20,bottom:40,left:55};
+  var svg=d3.select("#speed_vs_vel_1027").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right;
+  // top panel: vx, vy components; bottom panel: speed
+  var panelH=190, gap=40;
+
+  // Top panel: velocity components
+  var g1=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+  var xS=d3.scaleLinear().domain([0,6.28]).range([0,iw]);
+  var yV=d3.scaleLinear().domain([-14,14]).range([panelH,0]);
+  g1.append("g").attr("transform","translate(0,"+panelH+")").call(d3.axisBottom(xS).ticks(6).tickFormat(function(d){return d.toFixed(1);}));
+  g1.append("g").call(d3.axisLeft(yV).ticks(5));
+  g1.append("text").attr("x",iw/2).attr("y",-5).attr("text-anchor","middle").style("font-size","12px").style("font-weight","bold").text("Velocity Components vx(t) and vy(t)");
+  g1.append("line").attr("x1",0).attr("x2",iw).attr("y1",yV(0)).attr("y2",yV(0)).attr("stroke","#ccc");
+
+  var tVals=d3.range(0,6.3,0.02);
+  var lineGen=d3.line().x(function(d){return xS(d[0]);}).y(function(d){return yV(d[1]);});
+  var vxData=tVals.map(function(t){return [t,-12*Math.sin(3*t)];});
+  var vyData=tVals.map(function(t){return [t,9*Math.cos(3*t)];});
+  g1.append("path").datum(vxData).attr("d",lineGen).attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2);
+  g1.append("path").datum(vyData).attr("d",lineGen).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2);
+  g1.append("text").attr("x",iw-5).attr("y",yV(-12*Math.sin(3*1))-5).style("font-size","11px").attr("fill","#c74440").text("vx");
+  g1.append("text").attr("x",iw-5).attr("y",yV(9*Math.cos(3*1))-5).style("font-size","11px").attr("fill","#2d70b3").text("vy");
+
+  var marker1=g1.append("circle").attr("r",5).attr("fill","#c74440");
+  var marker2=g1.append("circle").attr("r",5).attr("fill","#2d70b3");
+  var scanLine1=g1.append("line").attr("stroke","#333").attr("stroke-dasharray","3,2").attr("stroke-width",1);
+
+  // Bottom panel: speed
+  var g2=svg.append("g").attr("transform","translate("+margin.left+","+(margin.top+panelH+gap)+")");
+  var yS=d3.scaleLinear().domain([0,14]).range([panelH,0]);
+  g2.append("g").attr("transform","translate(0,"+panelH+")").call(d3.axisBottom(xS).ticks(6).tickFormat(function(d){return d.toFixed(1);}));
+  g2.append("g").call(d3.axisLeft(yS).ticks(5));
+  g2.append("text").attr("x",iw/2).attr("y",-5).attr("text-anchor","middle").style("font-size","12px").style("font-weight","bold").text("Speed |v(t)| = √(vx² + vy²)");
+  var lineGen2=d3.line().x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);});
+  var speedData=tVals.map(function(t){return [t,Math.sqrt(144*Math.sin(3*t)*Math.sin(3*t)+81*Math.cos(3*t)*Math.cos(3*t))];});
+  g2.append("path").datum(speedData).attr("d",lineGen2).attr("fill","none").attr("stroke","#388c46").attr("stroke-width",2.5);
+  // min/max lines
+  g2.append("line").attr("x1",0).attr("x2",iw).attr("y1",yS(9)).attr("y2",yS(9)).attr("stroke","#aaa").attr("stroke-dasharray","5,3");
+  g2.append("text").attr("x",iw-5).attr("y",yS(9)-4).attr("text-anchor","end").style("font-size","10px").attr("fill","#888").text("min speed = 9");
+  g2.append("line").attr("x1",0).attr("x2",iw).attr("y1",yS(12)).attr("y2",yS(12)).attr("stroke","#aaa").attr("stroke-dasharray","5,3");
+  g2.append("text").attr("x",iw-5).attr("y",yS(12)-4).attr("text-anchor","end").style("font-size","10px").attr("fill","#888").text("max speed = 12");
+
+  var marker3=g2.append("circle").attr("r",5).attr("fill","#388c46");
+  var scanLine2=g2.append("line").attr("stroke","#333").attr("stroke-dasharray","3,2").attr("stroke-width",1);
+  var speedLabel=g2.append("text").attr("text-anchor","start").style("font-size","12px").style("font-weight","bold").attr("fill","#388c46");
+
+  svg.append("text").attr("x",w/2).attr("y",h-5).attr("text-anchor","middle").style("font-size","12px").text("t (time)");
+
+  function render(t){
+    var vx=-12*Math.sin(3*t), vy=9*Math.cos(3*t);
+    var speed=Math.sqrt(vx*vx+vy*vy);
+    marker1.attr("cx",xS(t)).attr("cy",yV(vx));
+    marker2.attr("cx",xS(t)).attr("cy",yV(vy));
+    marker3.attr("cx",xS(t)).attr("cy",yS(speed));
+    scanLine1.attr("x1",xS(t)).attr("x2",xS(t)).attr("y1",0).attr("y2",panelH);
+    scanLine2.attr("x1",xS(t)).attr("x2",xS(t)).attr("y1",0).attr("y2",panelH);
+    speedLabel.attr("x",xS(t)+8).attr("y",yS(speed)-8).text("|v|="+speed.toFixed(1));
+  }
+
+  render(0);
+  d3.select("#speedvel_t").on("input",function(){ var v=parseFloat(this.value); d3.select("#speedvel_t_val").text(v.toFixed(2)); render(v); });
+
+  var playing=false, animTimer, animT=0;
+  d3.select("#speedvel_play").on("click",function(){
+    if(playing){ clearInterval(animTimer); playing=false; this.textContent="\u25B6 Play"; return; }
+    playing=true; this.textContent="\u23F8 Pause";
+    animT=parseFloat(document.getElementById("speedvel_t").value);
+    animTimer=setInterval(function(){
+      animT+=0.03; if(animT>6.28) animT=0;
+      document.getElementById("speedvel_t").value=animT;
+      d3.select("#speedvel_t_val").text(animT.toFixed(2));
+      render(animT);
+    },30);
+  });
+})();
+</script>
+```
+
+*The top panel shows the velocity components $v_x(t)$ (red) and $v_y(t)$ (blue) -- these are signed vector quantities that oscillate. The bottom panel shows speed $|\vec{v}|$ (green), which is always positive and oscillates between 9 and 12. Press Play to see the scan line sweep through time.*
 
 ### Graphical Analysis of Speed in 2D (Avoiding Derivatives)
 

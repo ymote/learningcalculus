@@ -130,6 +130,97 @@ The factor of $2$ inside the argument controls how fast the point moves around t
 </script>
 ```
 
+### Interactive: Parametric Circle with Tangent Velocity Vector
+
+```{=html}
+<div class="d3-container" id="param_circle_1030">
+  <h4 style="text-align:center; margin-bottom:4px;">Point on Circle with Velocity Vector (speed = 2r)</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="pcircle_play">&#9654; Play</button>
+    <label style="margin-left:12px;">t: <input type="range" id="pcircle_t" min="0" max="3.14" step="0.01" value="0"><span id="pcircle_t_val">0.00</span></label>
+    <label style="margin-left:12px;">r: <input type="range" id="pcircle_r" min="0.5" max="4" step="0.1" value="2"><span id="pcircle_r_val">2.0</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=560, h=480, margin={top:20,right:30,bottom:40,left:50};
+  var svg=d3.select("#param_circle_1030").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right, ih=h-margin.top-margin.bottom;
+  var g=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xS=d3.scaleLinear().domain([-5,5]).range([0,iw]);
+  var yS=d3.scaleLinear().domain([-5,5]).range([ih,0]);
+  g.append("g").attr("transform","translate(0,"+ih+")").call(d3.axisBottom(xS).ticks(5));
+  g.append("g").call(d3.axisLeft(yS).ticks(5));
+  g.append("line").attr("x1",xS(-5)).attr("x2",xS(5)).attr("y1",yS(0)).attr("y2",yS(0)).attr("stroke","#ddd");
+  g.append("line").attr("x1",xS(0)).attr("x2",xS(0)).attr("y1",yS(-5)).attr("y2",yS(5)).attr("stroke","#ddd");
+
+  var circlePath=g.append("path").attr("fill","none").attr("stroke","#ccc").attr("stroke-width",1.5);
+  var radiusLine=g.append("line").attr("stroke","#388c46").attr("stroke-width",1.5).attr("stroke-dasharray","4,3");
+
+  svg.append("defs").append("marker").attr("id","arrow1030").attr("viewBox","0 0 10 10").attr("refX",8).attr("refY",5).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M0,0 L10,5 L0,10 Z").attr("fill","#c74440");
+  var velArrow=g.append("line").attr("stroke","#c74440").attr("stroke-width",2.5).attr("marker-end","url(#arrow1030)");
+
+  var dot=g.append("circle").attr("r",7).attr("fill","#2d70b3").attr("stroke","#222").attr("stroke-width",1);
+  var angleArc=g.append("path").attr("fill","none").attr("stroke","#fa7e19").attr("stroke-width",1.5);
+  var infoText=g.append("text").attr("x",10).attr("y",ih-10).style("font-size","12px");
+  var speedInfo=g.append("text").attr("x",10).attr("y",ih+25).style("font-size","13px").style("font-weight","bold").attr("fill","#c74440");
+  var omegaInfo=g.append("text").attr("x",iw-10).attr("y",ih+25).attr("text-anchor","end").style("font-size","12px").attr("fill","#fa7e19");
+
+  function render(t,r){
+    // circle
+    var cpts=d3.range(0,6.3,0.02).map(function(s){return [r*Math.cos(s), r*Math.sin(s)];});
+    var cline=d3.line().x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);});
+    circlePath.attr("d",cline(cpts));
+
+    var omega=2;
+    var px=r*Math.cos(omega*t), py=r*Math.sin(omega*t);
+    var vx=-omega*r*Math.sin(omega*t), vy=omega*r*Math.cos(omega*t);
+    var speed=Math.sqrt(vx*vx+vy*vy);
+    var sc=0.18;
+
+    dot.attr("cx",xS(px)).attr("cy",yS(py));
+    radiusLine.attr("x1",xS(0)).attr("y1",yS(0)).attr("x2",xS(px)).attr("y2",yS(py));
+    velArrow.attr("x1",xS(px)).attr("y1",yS(py)).attr("x2",xS(px+vx*sc)).attr("y2",yS(py+vy*sc));
+
+    // angle arc
+    var arcPts=d3.range(0,omega*t+0.01,0.05).map(function(a){return [xS(r*0.25*Math.cos(a)), yS(r*0.25*Math.sin(a))];});
+    if(arcPts.length>1){
+      var arcLine=d3.line().x(function(d){return d[0];}).y(function(d){return d[1];});
+      angleArc.attr("d",arcLine(arcPts));
+    }
+
+    infoText.text("Position: ("+px.toFixed(2)+", "+py.toFixed(2)+")  Angle 2t = "+(omega*t).toFixed(2)+" rad");
+    speedInfo.text("Speed = "+omega+"r = "+speed.toFixed(2)+"  (constant!)");
+    omegaInfo.text("\u03C9 = "+omega+", so speed = r\u00B7\u03C9 = "+r.toFixed(1)+"\u00D7"+omega+" = "+(r*omega).toFixed(1));
+  }
+
+  render(0,2);
+
+  function getVals(){ return { t:parseFloat(document.getElementById("pcircle_t").value), r:parseFloat(document.getElementById("pcircle_r").value) }; }
+
+  d3.select("#pcircle_t").on("input",function(){ var v=getVals(); d3.select("#pcircle_t_val").text(v.t.toFixed(2)); render(v.t,v.r); });
+  d3.select("#pcircle_r").on("input",function(){ var v=getVals(); d3.select("#pcircle_r_val").text(v.r.toFixed(1)); render(v.t,v.r); });
+
+  var playing=false, animTimer, animT=0;
+  d3.select("#pcircle_play").on("click",function(){
+    if(playing){ clearInterval(animTimer); playing=false; this.textContent="\u25B6 Play"; return; }
+    playing=true; this.textContent="\u23F8 Pause";
+    animT=parseFloat(document.getElementById("pcircle_t").value);
+    animTimer=setInterval(function(){
+      var r=parseFloat(document.getElementById("pcircle_r").value);
+      animT+=0.015; if(animT>3.14) animT=0;
+      document.getElementById("pcircle_t").value=animT;
+      d3.select("#pcircle_t_val").text(animT.toFixed(2));
+      render(animT,r);
+    },30);
+  });
+})();
+</script>
+```
+
+*The blue dot moves around the circle of radius $r$. The green dashed line is the radius, and the red arrow is the velocity vector -- always tangent (perpendicular to the radius). The speed $|\vec{v}| = 2r$ stays constant as the particle moves. Change $r$ to see how the speed scales linearly with the radius.*
+
 ## Finding the Velocity Vector
 
 Velocity is the rate of change of position. We differentiate each coordinate separately:
@@ -219,6 +310,105 @@ Observe that traveling at a constant speed of $2r$ for a duration of $\pi$ yield
   calc2.setMathBounds({ left: -0.5, right: 4, bottom: -1, top: 10 });
 </script>
 ```
+
+### Interactive: Arc Length Accumulation
+
+```{=html}
+<div class="d3-container" id="arclength_1030">
+  <h4 style="text-align:center; margin-bottom:4px;">Arc Length Accumulation Along a Parametric Curve</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="arclen_play">&#9654; Play</button>
+    <label style="margin-left:12px;">t<sub>max</sub>: <input type="range" id="arclen_t" min="0" max="3" step="0.01" value="0"><span id="arclen_t_val">0.00</span></label>
+  </div>
+</div>
+<script>
+(function(){
+  var w=640, h=480, margin={top:20,right:30,bottom:50,left:55};
+  var svg=d3.select("#arclength_1030").append("svg").attr("width",w).attr("height",h);
+  var iw=w-margin.left-margin.right;
+  var panelH=200, gap=30;
+
+  // Top panel: parametric curve (using v(t)=(3t, 1-t^2) => x=1.5t^2, y=t-t^3/3)
+  var g1=svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+  var xS1=d3.scaleLinear().domain([-1,15]).range([0,iw]);
+  var yS1=d3.scaleLinear().domain([-6,2]).range([panelH,0]);
+  g1.append("g").attr("transform","translate(0,"+panelH+")").call(d3.axisBottom(xS1).ticks(6));
+  g1.append("g").call(d3.axisLeft(yS1).ticks(5));
+  g1.append("text").attr("x",iw/2).attr("y",-5).attr("text-anchor","middle").style("font-size","12px").style("font-weight","bold").text("Parametric Curve: x = 1.5t\u00B2, y = t - t\u00B3/3");
+
+  function posX(t){return 1.5*t*t;} function posY(t){return t-t*t*t/3;}
+
+  var fullCurve=d3.range(0,3.01,0.02).map(function(t){return [posX(t),posY(t)];});
+  var lineGen=d3.line().x(function(d){return xS1(d[0]);}).y(function(d){return yS1(d[1]);});
+  g1.append("path").datum(fullCurve).attr("d",lineGen).attr("fill","none").attr("stroke","#ddd").attr("stroke-width",1.5);
+  var tracedCurve=g1.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",3);
+  var dot1=g1.append("circle").attr("r",6).attr("fill","#c74440").attr("stroke","#222").attr("stroke-width",1);
+
+  var arcLenDisplay=g1.append("text").attr("x",iw-10).attr("y",20).attr("text-anchor","end").style("font-size","14px").style("font-weight","bold").attr("fill","#388c46");
+
+  // Bottom panel: arc length s(t) vs t
+  var g2=svg.append("g").attr("transform","translate("+margin.left+","+(margin.top+panelH+gap)+")");
+  var xS2=d3.scaleLinear().domain([0,3]).range([0,iw]);
+  var yS2=d3.scaleLinear().domain([0,15]).range([panelH,0]);
+  g2.append("g").attr("transform","translate(0,"+panelH+")").call(d3.axisBottom(xS2).ticks(6));
+  g2.append("g").call(d3.axisLeft(yS2).ticks(5));
+  g2.append("text").attr("x",iw/2).attr("y",-5).attr("text-anchor","middle").style("font-size","12px").style("font-weight","bold").text("Cumulative Arc Length s(t)");
+  svg.append("text").attr("x",w/2).attr("y",h-5).attr("text-anchor","middle").style("font-size","12px").text("t (time)");
+
+  // Precompute arc lengths
+  var dt=0.005, arcLens=[0];
+  for(var i=1;i<=600;i++){
+    var tt=i*dt;
+    var vx=3*tt, vy=1-tt*tt;
+    var ds=Math.sqrt(vx*vx+vy*vy)*dt;
+    arcLens.push(arcLens[i-1]+ds);
+  }
+  function getArcLen(t){ var idx=Math.min(Math.round(t/dt),600); return arcLens[idx]; }
+
+  var arcCurveData=d3.range(0,3.01,0.02).map(function(t){return [t,getArcLen(t)];});
+  var lineGen2=d3.line().x(function(d){return xS2(d[0]);}).y(function(d){return yS2(d[1]);});
+  g2.append("path").datum(arcCurveData).attr("d",lineGen2).attr("fill","none").attr("stroke","#ddd").attr("stroke-width",1.5);
+
+  var arcTracedCurve=g2.append("path").attr("fill","none").attr("stroke","#388c46").attr("stroke-width",2.5);
+  var dot2=g2.append("circle").attr("r",5).attr("fill","#388c46").attr("stroke","#222").attr("stroke-width",1);
+  var scanLine=g2.append("line").attr("stroke","#333").attr("stroke-dasharray","3,2");
+
+  function render(tmax){
+    var pts=d3.range(0,tmax+0.01,0.02).map(function(t){return [posX(t),posY(t)];});
+    tracedCurve.datum(pts).attr("d",lineGen);
+    dot1.attr("cx",xS1(posX(tmax))).attr("cy",yS1(posY(tmax)));
+
+    var s=getArcLen(tmax);
+    arcLenDisplay.text("Arc length s = "+s.toFixed(2));
+
+    var arcPts=d3.range(0,tmax+0.01,0.02).map(function(t){return [t,getArcLen(t)];});
+    arcTracedCurve.datum(arcPts).attr("d",lineGen2);
+    dot2.attr("cx",xS2(tmax)).attr("cy",yS2(s));
+    scanLine.attr("x1",xS2(tmax)).attr("x2",xS2(tmax)).attr("y1",0).attr("y2",panelH);
+  }
+
+  render(0);
+
+  d3.select("#arclen_t").on("input",function(){ var v=parseFloat(this.value); d3.select("#arclen_t_val").text(v.toFixed(2)); render(v); });
+
+  var playing=false, animTimer, animT=0;
+  d3.select("#arclen_play").on("click",function(){
+    if(playing){ clearInterval(animTimer); playing=false; this.textContent="\u25B6 Play"; return; }
+    playing=true; this.textContent="\u23F8 Pause";
+    animT=parseFloat(document.getElementById("arclen_t").value);
+    animTimer=setInterval(function(){
+      animT+=0.015; if(animT>3) animT=3;
+      document.getElementById("arclen_t").value=animT;
+      d3.select("#arclen_t_val").text(animT.toFixed(2));
+      render(animT);
+      if(animT>=3){ clearInterval(animTimer); playing=false; document.getElementById("arclen_play").textContent="\u25B6 Play"; }
+    },30);
+  });
+})();
+</script>
+```
+
+*The top panel shows the parametric curve being traced in real time (blue), with the red dot marking the current position. The bottom panel shows the cumulative arc length $s(t) = \int_0^t |\vec{v}|\,d\tau$ growing as $t$ increases. Notice how arc length grows faster when the particle moves faster (where the speed is higher).*
 
 ## Distance vs. Displacement in General Motion
 

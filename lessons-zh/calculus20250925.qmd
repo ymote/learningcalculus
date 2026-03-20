@@ -150,6 +150,79 @@ $$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
 
 *拖动滑块 $a$。绿色虚线是 $\tan x$（蓝色）的切线，其斜率始终等于 $\sec^2(a)$（红色虚线曲线）。可以观察到斜率始终不小于 1，即 $\tan x$ 的增长率单调不减。*
 
+### 动画演示：切线沿 tan(x) 滑动，斜率 = sec²(x)
+
+```{=html}
+<div class="d3-container" id="d3_tan_tangent_line">
+  <svg id="d3_tan_tangent_line_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_tan_tangent_play">&#9654; Play</button>
+  <label>x₀: <input type="range" id="d3_tan_tangent_slider" min="-1.4" max="1.4" step="0.01" value="0"> <span id="d3_tan_tangent_val">0.00</span></label>
+</div>
+<script>
+(function(){
+  var W = 600, H = 400, margin = {top:20,right:20,bottom:40,left:50};
+  var w = W - margin.left - margin.right, h = H - margin.top - margin.bottom;
+  var svg = d3.select("#d3_tan_tangent_line_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+  var g = svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")");
+
+  var xScale = d3.scaleLinear().domain([-4,4]).range([0,w]);
+  var yScale = d3.scaleLinear().domain([-6,6]).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xScale).ticks(8));
+  g.append("g").call(d3.axisLeft(yScale).ticks(8));
+
+  var line = d3.line().defined(function(d){return isFinite(d[1]) && Math.abs(d[1])<50;});
+  var pts = d3.range(-4,4.01,0.02);
+
+  // tan(x) curve
+  var tanData = pts.map(function(x){return [xScale(x), yScale(Math.tan(x))];});
+  g.append("path").datum(tanData).attr("d",line).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+
+  // sec^2(x) curve
+  var sec2Data = pts.map(function(x){var c=Math.cos(x); return [xScale(x), yScale(1/(c*c))];});
+  g.append("path").datum(sec2Data).attr("d",line).attr("fill","none").attr("stroke","#c74440").attr("stroke-width",1.5).attr("stroke-dasharray","6,3");
+
+  // labels
+  g.append("text").attr("x",xScale(1.2)).attr("y",yScale(Math.tan(1.2))-10).text("tan(x)").attr("fill","#2d70b3").attr("font-size","13px");
+  g.append("text").attr("x",xScale(0.8)).attr("y",yScale(1/Math.cos(0.8)**2)-12).text("sec²(x)").attr("fill","#c74440").attr("font-size","13px");
+
+  // tangent line
+  var tangentLine = g.append("line").attr("stroke","#388c46").attr("stroke-width",2).attr("stroke-dasharray","5,3");
+  var dot = g.append("circle").attr("r",6).attr("fill","#2d70b3");
+  var slopeText = g.append("text").attr("font-size","13px").attr("fill","#333");
+
+  function update(x0){
+    var y0 = Math.tan(x0), slope = 1/Math.pow(Math.cos(x0),2);
+    if(!isFinite(y0)||Math.abs(y0)>50) return;
+    dot.attr("cx",xScale(x0)).attr("cy",yScale(y0));
+    var x1=-4, x2=4;
+    tangentLine.attr("x1",xScale(x1)).attr("y1",yScale(y0+slope*(x1-x0)))
+               .attr("x2",xScale(x2)).attr("y2",yScale(y0+slope*(x2-x0)));
+    slopeText.attr("x",xScale(x0)+10).attr("y",yScale(y0)-10).text("slope = sec²("+x0.toFixed(2)+") = "+slope.toFixed(2));
+    document.getElementById("d3_tan_tangent_val").textContent = x0.toFixed(2);
+    document.getElementById("d3_tan_tangent_slider").value = x0;
+  }
+  update(0);
+
+  document.getElementById("d3_tan_tangent_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing = false, anim;
+  document.getElementById("d3_tan_tangent_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";cancelAnimationFrame(anim);return;}
+    playing=true;this.textContent="⏸ Pause";
+    var x0=-1.4;
+    (function step(){
+      if(!playing)return;
+      x0+=0.008; if(x0>1.4)x0=-1.4;
+      update(x0);
+      anim=requestAnimationFrame(step);
+    })();
+  });
+})();
+</script>
+```
+
 ### 单位圆上的图形推导
 
 除了代数方法，我们还可以用图形推导 $\frac{d}{d\theta}(\tan\theta) = \sec^2\theta$。
@@ -187,6 +260,77 @@ $$\boxed{\frac{d}{d\theta}(\tan\theta) = \sec^2\theta}$$
 ```
 
 *拖动 $\theta$，观察正切高度（红色线段）和正割长度（紫色标签）的变化。可以观察到当 $\theta$ 趋近 $\pm\frac{\pi}{2}$ 时，$\tan\theta$ 增长极为迅速。*
+
+### 动画演示：sec(x) 及其导数 sec(x)tan(x) 的滑动标记
+
+```{=html}
+<div class="d3-container" id="d3_sec_deriv">
+  <svg id="d3_sec_deriv_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_sec_deriv_play">&#9654; Play</button>
+  <label>x₀: <input type="range" id="d3_sec_deriv_slider" min="-1.4" max="1.4" step="0.01" value="0.5"> <span id="d3_sec_deriv_val">0.50</span></label>
+</div>
+<script>
+(function(){
+  var W=600, H=400, m={top:20,right:20,bottom:40,left:50};
+  var w=W-m.left-m.right, h=H-m.top-m.bottom;
+  var svg=d3.select("#d3_sec_deriv_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.left+","+m.top+")");
+
+  var xS=d3.scaleLinear().domain([-4,4]).range([0,w]);
+  var yS=d3.scaleLinear().domain([-8,8]).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(8));
+  g.append("g").call(d3.axisLeft(yS).ticks(8));
+
+  var line=d3.line().defined(function(d){return isFinite(d[1])&&Math.abs(d[1])<50;});
+  var pts=d3.range(-4,4.01,0.02);
+
+  // sec(x)
+  var secData=pts.map(function(x){return [xS(x),yS(1/Math.cos(x))];});
+  g.append("path").datum(secData).attr("d",line).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+
+  // sec(x)tan(x)
+  var secTanData=pts.map(function(x){var c=Math.cos(x);return [xS(x),yS(Math.tan(x)/c)];});
+  g.append("path").datum(secTanData).attr("d",line).attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2).attr("stroke-dasharray","6,3");
+
+  g.append("text").attr("x",xS(0.6)).attr("y",yS(1/Math.cos(0.6))-10).text("sec(x)").attr("fill","#2d70b3").attr("font-size","13px");
+  g.append("text").attr("x",xS(0.9)).attr("y",yS(Math.tan(0.9)/Math.cos(0.9))+20).text("sec(x)tan(x)").attr("fill","#c74440").attr("font-size","13px");
+
+  var dotSec=g.append("circle").attr("r",7).attr("fill","#2d70b3").attr("stroke","white").attr("stroke-width",2);
+  var dotDeriv=g.append("circle").attr("r",7).attr("fill","#c74440").attr("stroke","white").attr("stroke-width",2);
+  var vertLine=g.append("line").attr("stroke","#999").attr("stroke-width",1).attr("stroke-dasharray","3,3");
+  var info=g.append("text").attr("font-size","12px").attr("fill","#333");
+
+  function update(x0){
+    var c=Math.cos(x0), s=1/c, d=Math.tan(x0)/c;
+    if(!isFinite(s)||Math.abs(s)>50)return;
+    dotSec.attr("cx",xS(x0)).attr("cy",yS(s));
+    dotDeriv.attr("cx",xS(x0)).attr("cy",yS(d));
+    vertLine.attr("x1",xS(x0)).attr("y1",yS(s)).attr("x2",xS(x0)).attr("y2",yS(d));
+    info.attr("x",xS(x0)+12).attr("y",yS((s+d)/2)).text("sec="+s.toFixed(2)+"  d/dx="+d.toFixed(2));
+    document.getElementById("d3_sec_deriv_val").textContent=x0.toFixed(2);
+    document.getElementById("d3_sec_deriv_slider").value=x0;
+  }
+  update(0.5);
+
+  document.getElementById("d3_sec_deriv_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,anim;
+  document.getElementById("d3_sec_deriv_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";cancelAnimationFrame(anim);return;}
+    playing=true;this.textContent="⏸ Pause";
+    var x0=-1.4;
+    (function step(){
+      if(!playing)return;
+      x0+=0.008;if(x0>1.4)x0=-1.4;
+      update(x0);
+      anim=requestAnimationFrame(step);
+    })();
+  });
+})();
+</script>
+```
 
 ### 通过相似三角形求 $\sec\theta$ 的导数
 

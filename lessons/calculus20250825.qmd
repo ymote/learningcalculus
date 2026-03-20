@@ -138,6 +138,94 @@ When both sides are increased by small amounts, the new area gains:
 
 So the total change in area is $g\,df + f\,dg$.
 
+**Animated: Product Rule as a rectangle area model**
+
+```{=html}
+<div class="d3-container" id="d3_0825_1">
+  <h4 style="text-align:center; margin-bottom:8px;">Product Rule: Area Model &mdash; d(fg) = g&middot;df + f&middot;dg</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0825_1_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+    <label style="margin-left:12px;">df: <input type="range" id="d3_0825_1_df" min="0" max="1.5" step="0.05" value="0"><span id="d3_0825_1_df_val">0.00</span></label>
+    <label style="margin-left:12px;">dg: <input type="range" id="d3_0825_1_dg" min="0" max="1.5" step="0.05" value="0"><span id="d3_0825_1_dg_val">0.00</span></label>
+  </div>
+  <div id="d3_0825_1_info" style="text-align:center; font-size:13px; margin-top:4px;"></div>
+</div>
+<script>
+(function(){
+  var w=580,h=440,m={t:30,r:80,b:50,l:60};
+  var pw=w-m.l-m.r, ph=h-m.t-m.b;
+  var svg=d3.select("#d3_0825_1").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+  var F=3, G=4;
+  var maxV=6;
+  var s=d3.scaleLinear().domain([0,maxV]).range([0,pw]);
+  var sY=d3.scaleLinear().domain([0,maxV]).range([ph,ph-pw*maxV/maxV]);
+  // axes
+  g.append("g").attr("transform","translate(0,"+ph+")").call(d3.axisBottom(d3.scaleLinear().domain([0,maxV]).range([0,pw])).ticks(6));
+  g.append("g").call(d3.axisLeft(d3.scaleLinear().domain([0,maxV]).range([ph,ph-pw])).ticks(6));
+  g.append("text").attr("x",pw/2).attr("y",ph+36).attr("text-anchor","middle").attr("font-size","13px").text("g \u2192");
+  g.append("text").attr("transform","rotate(-90)").attr("x",-(ph-pw/2)).attr("y",-40).attr("text-anchor","middle").attr("font-size","13px").text("f \u2192");
+
+  var rectMain=g.append("rect").attr("fill","#2d70b3").attr("opacity",0.25).attr("stroke","#2d70b3").attr("stroke-width",1.5);
+  var rectRight=g.append("rect").attr("fill","#388c46").attr("opacity",0).attr("stroke","#388c46").attr("stroke-width",1.5);
+  var rectTop=g.append("rect").attr("fill","#fa7e19").attr("opacity",0).attr("stroke","#fa7e19").attr("stroke-width",1.5);
+  var rectCorner=g.append("rect").attr("fill","#c74440").attr("opacity",0).attr("stroke","#c74440").attr("stroke-width",1.5);
+
+  var lblMain=g.append("text").attr("font-size","14px").attr("font-weight","bold").attr("fill","#2d70b3");
+  var lblRight=g.append("text").attr("font-size","12px").attr("fill","#388c46").attr("font-weight","bold");
+  var lblTop=g.append("text").attr("font-size","12px").attr("fill","#fa7e19").attr("font-weight","bold");
+  var lblCorner=g.append("text").attr("font-size","10px").attr("fill","#c74440");
+
+  // legend
+  var leg=svg.append("g").attr("transform","translate("+(w-70)+","+(m.t+10)+")");
+  [["f\u00B7g","#2d70b3"],["f\u00B7dg","#388c46"],["g\u00B7df","#fa7e19"],["df\u00B7dg","#c74440"]].forEach(function(d,i){
+    leg.append("rect").attr("x",0).attr("y",i*22).attr("width",14).attr("height",14).attr("fill",d[1]).attr("opacity",0.5);
+    leg.append("text").attr("x",18).attr("y",i*22+12).text(d[0]).attr("font-size","11px");
+  });
+
+  function draw(df,dg){
+    var sx=function(v){return s(v);};
+    var sy=function(v){return ph-s(v);};
+    rectMain.attr("x",sx(0)).attr("y",sy(F)).attr("width",sx(G)).attr("height",s(F));
+    lblMain.attr("x",sx(G/2)).attr("y",sy(F/2)+5).attr("text-anchor","middle").text("f\u00B7g = "+(F*G));
+
+    if(dg>0.01){
+      rectRight.attr("x",sx(G)).attr("y",sy(F)).attr("width",sx(dg)).attr("height",s(F)).attr("opacity",0.45);
+      lblRight.attr("x",sx(G+dg/2)).attr("y",sy(F/2)+5).attr("text-anchor","middle").text((F*dg).toFixed(2));
+    } else { rectRight.attr("opacity",0); lblRight.text(""); }
+    if(df>0.01){
+      rectTop.attr("x",sx(0)).attr("y",sy(F+df)).attr("width",sx(G)).attr("height",s(df)).attr("opacity",0.45);
+      lblTop.attr("x",sx(G/2)).attr("y",sy(F+df/2)+5).attr("text-anchor","middle").text((G*df).toFixed(2));
+    } else { rectTop.attr("opacity",0); lblTop.text(""); }
+    if(df>0.01&&dg>0.01){
+      rectCorner.attr("x",sx(G)).attr("y",sy(F+df)).attr("width",sx(dg)).attr("height",s(df)).attr("opacity",0.5);
+      lblCorner.attr("x",sx(G+dg/2)).attr("y",sy(F+df/2)+4).attr("text-anchor","middle").text((df*dg).toFixed(2));
+    } else { rectCorner.attr("opacity",0); lblCorner.text(""); }
+
+    d3.select("#d3_0825_1_df_val").text(df.toFixed(2));
+    d3.select("#d3_0825_1_dg_val").text(dg.toFixed(2));
+    d3.select("#d3_0825_1_info").html("d(fg) \u2248 g\u00B7df + f\u00B7dg = "+(G*df).toFixed(2)+" + "+(F*dg).toFixed(2)+" = "+(G*df+F*dg).toFixed(2)+"&nbsp;&nbsp;(tiny corner df\u00B7dg = "+(df*dg).toFixed(3)+" dropped)");
+  }
+  draw(0,0);
+
+  d3.select("#d3_0825_1_df").on("input",function(){draw(+this.value,+d3.select("#d3_0825_1_dg").property("value"));});
+  d3.select("#d3_0825_1_dg").on("input",function(){draw(+d3.select("#d3_0825_1_df").property("value"),+this.value);});
+
+  d3.select("#d3_0825_1_play").on("click",function(){
+    var dur=3000,t0=Date.now();
+    var timer=d3.timer(function(){
+      var p=Math.min(1,(Date.now()-t0)/dur);
+      var v=1.2*p;
+      d3.select("#d3_0825_1_df").property("value",v);
+      d3.select("#d3_0825_1_dg").property("value",v);
+      draw(v,v);
+      if(p>=1)timer.stop();
+    });
+  });
+})();
+</script>
+```
+
 **Explore the rectangle interpretation — drag the slider to change the "nudge":**
 
 ```{=html}
@@ -200,6 +288,109 @@ $$\boxed{\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}}$$
 :::
 
 Intuitively, a small change in $x$ induces a change in $u$, which in turn induces a change in $y$. The total effect is multiplicative.
+
+**Animated: Chain Rule — nudge propagation through composition**
+
+```{=html}
+<div class="d3-container" id="d3_0825_2">
+  <h4 style="text-align:center; margin-bottom:8px;">Chain Rule: x &rarr; u = g(x) &rarr; y = f(u)</h4>
+  <div class="d3-controls" style="text-align:center; margin-bottom:8px;">
+    <button id="d3_0825_2_play" style="padding:6px 18px; font-size:14px; cursor:pointer;">&#9654; Play</button>
+    <label style="margin-left:12px;">x: <input type="range" id="d3_0825_2_x" min="0.5" max="2.5" step="0.05" value="1"><span id="d3_0825_2_x_val">1.00</span></label>
+    <label style="margin-left:12px;">dx: <input type="range" id="d3_0825_2_dx" min="0" max="0.5" step="0.01" value="0"><span id="d3_0825_2_dx_val">0.00</span></label>
+  </div>
+  <div id="d3_0825_2_info" style="text-align:center; font-size:13px; margin-top:4px;"></div>
+</div>
+<script>
+(function(){
+  var w=640,h=260,m={t:25,r:20,b:60,l:20};
+  var pw=w-m.l-m.r, ph=h-m.t-m.b;
+  var svg=d3.select("#d3_0825_2").append("svg").attr("viewBox","0 0 "+w+" "+h).style("max-width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.l+","+m.t+")");
+
+  // Three number lines: x, u, y
+  var lineY=50, gap=55;
+  var labels=["x","u = x\u00B2+1","y = u\u00B3"];
+  var scales=[
+    d3.scaleLinear().domain([0,3.5]).range([40,pw-40]),
+    d3.scaleLinear().domain([0,10]).range([40,pw-40]),
+    d3.scaleLinear().domain([0,1200]).range([40,pw-40])
+  ];
+  function gInner(x){return x*x+1;}
+  function fOuter(u){return u*u*u;}
+  function dgdx(x){return 2*x;}
+  function dfdu(u){return 3*u*u;}
+
+  labels.forEach(function(lbl,i){
+    var y=lineY+i*gap;
+    g.append("line").attr("x1",scales[i].range()[0]).attr("x2",scales[i].range()[1]).attr("y1",y).attr("y2",y).attr("stroke","#999").attr("stroke-width",2);
+    g.append("text").attr("x",5).attr("y",y+5).attr("font-size","12px").attr("font-weight","bold").text(lbl);
+    g.append("g").attr("transform","translate(0,"+y+")").call(d3.axisBottom(scales[i]).ticks(5).tickSize(6)).selectAll("text").attr("font-size","9px");
+  });
+
+  var dots=[], nudgeBars=[], valLabels=[];
+  var colors=["#2d70b3","#fa7e19","#c74440"];
+  for(var i=0;i<3;i++){
+    var y=lineY+i*gap;
+    dots.push(g.append("circle").attr("cy",y).attr("r",7).attr("fill",colors[i]));
+    nudgeBars.push(g.append("rect").attr("y",y-4).attr("height",8).attr("fill",colors[i]).attr("opacity",0.4).attr("rx",3));
+    valLabels.push(g.append("text").attr("y",y-14).attr("text-anchor","middle").attr("font-size","11px").attr("fill",colors[i]).attr("font-weight","bold"));
+  }
+
+  // arrows between lines
+  for(var i=0;i<2;i++){
+    var y1=lineY+i*gap+10, y2=lineY+(i+1)*gap-10;
+    g.append("line").attr("x1",pw/2).attr("x2",pw/2).attr("y1",y1).attr("y2",y2).attr("stroke","#666").attr("stroke-width",1.5).attr("marker-end","url(#arrowhead_0825)");
+  }
+  svg.append("defs").append("marker").attr("id","arrowhead_0825").attr("viewBox","0 0 10 10").attr("refX",8).attr("refY",5).attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto").append("path").attr("d","M 0 0 L 10 5 L 0 10 z").attr("fill","#666");
+
+  function draw(x,dx){
+    var u=gInner(x), y=fOuter(u);
+    var x2=x+dx, u2=gInner(x2), y2=fOuter(u2);
+    var du=u2-u, dy=y2-y;
+
+    dots[0].attr("cx",scales[0](x));
+    dots[1].attr("cx",scales[1](u));
+    dots[2].attr("cx",scales[2](y));
+    valLabels[0].attr("x",scales[0](x)).text(x.toFixed(2));
+    valLabels[1].attr("x",scales[1](u)).text(u.toFixed(2));
+    valLabels[2].attr("x",scales[2](y)).text(y.toFixed(1));
+
+    if(dx>0.005){
+      nudgeBars[0].attr("x",scales[0](x)).attr("width",Math.max(1,scales[0](x2)-scales[0](x))).attr("opacity",0.5);
+      nudgeBars[1].attr("x",scales[1](Math.min(u,u2))).attr("width",Math.max(1,Math.abs(scales[1](u2)-scales[1](u)))).attr("opacity",0.5);
+      nudgeBars[2].attr("x",scales[2](Math.min(y,y2))).attr("width",Math.max(1,Math.abs(scales[2](y2)-scales[2](y)))).attr("opacity",0.5);
+    } else {
+      nudgeBars.forEach(function(b){b.attr("opacity",0);});
+    }
+
+    d3.select("#d3_0825_2_x_val").text(x.toFixed(2));
+    d3.select("#d3_0825_2_dx_val").text(dx.toFixed(2));
+    var dudx_val=dgdx(x), dfdu_val=dfdu(u);
+    d3.select("#d3_0825_2_info").html(
+      "du/dx = "+dudx_val.toFixed(2)+" &nbsp;\u00D7&nbsp; dy/du = "+dfdu_val.toFixed(1)+" &nbsp;=&nbsp; dy/dx = "+(dudx_val*dfdu_val).toFixed(1)+
+      (dx>0.005?" &nbsp;|&nbsp; \u0394x="+dx.toFixed(2)+", \u0394u="+du.toFixed(3)+", \u0394y="+dy.toFixed(1):"")
+    );
+  }
+  draw(1,0);
+
+  d3.select("#d3_0825_2_x").on("input",function(){draw(+this.value,+d3.select("#d3_0825_2_dx").property("value"));});
+  d3.select("#d3_0825_2_dx").on("input",function(){draw(+d3.select("#d3_0825_2_x").property("value"),+this.value);});
+
+  d3.select("#d3_0825_2_play").on("click",function(){
+    var x0=+d3.select("#d3_0825_2_x").property("value");
+    var dur=2500,t0=Date.now();
+    var timer=d3.timer(function(){
+      var p=Math.min(1,(Date.now()-t0)/dur);
+      var dx=0.4*p;
+      d3.select("#d3_0825_2_dx").property("value",dx);
+      draw(x0,dx);
+      if(p>=1)timer.stop();
+    });
+  });
+})();
+</script>
+```
 
 **Explore the chain rule — see how the inner function shapes the derivative:**
 

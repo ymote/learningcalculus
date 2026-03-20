@@ -159,6 +159,67 @@ calc1.setMathBounds({ left: -5, right: 100, bottom: 1, top: 4 });
 
 *拖动滑块 $n$，观察绿色点如何趋近红色虚线 $y = e \approx 2.718$。*
 
+### 动画演示：(1 + x/n)^n 随 n 增大收敛到 e^x
+
+```{=html}
+<div class="d3-container" id="d3_1xn_convergence">
+  <svg id="d3_1xn_convergence_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_1xn_play">&#9654; Play</button>
+  <label>n: <input type="range" id="d3_1xn_slider" min="1" max="50" step="1" value="1"> <span id="d3_1xn_val">1</span></label>
+</div>
+<script>
+(function(){
+  var W=620, H=400, m={top:25,right:20,bottom:40,left:55};
+  var w=W-m.left-m.right, h=H-m.top-m.bottom;
+  var svg=d3.select("#d3_1xn_convergence_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.left+","+m.top+")");
+
+  var xS=d3.scaleLinear().domain([-2,3]).range([0,w]);
+  var yS=d3.scaleLinear().domain([-0.5,10]).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(5));
+  g.append("g").call(d3.axisLeft(yS).ticks(6));
+
+  var line=d3.line().defined(function(d){return isFinite(d[1])&&d[1]>=-.5&&d[1]<=10;}).x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);});
+
+  // e^x (target)
+  var expPts=d3.range(-2,3.01,0.05).map(function(x){return [x,Math.exp(x)];}).filter(function(d){return d[1]<=10;});
+  g.append("path").datum(expPts).attr("d",line).attr("fill","none").attr("stroke","#c74440").attr("stroke-width",2).attr("stroke-dasharray","6,3");
+  g.append("text").attr("x",xS(1.8)).attr("y",yS(Math.exp(1.8))-8).text("e^x (target)").attr("fill","#c74440").attr("font-size","13px");
+
+  // approximation curve
+  var approxPath=g.append("path").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",3);
+  var nLabel=svg.append("text").attr("x",W/2).attr("y",18).attr("text-anchor","middle").attr("font-size","15px").attr("fill","#2d70b3").attr("font-weight","bold");
+
+  function update(n){
+    var pts=d3.range(-2,3.01,0.05).map(function(x){
+      var v=Math.pow(1+x/n, n);
+      return [x, (isFinite(v)&&v>=0)?v:NaN];
+    }).filter(function(d){return isFinite(d[1])&&d[1]<=10&&d[1]>=-.5;});
+    approxPath.datum(pts).attr("d",line);
+    nLabel.text("(1 + x/"+n+")^"+n+" \u2192 e^x as n \u2192 \u221E");
+    document.getElementById("d3_1xn_val").textContent=n;
+    document.getElementById("d3_1xn_slider").value=n;
+  }
+  update(1);
+
+  document.getElementById("d3_1xn_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,anim,curN=1;
+  document.getElementById("d3_1xn_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";return;}
+    playing=true;this.textContent="⏸ Pause";curN=1;
+    var iv=setInterval(function(){
+      if(!playing){clearInterval(iv);return;}
+      update(curN);curN++;
+      if(curN>50){curN=1;playing=false;document.getElementById("d3_1xn_play").textContent="▶ Play";clearInterval(iv);}
+    },200);
+  });
+})();
+</script>
+```
+
 ### 极限的对数技巧
 
 **示例 2**：求 $\displaystyle\lim_{n \to \infty}\left(1 - \frac{3}{n^2}\right)^n$。
@@ -336,6 +397,80 @@ calc3.setMathBounds({ left: -3, right: 3, bottom: -3, top: 3 });
 :::
 
 *注意 $\arcsin x$（蓝色）是 $\sin x$（红色虚线）关于直线 $y = x$ 的反射。两者都是奇函数，经过原点并具有旋转对称性。*
+
+### 动画演示：f、f' 和 f'' 的联动图
+
+```{=html}
+<div class="d3-container" id="d3_higher_derivs">
+  <svg id="d3_higher_derivs_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_higher_derivs_play">&#9654; Play</button>
+  <label>x₀: <input type="range" id="d3_higher_derivs_slider" min="-3" max="3" step="0.02" value="0"> <span id="d3_higher_derivs_val">0.00</span></label>
+</div>
+<script>
+(function(){
+  var W=620, H=520, m={top:10,right:15,bottom:30,left:50};
+  var w=W-m.left-m.right, panelH=140, gap=20;
+  var svg=d3.select("#d3_higher_derivs_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+
+  var xDom=[-3.5,3.5];
+  var funcs=[
+    {fn:function(x){return Math.sin(x);}, label:"f(x) = sin(x)", color:"#2d70b3", yDom:[-1.5,1.5]},
+    {fn:function(x){return Math.cos(x);}, label:"f\u2032(x) = cos(x)", color:"#388c46", yDom:[-1.5,1.5]},
+    {fn:function(x){return -Math.sin(x);}, label:"f\u2033(x) = \u2212sin(x)", color:"#c74440", yDom:[-1.5,1.5]}
+  ];
+
+  var panels=[];
+  for(var p=0;p<3;p++){
+    var yOff=m.top+p*(panelH+gap);
+    var pg=svg.append("g").attr("transform","translate("+m.left+","+yOff+")");
+    var xS=d3.scaleLinear().domain(xDom).range([0,w]);
+    var yS=d3.scaleLinear().domain(funcs[p].yDom).range([panelH,0]);
+    pg.append("rect").attr("width",w).attr("height",panelH).attr("fill","#fafafa").attr("stroke","#ddd");
+    pg.append("g").attr("transform","translate(0,"+panelH+")").call(d3.axisBottom(xS).ticks(7).tickSize(-panelH)).selectAll("line").attr("stroke","#eee");
+    pg.append("g").call(d3.axisLeft(yS).ticks(3).tickSize(-w)).selectAll("line").attr("stroke","#eee");
+    // curve
+    var line=d3.line().x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);});
+    var pts=d3.range(xDom[0],xDom[1]+.01,.05).map(function(x){return [x,funcs[p].fn(x)];});
+    pg.append("path").datum(pts).attr("d",line).attr("fill","none").attr("stroke",funcs[p].color).attr("stroke-width",2.5);
+    pg.append("text").attr("x",5).attr("y",16).text(funcs[p].label).attr("fill",funcs[p].color).attr("font-size","13px").attr("font-weight","bold");
+
+    var dot=pg.append("circle").attr("r",6).attr("fill",funcs[p].color);
+    var vl=pg.append("line").attr("stroke","#999").attr("stroke-width",1).attr("stroke-dasharray","3,2").attr("y1",0).attr("y2",panelH);
+    var valText=pg.append("text").attr("font-size","11px").attr("fill","#333");
+    panels.push({xS:xS, yS:yS, dot:dot, vl:vl, valText:valText, fn:funcs[p].fn});
+  }
+
+  function update(x0){
+    for(var i=0;i<3;i++){
+      var px=panels[i].xS(x0), py=panels[i].yS(panels[i].fn(x0));
+      panels[i].dot.attr("cx",px).attr("cy",py);
+      panels[i].vl.attr("x1",px).attr("x2",px);
+      panels[i].valText.attr("x",px+8).attr("y",py-8).text(panels[i].fn(x0).toFixed(3));
+    }
+    document.getElementById("d3_higher_derivs_val").textContent=x0.toFixed(2);
+    document.getElementById("d3_higher_derivs_slider").value=x0;
+  }
+  update(0);
+
+  document.getElementById("d3_higher_derivs_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,anim;
+  document.getElementById("d3_higher_derivs_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";cancelAnimationFrame(anim);return;}
+    playing=true;this.textContent="⏸ Pause";
+    var x0=-3;
+    (function step(){
+      if(!playing)return;
+      x0+=0.012;if(x0>3)x0=-3;
+      update(x0);
+      anim=requestAnimationFrame(step);
+    })();
+  });
+})();
+</script>
+```
 
 ### 求 arcsin x 的展开（作业预告）
 

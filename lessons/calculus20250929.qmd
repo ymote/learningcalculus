@@ -143,6 +143,82 @@ $$\boxed{Z(\theta) \cdot Z(\phi) = Z(\theta + \phi)}$$
 
 This is the property we will use to prove that $Z(\theta) = e^{i\theta}$.
 
+**Animated visualization -- $e^{i\theta}$ tracing the unit circle as $\theta$ increases:**
+
+```{=html}
+<div class="d3-container" id="d3_euler_circle">
+  <svg id="d3_euler_circle_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_euler_circle_play">&#9654; Play</button>
+  <label>&theta;: <input type="range" id="d3_euler_circle_slider" min="0" max="6.283" step="0.01" value="0"> <span id="d3_euler_circle_val">0.00</span></label>
+</div>
+<script>
+(function(){
+  var W=500, H=500, cx=W/2, cy=H/2, R=180;
+  var svg=d3.select("#d3_euler_circle_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+
+  // axes
+  svg.append("line").attr("x1",cx-R-30).attr("y1",cy).attr("x2",cx+R+30).attr("y2",cy).attr("stroke","#ccc");
+  svg.append("line").attr("x1",cx).attr("y1",cy-R-30).attr("x2",cx).attr("y2",cy+R+30).attr("stroke","#ccc");
+  svg.append("text").attr("x",cx+R+10).attr("y",cy-8).text("Re").attr("fill","#888").attr("font-size","13px");
+  svg.append("text").attr("x",cx+8).attr("y",cy-R-10).text("Im").attr("fill","#888").attr("font-size","13px");
+
+  // unit circle
+  svg.append("circle").attr("cx",cx).attr("cy",cy).attr("r",R).attr("fill","none").attr("stroke","#aaa").attr("stroke-width",1.5);
+
+  // trail arc
+  var arc=d3.arc().innerRadius(R).outerRadius(R).startAngle(0);
+  var trail=svg.append("path").attr("transform","translate("+cx+","+cy+")").attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",4).attr("opacity",0.5);
+
+  // radius line
+  var radius=svg.append("line").attr("stroke","#2d70b3").attr("stroke-width",2);
+  // cos/sin segments
+  var cosSeg=svg.append("line").attr("stroke","#388c46").attr("stroke-width",2.5);
+  var sinSeg=svg.append("line").attr("stroke","#c74440").attr("stroke-width",2.5);
+  var dot=svg.append("circle").attr("r",8).attr("fill","#2d70b3");
+  var label=svg.append("text").attr("font-size","13px").attr("fill","#333").attr("font-weight","bold");
+  var cosLabel=svg.append("text").attr("font-size","12px").attr("fill","#388c46");
+  var sinLabel=svg.append("text").attr("font-size","12px").attr("fill","#c74440");
+  var thetaLabel=svg.append("text").attr("font-size","14px").attr("fill","#2d70b3").attr("font-weight","bold");
+
+  function update(theta){
+    var px=cx+R*Math.cos(theta), py=cy-R*Math.sin(theta);
+    dot.attr("cx",px).attr("cy",py);
+    radius.attr("x1",cx).attr("y1",cy).attr("x2",px).attr("y2",py);
+    cosSeg.attr("x1",cx).attr("y1",cy).attr("x2",px).attr("y2",cy);
+    sinSeg.attr("x1",px).attr("y1",cy).attr("x2",px).attr("y2",py);
+    label.attr("x",px+12).attr("y",py-12).text("e^{i"+theta.toFixed(2)+"} = "+Math.cos(theta).toFixed(2)+" + "+Math.sin(theta).toFixed(2)+"i");
+    cosLabel.attr("x",(cx+px)/2-20).attr("y",cy+18).text("cos="+Math.cos(theta).toFixed(2));
+    sinLabel.attr("x",px+8).attr("y",(cy+py)/2).text("sin="+Math.sin(theta).toFixed(2));
+    thetaLabel.attr("x",cx+35).attr("y",cy-8).text("\u03B8="+theta.toFixed(2));
+
+    // trail arc
+    trail.attr("d",arc.endAngle(theta)({startAngle:0,endAngle:theta}));
+
+    document.getElementById("d3_euler_circle_val").textContent=theta.toFixed(2);
+    document.getElementById("d3_euler_circle_slider").value=theta;
+  }
+  update(0);
+
+  document.getElementById("d3_euler_circle_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,anim;
+  document.getElementById("d3_euler_circle_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";cancelAnimationFrame(anim);return;}
+    playing=true;this.textContent="⏸ Pause";
+    var t=0;
+    (function step(){
+      if(!playing)return;
+      t+=0.015; if(t>6.283)t=0;
+      update(t);
+      anim=requestAnimationFrame(step);
+    })();
+  });
+})();
+</script>
+```
+
 ### Step 1: Additive Functions -- $L(a + b) = L(a) + L(b)$
 
 Before tackling the multiplicative equation, we prove a foundational result: if a continuous function $L$ satisfies
@@ -254,6 +330,90 @@ $$\boxed{Z(\theta) = e^{k\theta}}$$
 :::
 
 *Drag the slider $k$ to see how the exponential stretches or compresses. The function always passes through $(0, 1)$ because $Z(0) = e^0 = 1$.*
+
+**Animated visualization -- the functional equation $f(x+y)=f(x)\cdot f(y)$: why only exponentials work:**
+
+```{=html}
+<div class="d3-container" id="d3_func_eq_table">
+  <svg id="d3_func_eq_table_svg"></svg>
+</div>
+<div class="d3-controls">
+  <button id="d3_func_eq_play">&#9654; Play</button>
+  <label>y: <input type="range" id="d3_func_eq_slider" min="0" max="3" step="0.05" value="0"> <span id="d3_func_eq_val">0.00</span></label>
+</div>
+<script>
+(function(){
+  var W=650, H=420, m={top:30,right:20,bottom:50,left:60};
+  var w=W-m.left-m.right, h=H-m.top-m.bottom;
+  var svg=d3.select("#d3_func_eq_table_svg").attr("viewBox","0 0 "+W+" "+H).style("width","100%");
+  var g=svg.append("g").attr("transform","translate("+m.left+","+m.top+")");
+
+  var xS=d3.scaleLinear().domain([0,5]).range([0,w]);
+  var yS=d3.scaleLinear().domain([0,15]).range([h,0]);
+  g.append("g").attr("transform","translate(0,"+h+")").call(d3.axisBottom(xS).ticks(5));
+  g.append("g").call(d3.axisLeft(yS).ticks(6));
+  g.append("text").attr("x",w/2).attr("y",h+38).attr("text-anchor","middle").attr("font-size","13px").text("x");
+  g.append("text").attr("transform","rotate(-90)").attr("x",-h/2).attr("y",-40).attr("text-anchor","middle").attr("font-size","13px").text("f(x)");
+
+  var line=d3.line().x(function(d){return xS(d[0]);}).y(function(d){return yS(d[1]);});
+
+  // e^x curve (base=e, k=1)
+  var curvePts=d3.range(0,5.01,0.05).map(function(x){return [x,Math.exp(x)];}).filter(function(d){return d[1]<15;});
+  g.append("path").datum(curvePts).attr("d",line).attr("fill","none").attr("stroke","#2d70b3").attr("stroke-width",2.5);
+  g.append("text").attr("x",xS(2.2)).attr("y",yS(Math.exp(2.2))-8).text("f(x) = e^x").attr("fill","#2d70b3").attr("font-size","13px");
+
+  // markers
+  var dotX=g.append("circle").attr("r",7).attr("fill","#388c46").attr("stroke","white").attr("stroke-width",2);
+  var dotY=g.append("circle").attr("r",7).attr("fill","#c74440").attr("stroke","white").attr("stroke-width",2);
+  var dotXY=g.append("circle").attr("r",7).attr("fill","#6042a6").attr("stroke","white").attr("stroke-width",2);
+
+  var labelX=g.append("text").attr("font-size","12px").attr("fill","#388c46").attr("font-weight","bold");
+  var labelY=g.append("text").attr("font-size","12px").attr("fill","#c74440").attr("font-weight","bold");
+  var labelXY=g.append("text").attr("font-size","12px").attr("fill","#6042a6").attr("font-weight","bold");
+
+  // equation display
+  var eqText=svg.append("text").attr("x",W/2).attr("y",22).attr("text-anchor","middle").attr("font-size","14px").attr("fill","#333").attr("font-weight","bold");
+
+  var xFixed=1.0;
+
+  function update(yVal){
+    var fx=Math.exp(xFixed), fy=Math.exp(yVal), fxy=Math.exp(xFixed+yVal);
+    dotX.attr("cx",xS(xFixed)).attr("cy",yS(fx));
+    dotY.attr("cx",xS(yVal)).attr("cy",yS(fy));
+    if(xFixed+yVal<=5 && fxy<15){
+      dotXY.attr("cx",xS(xFixed+yVal)).attr("cy",yS(fxy)).attr("opacity",1);
+      labelXY.attr("x",xS(xFixed+yVal)+8).attr("y",yS(fxy)-10).text("f(x+y)="+fxy.toFixed(2)).attr("opacity",1);
+    } else {
+      dotXY.attr("opacity",0); labelXY.attr("opacity",0);
+    }
+    labelX.attr("x",xS(xFixed)+8).attr("y",yS(fx)-10).text("f("+xFixed.toFixed(1)+")="+fx.toFixed(2));
+    labelY.attr("x",xS(yVal)+8).attr("y",yS(fy)-10).text("f("+yVal.toFixed(2)+")="+fy.toFixed(2));
+    eqText.text("f("+xFixed.toFixed(1)+"+"+yVal.toFixed(2)+") = f("+xFixed.toFixed(1)+") \u00D7 f("+yVal.toFixed(2)+") = "+fx.toFixed(2)+" \u00D7 "+fy.toFixed(2)+" = "+(fx*fy).toFixed(2));
+
+    document.getElementById("d3_func_eq_val").textContent=yVal.toFixed(2);
+    document.getElementById("d3_func_eq_slider").value=yVal;
+  }
+  update(0);
+
+  document.getElementById("d3_func_eq_slider").addEventListener("input",function(){update(+this.value);});
+
+  var playing=false,anim;
+  document.getElementById("d3_func_eq_play").addEventListener("click",function(){
+    if(playing){playing=false;this.textContent="▶ Play";cancelAnimationFrame(anim);return;}
+    playing=true;this.textContent="⏸ Pause";
+    var y0=0;
+    (function step(){
+      if(!playing)return;
+      y0+=0.01; if(y0>3)y0=0;
+      update(y0);
+      anim=requestAnimationFrame(step);
+    })();
+  });
+})();
+</script>
+```
+
+*Watch how as $y$ increases, $f(x+y)$ (purple) always equals the product $f(x) \cdot f(y)$ (green times red). Only exponential functions have this property.*
 
 ::: {.callout-tip collapse="true"}
 ## Why does $\ln(ab) = \ln a + \ln b$?
