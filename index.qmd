@@ -2,34 +2,121 @@
 title: "Learning Calculus"
 ---
 
-Interactive calculus lecture notes with video and Desmos graphs.
+```{=html}
+<section class="course-hero">
+  <div>
+    <p class="lesson-kicker">Video-first calculus notes</p>
+    <h1>Learning Calculus</h1>
+    <p>Interactive calculus lecture notes with videos, transcripts, and focused topic pages for AP Calculus AB/BC study.</p>
+  </div>
+  <div class="course-stats" aria-label="Course statistics">
+    <div><strong>45</strong><span>lessons</span></div>
+    <div><strong>20</strong><span>new videos</span></div>
+    <div><strong>10</strong><span>2026 sessions</span></div>
+  </div>
+</section>
+```
 
-## Lessons
+## Newly Added Videos
 
-| Date | Topic |
-|------|-------|
-| Aug 19 | [Polynomial Graphing, Critical Points & Quotient Rule](lessons/calculus20250819.qmd) |
-| Aug 21 | [Derivative Analysis & Quotient Rule](lessons/calculus20250821.qmd) |
-| Aug 25 | [Product Rule, Chain Rule & Inverse Functions](lessons/calculus20250825.qmd) |
-| Aug 28 | [Inverse Functions & Chain Rule](lessons/calculus20250828.qmd) |
-| Sep 01 | [Optimization & Distance to Curves](lessons/calculus20250901.qmd) |
-| Sep 05 | [Optimization on Ellipses & 3D Surfaces](lessons/calculus20250905.qmd) |
-| Sep 11 | [The Number e & Binomial Expansion](lessons/calculus20250911.qmd) |
-| Sep 15 | [Exponential Functions, Logarithms & Their Derivatives](lessons/calculus20250915.qmd) |
-| Sep 18 | [Taylor/Maclaurin Series & Power Series of ln(1+x)](lessons/calculus20250918.qmd) |
-| Sep 22 | [Derivatives of Trig Functions & sin(x)/x Limit](lessons/calculus20250922.qmd) |
-| Sep 25 | [Derivatives of tan & sec — Graphical and Algebraic](lessons/calculus20250925.qmd) |
-| Sep 29 | [Euler's Formula & Functional Equations](lessons/calculus20250929.qmd) |
-| Oct 02 | [Derivative Techniques Review: Chain Rule, Logarithmic Differentiation & Inverse Function Derivatives](lessons/calculus20251002.qmd) |
-| Oct 06 | [Limits Involving the Definition of e, Power Expansions & Higher Derivatives of Inverse Functions](lessons/calculus20251006.qmd) |
-| Oct 09 | [Power Series from Known Expansions, Geometric Series & Partial Fractions](lessons/calculus20251009.qmd) |
-| Oct 13 | [Related Rates: Connecting Changing Quantities with Derivatives](lessons/calculus20251013_1.qmd) |
-| Oct 13 | [Related Rates: Distance, Shadows & Velocity Decomposition](lessons/calculus20251013_2.qmd) |
-| Oct 16 | [Related Rates via the Physics (Vector Projection) Method](lessons/calculus20251016.qmd) |
-| Oct 20 | [Related Rates — Spheres, Cones & Propagated Error](lessons/calculus20251020.qmd) |
-| Oct 23 | [Propagated Error & Combining Measurements](lessons/calculus20251023.qmd) |
-| Oct 23 | [Propagated Error & Logarithmic Differentiation for Percent Error](lessons/calculus20251023_2.qmd) |
-| Oct 27 | [Motion in 2D: Velocity, Speed, Trajectories & Acceleration](lessons/calculus20251027.qmd) |
-| Oct 30 | [Parametric Motion, Speed vs. Velocity & Proving the Circumference](lessons/calculus20251030.qmd) |
-| Nov 03 | [From Trajectories to Integrals — Antiderivatives & the Area of a Circle](lessons/calculus20251103.qmd) |
-| Nov 06 | [Antiderivative of the Semicircle: Geometry Meets Calculus](lessons/calculus20251106.qmd) |
+```{=html}
+<div class="lesson-grid featured-lessons">
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Apr 16</span><span>New</span></div>
+  <h3><a href="lessons/Calculus20260416.html">Polar Curves, Parametric Derivatives and Logistic Review</a></h3>
+  <p>A late review session revisiting polar tangent geometry, parametric derivatives, and logistic-model interpretation.</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Apr 15</span><span>New</span></div>
+  <h3><a href="lessons/NOTCalculus20260415Functional.html">Supplement: Functional Equations and Recurrences</a></h3>
+  <p>A supplemental non-calculus session on functional equations, recurrences, and algebraic structure.</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Apr 06</span><span>New</span></div>
+  <h3><a href="lessons/calculus04062026.html">Series, Inverse Derivatives, Polar Curves and Differential Equations</a></h3>
+  <p>A broad review session tying together series, inverse derivatives, polar-curve analysis, and differential equations.</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Mar 23</span><span>New</span></div>
+  <h3><a href="lessons/Calculus20260323PowerSeriesandConvergence.html">Power Series and Convergence Tests</a></h3>
+  <p>A focused BC calculus lesson on power series, intervals of convergence, and test selection.</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Jan 26</span><span>New</span></div>
+  <h3><a href="lessons/Calculus20260126.html">AP Calculus Review: Limits, Inverses and Tabular Problems</a></h3>
+  <p>A review session covering limits, inverse-function derivatives, and AP-style tabular reasoning.</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Jan 12</span><span>New</span></div>
+  <h3><a href="lessons/Calculus20260112ConvergenceandRiemannS.html">Convergence, Improper Integrals and Riemann Sums</a></h3>
+  <p>A BC-focused session on convergence reasoning, improper integrals, and Riemann-sum interpretations.</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Jan 12</span><span>New</span></div>
+  <h3><a href="lessons/Calculus20260112.html">Implicit Differentiation, Taylor Expansion and Area</a></h3>
+  <p>A mixed problem session connecting implicit derivatives, Taylor expansion, and area reasoning.</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>Jan 08</span><span>New</span></div>
+  <h3><a href="lessons/Calculus20260108.html">Taylor Approximation and Error Estimates</a></h3>
+  <p>Taylor-polynomial practice with attention to approximation quality, remainder terms, and how to justify bounds.</p>
+</article>
+</div>
+```
+
+## Full Lesson Library
+
+```{=html}
+<div class="lesson-table-wrap">
+<table class="lesson-index-table">
+  <thead><tr><th>Date</th><th>Topic</th></tr></thead>
+  <tbody>
+<tr><td>Apr 15, 2025</td><td><a href="lessons/Calculus20250415.html">AP Review: Taylor Polynomials, Polar Tangents and Logistic Models</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Aug 19, 2025</td><td><a href="lessons/calculus20250819.html">Polynomial Graphing, Critical Points &amp; Quotient Rule</a></td></tr>
+<tr><td>Aug 21, 2025</td><td><a href="lessons/calculus20250821.html">Derivative Analysis &amp; Quotient Rule</a></td></tr>
+<tr><td>Aug 25, 2025</td><td><a href="lessons/calculus20250825.html">Product Rule, Chain Rule &amp; Inverse Functions</a></td></tr>
+<tr><td>Aug 28, 2025</td><td><a href="lessons/calculus20250828.html">Inverse Functions &amp; Chain Rule</a></td></tr>
+<tr><td>Sep 01, 2025</td><td><a href="lessons/calculus20250901.html">Optimization &amp; Distance to Curves</a></td></tr>
+<tr><td>Sep 05, 2025</td><td><a href="lessons/calculus20250905.html">Optimization on Ellipses &amp; 3D Surfaces</a></td></tr>
+<tr><td>Sep 11, 2025</td><td><a href="lessons/calculus20250911.html">The Number e &amp; Binomial Expansion</a></td></tr>
+<tr><td>Sep 15, 2025</td><td><a href="lessons/calculus20250915.html">Exponential Functions, Logarithms &amp; Their Derivatives</a></td></tr>
+<tr><td>Sep 18, 2025</td><td><a href="lessons/calculus20250918.html">Taylor/Maclaurin Series &amp; Power Series of ln(1+x)</a></td></tr>
+<tr><td>Sep 22, 2025</td><td><a href="lessons/calculus20250922.html">Derivatives of Trig Functions &amp; sin(x)/x Limit</a></td></tr>
+<tr><td>Sep 25, 2025</td><td><a href="lessons/calculus20250925.html">Derivatives of tan &amp; sec — Graphical and Algebraic</a></td></tr>
+<tr><td>Sep 29, 2025</td><td><a href="lessons/calculus20250929.html">Euler&#x27;s Formula &amp; Functional Equations</a></td></tr>
+<tr><td>Oct 02, 2025</td><td><a href="lessons/calculus20251002.html">Derivative Techniques Review: Chain Rule, Logarithmic Differentiation &amp; Inverse Function Derivatives</a></td></tr>
+<tr><td>Oct 06, 2025</td><td><a href="lessons/calculus20251006.html">Limits Involving the Definition of e, Power Expansions &amp; Higher Derivatives of Inverse Functions</a></td></tr>
+<tr><td>Oct 09, 2025</td><td><a href="lessons/calculus20251009.html">Power Series from Known Expansions, Geometric Series, and Partial Fractions</a></td></tr>
+<tr><td>Oct 13, 2025</td><td><a href="lessons/calculus20251013_1.html">Related Rates: Connecting Changing Quantities with Derivatives</a></td></tr>
+<tr><td>Oct 13, 2025</td><td><a href="lessons/calculus20251013_2.html">Related Rates: Distance, Shadows &amp; Velocity Decomposition</a></td></tr>
+<tr><td>Oct 16, 2025</td><td><a href="lessons/calculus20251016.html">Related Rates via the Physics (Vector Projection) Method</a></td></tr>
+<tr><td>Oct 20, 2025</td><td><a href="lessons/calculus20251020.html">Related Rates — Spheres, Cones, and Propagated Error</a></td></tr>
+<tr><td>Oct 23, 2025</td><td><a href="lessons/calculus20251023.html">Propagated Error &amp; Combining Measurements</a></td></tr>
+<tr><td>Oct 23, 2025</td><td><a href="lessons/calculus20251023_2.html">Propagated Error and Logarithmic Differentiation for Percent Error Analysis</a></td></tr>
+<tr><td>Oct 27, 2025</td><td><a href="lessons/calculus20251027.html">Motion in 2D: Velocity, Speed, Trajectories &amp; Acceleration</a></td></tr>
+<tr><td>Oct 30, 2025</td><td><a href="lessons/calculus20251030.html">Parametric Motion, Speed vs. Velocity &amp; Proving the Circumference</a></td></tr>
+<tr><td>Nov 03, 2025</td><td><a href="lessons/calculus20251103.html">From Trajectories to Integrals — Antiderivatives and the Area of a Circle</a></td></tr>
+<tr><td>Nov 06, 2025</td><td><a href="lessons/calculus20251106.html">Antiderivative of the Semicircle: Geometry Meets Calculus</a></td></tr>
+<tr><td>Nov 27, 2025</td><td><a href="lessons/Calculus20251127.html">Integration by Parts, Complex Exponentials and Volumes</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 01, 2025</td><td><a href="lessons/calculus20251201.html">Mean Value Theorem, Integration Techniques and Volumes</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 04, 2025</td><td><a href="lessons/Calculus20251204.html">Solid Geometry and Volumes from Cross Sections</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 11, 2025</td><td><a href="lessons/Calculus20251211.html">Center of Mass, Moments and Slicing</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 15, 2025</td><td><a href="lessons/Calculus20251215.html">Surface Area, Related Rates and Differential Equations</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 18, 2025</td><td><a href="lessons/Calculus20251218.html">Separable Differential Equations and Exponential Series</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 22, 2025</td><td><a href="lessons/Calculus20251222.html">Logistic Growth, Partial Fractions and Asymptotes</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 25, 2025</td><td><a href="lessons/Calculus20251225.html">Logistic Equations, Partial Fractions and Trig Identities</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Dec 29, 2025</td><td><a href="lessons/Calculus20251229.html">Logistic Phase Behavior and Carrying Capacity</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Jan 01, 2026</td><td><a href="lessons/Calculus20260101.html">Slope Fields and Separable Differential Equations</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Jan 05, 2026</td><td><a href="lessons/Calculus20260105.html">Logistic Model Solutions and Graph Behavior</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Jan 08, 2026</td><td><a href="lessons/Calculus20260108.html">Taylor Approximation and Error Estimates</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Jan 12, 2026</td><td><a href="lessons/Calculus20260112.html">Implicit Differentiation, Taylor Expansion and Area</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Jan 12, 2026</td><td><a href="lessons/Calculus20260112ConvergenceandRiemannS.html">Convergence, Improper Integrals and Riemann Sums</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Jan 26, 2026</td><td><a href="lessons/Calculus20260126.html">AP Calculus Review: Limits, Inverses and Tabular Problems</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Mar 23, 2026</td><td><a href="lessons/Calculus20260323PowerSeriesandConvergence.html">Power Series and Convergence Tests</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Apr 06, 2026</td><td><a href="lessons/calculus04062026.html">Series, Inverse Derivatives, Polar Curves and Differential Equations</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Apr 15, 2026</td><td><a href="lessons/NOTCalculus20260415Functional.html">Supplement: Functional Equations and Recurrences</a> <span class="mini-badge">New</span></td></tr>
+<tr><td>Apr 16, 2026</td><td><a href="lessons/Calculus20260416.html">Polar Curves, Parametric Derivatives and Logistic Review</a> <span class="mini-badge">New</span></td></tr>
+  </tbody>
+</table>
+</div>
+```

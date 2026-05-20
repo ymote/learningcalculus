@@ -104,3 +104,249 @@ h1, h2, h3, h4, h5, h6,
   margin: 1em 0;
   border-radius: 0 8px 8px 0;
 }
+
+/* Course library redesign */
+.course-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  gap: 2rem;
+  align-items: end;
+  padding: 2rem 0 1.25rem;
+  border-bottom: 1px solid #d9dee8;
+  margin-bottom: 1.5rem;
+}
+
+.course-hero h1 {
+  margin: 0.15rem 0 0.5rem;
+  font-size: clamp(2.2rem, 7vw, 4.25rem);
+  line-height: 0.95;
+  letter-spacing: 0;
+}
+
+.course-hero p {
+  max-width: 760px;
+  color: #4a5568;
+  font-size: 1.05rem;
+}
+
+.lesson-kicker {
+  margin: 0;
+  color: #2176ae;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.course-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.course-stats div {
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  padding: 0.85rem;
+  background: #f8fafc;
+}
+
+.course-stats strong {
+  display: block;
+  color: #1f2937;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.course-stats span {
+  display: block;
+  margin-top: 0.25rem;
+  color: #586174;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 2rem;
+}
+
+.lesson-card {
+  display: flex;
+  min-height: 210px;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #ffffff;
+}
+
+.lesson-card.is-new {
+  border-color: #9bc4bc;
+  background: #fbfefd;
+}
+
+.lesson-card-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: #586174;
+  font-size: 0.77rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lesson-card h3 {
+  margin: 0.8rem 0 0.6rem;
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.lesson-card h3 a {
+  color: #1f2937;
+  text-decoration: none;
+}
+
+.lesson-card h3 a:hover {
+  color: #2176ae;
+  text-decoration: underline;
+}
+
+.lesson-card p {
+  margin: 0;
+  color: #4a5568;
+  font-size: 0.92rem;
+}
+
+.lesson-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+}
+
+.lesson-index-table {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+.lesson-index-table th,
+.lesson-index-table td {
+  padding: 0.8rem 0.95rem;
+  border-bottom: 1px solid #e8edf3;
+  vertical-align: top;
+}
+
+.lesson-index-table th {
+  background: #f8fafc;
+  color: #374151;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lesson-index-table td:first-child {
+  width: 11rem;
+  color: #586174;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.lesson-index-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.mini-badge {
+  display: inline-block;
+  margin-left: 0.45rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  background: #e7f5f2;
+  color: #1f6f63;
+  font-size: 0.68rem;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.lesson-hero.compact {
+  margin: 0.5rem 0 1.5rem;
+  padding: 1.25rem 0 1rem;
+  border-bottom: 1px solid #d9dee8;
+}
+
+.lesson-hero.compact h2 {
+  margin: 0.25rem 0 0.5rem;
+  font-size: clamp(1.75rem, 5vw, 3rem);
+  line-height: 1.05;
+}
+
+.lesson-hero.compact p:last-child {
+  max-width: 760px;
+  color: #4a5568;
+  font-size: 1rem;
+}
+
+.video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 1rem 0 1.5rem;
+  overflow: hidden;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  background: #111827;
+}
+
+.video-frame video {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.transcript-panel {
+  margin: 1rem 0 2rem;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  background: #f8fafc;
+}
+
+.transcript-panel summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  font-weight: 800;
+}
+
+.transcript-text {
+  max-height: 520px;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border-top: 1px solid #d9dee8;
+  color: #263142;
+  background: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .course-hero {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding-top: 1rem;
+  }
+
+  .course-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .lesson-index-table td:first-child {
+    width: auto;
+    white-space: normal;
+  }
+}

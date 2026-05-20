@@ -2,34 +2,121 @@
 title: "微积分学习"
 ---
 
-交互式微积分课程笔记，包含视频和 Desmos 图表。
+```{=html}
+<section class="course-hero">
+  <div>
+    <p class="lesson-kicker">以视频为核心的微积分笔记</p>
+    <h1>微积分学习</h1>
+    <p>面向 AP Calculus AB/BC 的互动课程笔记，包含课程视频、自动转写文本与按主题整理的讲义页面。</p>
+  </div>
+  <div class="course-stats" aria-label="课程统计">
+    <div><strong>45</strong><span>节课程</span></div>
+    <div><strong>20</strong><span>新增视频</span></div>
+    <div><strong>10</strong><span>2026 课程</span></div>
+  </div>
+</section>
+```
 
-## 课程列表
+## 新增视频
 
-| 日期 | 主题 |
-|------|------|
-| 8月19日 | [多项式图形、临界点与商法则](lessons-zh/calculus20250819.qmd) |
-| 8月21日 | [导数分析与商法则](lessons-zh/calculus20250821.qmd) |
-| 8月25日 | [乘法法则、链式法则与反函数](lessons-zh/calculus20250825.qmd) |
-| 8月28日 | [反函数与链式法则](lessons-zh/calculus20250828.qmd) |
-| 9月1日 | [优化问题与点到曲线的距离](lessons-zh/calculus20250901.qmd) |
-| 9月5日 | [椭圆与三维曲面上的优化](lessons-zh/calculus20250905.qmd) |
-| 9月11日 | [自然常数 e 与二项式展开](lessons-zh/calculus20250911.qmd) |
-| 9月15日 | [指数函数、对数及其导数](lessons-zh/calculus20250915.qmd) |
-| 9月18日 | [泰勒/麦克劳林级数与 ln(1+x) 的幂级数](lessons-zh/calculus20250918.qmd) |
-| 9月22日 | [三角函数的导数与 sin(x)/x 的极限](lessons-zh/calculus20250922.qmd) |
-| 9月25日 | [tan 与 sec 的导数——图形与代数方法](lessons-zh/calculus20250925.qmd) |
-| 9月29日 | [欧拉公式与函数方程](lessons-zh/calculus20250929.qmd) |
-| 10月2日 | [导数技巧复习：链式法则、对数微分与反函数导数](lessons-zh/calculus20251002.qmd) |
-| 10月6日 | [涉及 e 定义的极限、幂展开与反函数的高阶导数](lessons-zh/calculus20251006.qmd) |
-| 10月9日 | [已知展开式的幂级数、几何级数与部分分式](lessons-zh/calculus20251009.qmd) |
-| 10月13日 | [相关变化率：用导数连接变化的量](lessons-zh/calculus20251013_1.qmd) |
-| 10月13日 | [相关变化率：距离、影子与速度分解](lessons-zh/calculus20251013_2.qmd) |
-| 10月16日 | [用物理方法（向量投影）求解相关变化率](lessons-zh/calculus20251016.qmd) |
-| 10月20日 | [相关变化率——球体、圆锥与传播误差](lessons-zh/calculus20251020.qmd) |
-| 10月23日 | [传播误差与组合测量](lessons-zh/calculus20251023.qmd) |
-| 10月23日 | [传播误差与对数微分求百分比误差](lessons-zh/calculus20251023_2.qmd) |
-| 10月27日 | [二维运动：速度、速率、轨迹与加速度](lessons-zh/calculus20251027.qmd) |
-| 10月30日 | [参数运动、速率与速度的区别及圆周长的证明](lessons-zh/calculus20251030.qmd) |
-| 11月3日 | [从轨迹到积分——反导数与圆的面积](lessons-zh/calculus20251103.qmd) |
-| 11月6日 | [半圆的反导数：几何与微积分的交汇](lessons-zh/calculus20251106.qmd) |
+```{=html}
+<div class="lesson-grid featured-lessons">
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>4月16日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/Calculus20260416.html">极坐标曲线、参数导数与 Logistic 复习</a></h3>
+  <p>后期复习课，回顾极坐标切线几何、参数导数和 Logistic 模型解释。</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>4月15日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/NOTCalculus20260415Functional.html">补充课：函数方程与递推关系</a></h3>
+  <p>一节非微积分补充课，讨论函数方程、递推关系和代数结构。</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>4月6日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/calculus04062026.html">级数、反函数导数、极坐标曲线与微分方程</a></h3>
+  <p>综合复习级数、反函数导数、极坐标曲线分析和微分方程。</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>3月23日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/Calculus20260323PowerSeriesandConvergence.html">幂级数与收敛判别</a></h3>
+  <p>BC 微积分专题课，聚焦幂级数、收敛区间和判别法选择。</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>1月26日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/Calculus20260126.html">AP 微积分复习：极限、反函数与表格题</a></h3>
+  <p>复习极限、反函数导数和 AP 风格表格题的综合课。</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>1月12日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/Calculus20260112ConvergenceandRiemannS.html">收敛性、反常积分与黎曼和</a></h3>
+  <p>偏 BC 的课程，讨论收敛性推理、反常积分和黎曼和解释。</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>1月12日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/Calculus20260112.html">隐函数求导、泰勒展开与面积</a></h3>
+  <p>综合题课，连接隐函数求导、泰勒展开和面积推理。</p>
+</article>
+<article class="lesson-card is-new">
+  <div class="lesson-card-meta"><span>1月8日</span><span>新增</span></div>
+  <h3><a href="lessons-zh/Calculus20260108.html">泰勒近似与误差估计</a></h3>
+  <p>泰勒多项式练习，重点是近似质量、余项和误差界的说明。</p>
+</article>
+</div>
+```
+
+## 完整课程库
+
+```{=html}
+<div class="lesson-table-wrap">
+<table class="lesson-index-table">
+  <thead><tr><th>日期</th><th>主题</th></tr></thead>
+  <tbody>
+<tr><td>2025年4月15日</td><td><a href="lessons-zh/Calculus20250415.html">AP 复习：泰勒多项式、极坐标切线与 Logistic 模型</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年8月19日</td><td><a href="lessons-zh/calculus20250819.html">多项式图形、临界点与商法则</a></td></tr>
+<tr><td>2025年8月21日</td><td><a href="lessons-zh/calculus20250821.html">导数分析与商法则</a></td></tr>
+<tr><td>2025年8月25日</td><td><a href="lessons-zh/calculus20250825.html">乘法法则、链式法则与反函数</a></td></tr>
+<tr><td>2025年8月28日</td><td><a href="lessons-zh/calculus20250828.html">反函数与链式法则</a></td></tr>
+<tr><td>2025年9月1日</td><td><a href="lessons-zh/calculus20250901.html">最优化与曲线距离</a></td></tr>
+<tr><td>2025年9月5日</td><td><a href="lessons-zh/calculus20250905.html">椭圆与三维曲面上的优化</a></td></tr>
+<tr><td>2025年9月11日</td><td><a href="lessons-zh/calculus20250911.html">自然常数 e 与二项式展开</a></td></tr>
+<tr><td>2025年9月15日</td><td><a href="lessons-zh/calculus20250915.html">指数函数、对数及其导数</a></td></tr>
+<tr><td>2025年9月18日</td><td><a href="lessons-zh/calculus20250918.html">泰勒/麦克劳林级数与 ln(1+x) 的幂级数</a></td></tr>
+<tr><td>2025年9月22日</td><td><a href="lessons-zh/calculus20250922.html">三角函数的导数与 sin(x)/x 极限</a></td></tr>
+<tr><td>2025年9月25日</td><td><a href="lessons-zh/calculus20250925.html">tan 与 sec 的导数 —— 图形与代数方法</a></td></tr>
+<tr><td>2025年9月29日</td><td><a href="lessons-zh/calculus20250929.html">欧拉公式与函数方程</a></td></tr>
+<tr><td>2025年10月2日</td><td><a href="lessons-zh/calculus20251002.html">求导技巧复习：链式法则、对数微分与反函数导数</a></td></tr>
+<tr><td>2025年10月6日</td><td><a href="lessons-zh/calculus20251006.html">涉及 e 的定义的极限、幂展开与反函数的高阶导数</a></td></tr>
+<tr><td>2025年10月9日</td><td><a href="lessons-zh/calculus20251009.html">利用已知展开求幂级数、几何级数与部分分式</a></td></tr>
+<tr><td>2025年10月13日</td><td><a href="lessons-zh/calculus20251013_1.html">相关变化率：用导数连接变化的量</a></td></tr>
+<tr><td>2025年10月13日</td><td><a href="lessons-zh/calculus20251013_2.html">相关变化率：距离、影子与速度分解</a></td></tr>
+<tr><td>2025年10月16日</td><td><a href="lessons-zh/calculus20251016.html">用物理方法（向量投影）解相关变化率</a></td></tr>
+<tr><td>2025年10月20日</td><td><a href="lessons-zh/calculus20251020.html">相关变化率——球体、圆锥与误差传播</a></td></tr>
+<tr><td>2025年10月23日</td><td><a href="lessons-zh/calculus20251023.html">误差传播与组合测量</a></td></tr>
+<tr><td>2025年10月23日</td><td><a href="lessons-zh/calculus20251023_2.html">传播误差与对数微分法求百分比误差</a></td></tr>
+<tr><td>2025年10月27日</td><td><a href="lessons-zh/calculus20251027.html">二维运动：速度、速率、轨迹与加速度</a></td></tr>
+<tr><td>2025年10月30日</td><td><a href="lessons-zh/calculus20251030.html">参数运动、速率与速度的区别及圆周长的证明</a></td></tr>
+<tr><td>2025年11月3日</td><td><a href="lessons-zh/calculus20251103.html">从轨迹到积分——反导数与圆的面积</a></td></tr>
+<tr><td>2025年11月6日</td><td><a href="lessons-zh/calculus20251106.html">半圆的反导数：几何与微积分的邂逅</a></td></tr>
+<tr><td>2025年11月27日</td><td><a href="lessons-zh/Calculus20251127.html">分部积分、复指数与体积问题</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月1日</td><td><a href="lessons-zh/calculus20251201.html">中值定理、积分技巧与体积</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月4日</td><td><a href="lessons-zh/Calculus20251204.html">立体几何与截面积体积</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月11日</td><td><a href="lessons-zh/Calculus20251211.html">质心、矩与切片法</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月15日</td><td><a href="lessons-zh/Calculus20251215.html">曲面面积、相关变化率与微分方程</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月18日</td><td><a href="lessons-zh/Calculus20251218.html">可分离微分方程与指数级数</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月22日</td><td><a href="lessons-zh/Calculus20251222.html">Logistic 增长、部分分式与渐近线</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月25日</td><td><a href="lessons-zh/Calculus20251225.html">Logistic 方程、部分分式与三角恒等式</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2025年12月29日</td><td><a href="lessons-zh/Calculus20251229.html">Logistic 相图行为与环境承载量</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年1月1日</td><td><a href="lessons-zh/Calculus20260101.html">斜率场与可分离微分方程</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年1月5日</td><td><a href="lessons-zh/Calculus20260105.html">Logistic 模型解与图像行为</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年1月8日</td><td><a href="lessons-zh/Calculus20260108.html">泰勒近似与误差估计</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年1月12日</td><td><a href="lessons-zh/Calculus20260112.html">隐函数求导、泰勒展开与面积</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年1月12日</td><td><a href="lessons-zh/Calculus20260112ConvergenceandRiemannS.html">收敛性、反常积分与黎曼和</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年1月26日</td><td><a href="lessons-zh/Calculus20260126.html">AP 微积分复习：极限、反函数与表格题</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年3月23日</td><td><a href="lessons-zh/Calculus20260323PowerSeriesandConvergence.html">幂级数与收敛判别</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年4月6日</td><td><a href="lessons-zh/calculus04062026.html">级数、反函数导数、极坐标曲线与微分方程</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年4月15日</td><td><a href="lessons-zh/NOTCalculus20260415Functional.html">补充课：函数方程与递推关系</a> <span class="mini-badge">新增</span></td></tr>
+<tr><td>2026年4月16日</td><td><a href="lessons-zh/Calculus20260416.html">极坐标曲线、参数导数与 Logistic 复习</a> <span class="mini-badge">新增</span></td></tr>
+  </tbody>
+</table>
+</div>
+```
